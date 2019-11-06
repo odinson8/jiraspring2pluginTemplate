@@ -1,9 +1,5 @@
-@echo off
+REM Berk
 
-title This is BERK!
-echo Welcome to batch scripting!
+CALL "C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4\bin\mvn.cmd" -gs C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4/conf/settings.xml -Dmaven.test.skip=true package
 
-C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4\bin\mvn.cmd -gs C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4/conf/settings.xml package
-atlas-install-plugin --username plugin --password asd --plugin-key com.veniture.resourceManagement --server https://veniture.tk -p 8073 --context-path
-
-pause
+CALL "C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4\bin\mvn.cmd" com.atlassian.maven.plugins:amps-dispatcher-maven-plugin:8.0.2:install -gs C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4/conf/settings.xml -Dusername=admin -Dpassword=asd -Datlassian.plugin.key=com.veniture.resourceManagement -Dserver=http://veniture.tk -Dhttp.port=8073 -Dcontext.path=
