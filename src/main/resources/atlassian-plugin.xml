@@ -20,7 +20,7 @@
         <context>atl.general</context>
     </web-resource>
 
-    <web-item key="web-item-example" name="My Web Item" section="system.top.navigation.bar" weight="200"><description key="my-web-item-desc">General description</description><label key="my-web-item-label" /><link linkId="my-web-item-link">/my-web-item</link></web-item>
+    <web-item key="helloworld-example" name="FLO" section="system.top.navigation.bar" weight="200"><description key="helloworld-item-desc">General description</description><label key="helloworld-item-label" /><link linkId="helloworld-item-link">/plugins/servlet/helloworld</link></web-item>
 
     <servlet name="Hello World Servlet" key="helloWorld" class="com.veniture.berk">
         <description>Says Hello World, Australia or your name.</description>

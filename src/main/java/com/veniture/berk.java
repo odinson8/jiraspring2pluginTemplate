@@ -3,10 +3,17 @@ package com.veniture;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
+import com.atlassian.jira.issue.search.SearchException;
+import com.atlassian.jira.issue.search.SearchResults;
+import com.atlassian.jira.jql.parser.JqlParseException;
+import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
+import com.atlassian.query.Query;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +77,20 @@ public class berk extends HttpServlet {
                 templateRenderer.render(EDIT_ISSUE_TEMPLATE, context, resp.getWriter());
                 break;
             default:
+
+                String query = "project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\"";
+                //String query = "project = TEST";
+                JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
+
+                try {
+                    Query conditionQuery = jqlQueryParser.parseQuery(query);
+                    SearchResults results = searchService.search(ComponentAccessor.getJiraAuthenticationContext().getUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
+                    context.put("issue", results.getResults());
+
+                } catch (JqlParseException | SearchException e) {
+                    e.printStackTrace();
+                }
                // List<Issue> issues = getIssues();
-               // context.put("issues", issues);
                 templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
         }
     }
