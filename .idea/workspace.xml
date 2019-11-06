@@ -2,88 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/installScript.bat" beforeDir="false" afterPath="$PROJECT_DIR$/installScript.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/berk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/berk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/api/MyPluginComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/berk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/impl/MyPluginComponentImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/atlassian-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/veniture/berk.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/veniture/berk.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/list.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/obr/obr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/obr.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0-tests.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ut.com.veniture.MyComponentUnitTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ut.com.veniture.MyComponentUnitTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/atlassian-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/com/veniture/MyComponentWiredTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ut/com/veniture/MyComponentUnitTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/activation-1.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/analytics-api-5.6.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/applinks-api-5.4.5.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-annotations-1.1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-application-api-1.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-cache-api-3.2.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-core-5.0.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-core-thumbnail-5.0.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-core-user-5.0.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-event-2.3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-gadgets-api-4.2.32.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-instrumentation-core-2.2.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-johnson-core-3.4.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-mail-2.8.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugin-point-safety-0.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-api-4.5.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-servlet-3.2.8.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webfragment-4.1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webfragment-api-4.1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webresource-3.5.41.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webresource-api-3.5.41.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webresource-compiler-gcc-3.5.41.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-plugins-webresource-spi-3.5.41.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-profiling-1.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-scheduler-api-1.7.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-tenancy-api-1.4.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/atlassian-util-concurrent-0.0.12.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/beehive-api-1.3.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/closure-compiler-v20151216.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/common-image-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/common-io-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/common-lang-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/commons-io-2.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/commons-lang3-3.3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/commons-pool-1.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/embedded-crowd-api-2.10.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/entityengine-1.3.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/entityengine-share-1.3.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/fugue-2.6.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/guava-18.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/imageio-core-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/imageio-jpeg-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/imageio-metadata-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/imageio-tiff-3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/isorelax-20020414.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/jackson-core-asl-1.9.13-atlassian-1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/jackson-mapper-asl-1.9.13-atlassian-1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/javax.servlet-api-3.0.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/jaxen-1.0-FCS.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/jira-api-7.13.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/log4j-1.2.16.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/msv-20020414.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/relaxngDatatype-20020414.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/sal-api-3.2.0-abbce37.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/saxpath-1.0-FCS.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/slf4j-api-1.7.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/validation-api-1.1.0.Final.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/testlibs/provided/velocity-htmlsafe-1.4.jar" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,6 +22,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -123,6 +52,15 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
+  <component name="RecentsManager">
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.veniture" />
+    </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.veniture.constants.Constants" />
+      <recent name="com.veniture.servlet.IssuesTable" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -135,6 +73,43 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Remote.Unnamed">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <module name="resourceManagement" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Unnamed (1)" type="Remote" nameIsGenerated="true">
+      <module name="resourceManagement" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
+      <module name="resourceManagement" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="62.108.36.188" />
+      <option name="PORT" value="8003" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="8003" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Unnamed" />
+      <item itemvalue="Remote.Unnamed (1)" />
+      <item itemvalue="Remote.Unnamed" />
+    </list>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -146,7 +121,7 @@
       <option name="presentableId" value="Default" />
       <updated>1572521882426</updated>
       <workItem from="1572521883805" duration="5631000" />
-      <workItem from="1573035816219" duration="11392000" />
+      <workItem from="1573035816219" duration="20256000" />
     </task>
     <servers />
   </component>

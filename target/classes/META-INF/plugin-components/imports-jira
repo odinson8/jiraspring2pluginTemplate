@@ -1,0 +1,6 @@
+com.atlassian.jira.bc.issue.IssueService
+com.atlassian.jira.bc.issue.search.SearchService
+com.atlassian.jira.bc.project.ProjectService
+com.atlassian.jira.config.ConstantsManager
+com.atlassian.jira.security.JiraAuthenticationContext
+com.atlassian.templaterenderer.TemplateRenderer

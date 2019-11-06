@@ -1,0 +1,41 @@
+Manifest-Version: 1.0
+Atlassian-Build-Date: 2019-11-06T20:38:39+0300
+Atlassian-Plugin-Key: com.veniture.resourceManagement
+Bnd-LastModified: 1573061920725
+Build-Jdk: 1.8.0_232
+Built-By: veniture
+Bundle-Description: This is the com.veniture:resourceManagement plugin f
+ or Atlassian JIRA.
+Bundle-DocURL: http://www.venITure.net/
+Bundle-ManifestVersion: 2
+Bundle-Name: resourceManagement
+Bundle-SymbolicName: com.veniture.resourceManagement
+Bundle-Vendor: venITure
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.veniture.api;version="1.0.0"
+Import-Package: org.springframework.osgi.context;resolution:=optional,or
+ g.springframework.osgi.service.exporter.support;resolution:=optional,or
+ g.springframework.osgi.service.importer.support;resolution:=optional,or
+ g.eclipse.gemini.blueprint.context;resolution:=optional,org.eclipse.gem
+ ini.blueprint.service.exporter;resolution:=optional,org.eclipse.gemini.
+ blueprint.service.exporter.support;resolution:=optional,org.eclipse.gem
+ ini.blueprint.service.importer.support;resolution:=optional,com.atlassi
+ an.jira.bc.issue,com.atlassian.jira.bc.issue.search,com.atlassian.jira.
+ bc.project,com.atlassian.jira.component,com.atlassian.jira.config,com.a
+ tlassian.jira.issue,com.atlassian.jira.issue.fields,com.atlassian.jira.
+ issue.search,com.atlassian.jira.jql.parser,com.atlassian.jira.security,
+ com.atlassian.jira.user,com.atlassian.jira.web.bean,com.atlassian.plugi
+ n.osgi.factory,com.atlassian.query,com.atlassian.templaterenderer,com.g
+ oogle.common.base,com.google.common.collect,javax.annotation,javax.serv
+ let.http,org.apache.commons.lang,org.apache.commons.logging,org.osgi.fr
+ amework,org.slf4j,org.springframework.aop.support,org.springframework.b
+ eans,org.springframework.beans.factory,org.springframework.beans.factor
+ y.annotation,org.springframework.beans.factory.config,org.springframewo
+ rk.beans.factory.parsing,org.springframework.beans.factory.support,org.
+ springframework.beans.factory.xml,org.springframework.context.annotatio
+ n,org.springframework.core.io,org.springframework.stereotype,org.spring
+ framework.util,org.w3c.dom
+Originally-Created-By: Apache Maven Bundle Plugin
+Spring-Context: *
+Tool: Bnd-3.5.0.201709291849
