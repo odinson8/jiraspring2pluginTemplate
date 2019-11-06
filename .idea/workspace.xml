@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/installScript.bat" beforeDir="false" afterPath="$PROJECT_DIR$/installScript.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/api/MyPluginComponent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/berk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/impl/MyPluginComponentImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/list.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/obr/obr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/obr.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/META-INF/MANIFEST.MF" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -121,7 +120,7 @@
       <option name="presentableId" value="Default" />
       <updated>1572521882426</updated>
       <workItem from="1572521883805" duration="5631000" />
-      <workItem from="1573035816219" duration="20256000" />
+      <workItem from="1573035816219" duration="20442000" />
     </task>
     <servers />
   </component>
