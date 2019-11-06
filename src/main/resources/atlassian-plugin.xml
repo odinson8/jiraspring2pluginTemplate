@@ -13,12 +13,11 @@
     <!-- add our web resources -->
     <web-resource key="resourceManagement-resources" name="resourceManagement Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
+        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="resourceManagement.css" location="/css/resourceManagement.css"/>
         <resource type="download" name="resourceManagement.js" location="/js/resourceManagement.js"/>
         <resource type="download" name="images/" location="/images"/>
-
-        <context>resourceManagement</context>
+        <context>atl.general</context>
     </web-resource>
 
     <web-item key="web-item-example" name="My Web Item" section="system.top.navigation.bar" weight="200"><description key="my-web-item-desc">General description</description><label key="my-web-item-label" /><link linkId="my-web-item-link">/my-web-item</link></web-item>
