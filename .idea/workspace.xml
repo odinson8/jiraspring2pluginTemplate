@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/plugin-components/imports-jira" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/plugin-components/imports-jira" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/veniture/servlet/IssuesTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/veniture/servlet/IssuesTable.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/list.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/obr/obr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/obr.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/obr/resourceManagement-1.0.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" afterDir="false" />
@@ -46,7 +50,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
@@ -121,7 +125,7 @@
       <updated>1572521882426</updated>
       <workItem from="1572521883805" duration="5631000" />
       <workItem from="1573035816219" duration="20709000" />
-      <workItem from="1573110343214" duration="6194000" />
+      <workItem from="1573110343214" duration="9156000" />
     </task>
     <servers />
   </component>

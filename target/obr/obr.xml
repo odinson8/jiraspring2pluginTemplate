@@ -1,7 +1,7 @@
-<repository lastmodified='20191107014950.158'>
+<repository lastmodified='20191107051014.833'>
   <resource id='com.veniture.resourceManagement/1.0.0' symbolicname='com.veniture.resourceManagement' presentationname='resourceManagement' uri='resourceManagement-1.0.0.jar' version='1.0.0'>
     <description>This is the com.veniture:resourceManagement plugin for Atlassian JIRA.</description>
-    <size>275739</size>
+    <size>276016</size>
     <documentation>http://www.venITure.net/</documentation>
     <capability name='bundle'>
       <p n='symbolicname' v='com.veniture.resourceManagement'/>

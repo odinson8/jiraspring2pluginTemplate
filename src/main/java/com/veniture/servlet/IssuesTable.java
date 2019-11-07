@@ -7,12 +7,15 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.service.ServiceManager;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
@@ -49,19 +52,21 @@ public class IssuesTable extends HttpServlet {
     @JiraImport
     private ConstantsManager constantsManager;
 
+
     private static final String LIST_ISSUES_TEMPLATE = "/templates/list.vm";
 
     public IssuesTable(IssueService issueService, ProjectService projectService,
                        SearchService searchService,
                        TemplateRenderer templateRenderer,
                        JiraAuthenticationContext authenticationContext,
-                       ConstantsManager constantsManager) {
+                       ConstantsManager constantsManager, IssueManager issueManager) {
         this.issueService = issueService;
         this.projectService = projectService;
         this.searchService = searchService;
         this.templateRenderer = templateRenderer;
         this.authenticationContext = authenticationContext;
         this.constantsManager = constantsManager;
+        this.issueManager = issueManager;
     }
 
     @Override
@@ -104,16 +109,20 @@ public class IssuesTable extends HttpServlet {
     private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
         try {
             Query conditionQuery = jqlQueryParser.parseQuery(Constants.QUERY);
+            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
             List<Issue> issues = results.getResults();
 //            for (Issue issue : issues) {
 //                Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
 //            }
+            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
             context.put("issues", results.getResults());
-            context.put("kapasiteAbapCf", kapasiteAbapCf);
-            context.put("kapasiteSapCf", kapasiteSapCf);
+            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
+            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
             context.put("gerekliAbapEforCf", gerekliAbapEforCf);
             context.put("gerekliSapEforCf", gerekliSapEforCf);
+
             return context;
 
         } catch (JqlParseException | SearchException e) {

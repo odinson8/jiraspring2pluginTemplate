@@ -1,10 +1,14 @@
 <!-- 
 Written by Veniture
+
+TODO
+İssue Link olsun
 -->
 
 $webResourceManager.requireResource("com.veniture.resourceManagement:resourceManagement-resources")
 
 <html>
+
 <head>
     <title>FLO DEMO</title>
 
@@ -22,115 +26,105 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
     <meta name="decorator" content="atl.general">
     <script>
         AJS.$(document).ready(function() {
-        displayFooter = function() {
-        table = AJS.$('#example').DataTable();
+            displayFooter = function() {
+                table = AJS.$('#example').DataTable();
 
-        // Total over all pages
-        var intVal = function(i) {
-            return typeof i === 'undefined' ? 0 : i * 1;
-        };
+                // Total over all pages
+                var intVal = function(i) {
+                    return typeof i === 'undefined' ? 0 : i * 1;
+                };
 
-        var totalize_filtered = function(col) {
-            var data = table.column(col, {
-                search: 'applied'
-            }).data();
-            if (typeof data != 'undefined') {
-                return data
-                    .reduce(function(a, b) {
-                            return intVal(a) + intVal(b);
-                        },
-                        0);
-            } else {
-                return 0;
-            }
-        };
+                var totalize_filtered = function(col) {
+                    var data = table.column(col, {
+                        search: 'applied'
+                    }).data();
+                    if (typeof data != 'undefined') {
+                        return data
+                            .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                },
+                                0);
+                    } else {
+                        return 0;
+                    }
+                };
 
-        var totalize_selected = function(col) {
-            var data = table.cells('.selected', 3).data();
-            if (typeof data != 'undefined') {
-                return data
-                    .reduce(function(a, b) {
-                            return intVal(a) + intVal(b);
-                        },
-                        0);
-            } else {
-                return 0;
-            }
-        };
-        var apply_footer = function(col) {
-            AJS.$(table.column(col).footer()).html(
-                'S: ' + (40 - totalize_selected(col))
-            );
-        };
-        apply_footer(3);
+                var totalize_selected = function(col) {
+                    var data = table.cells('.selected', col).data();
+                    if (typeof data != 'undefined') {
+                        return data
+                            .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                },
+                                0);
+                    } else {
+                        return 0;
+                    }
+                };
+                var apply_footer = function(kapasite,col) {
+                    AJS.$(table.column(col).footer()).html(
+                        ' ' + (kapasite - totalize_selected(col))
+                    );
+                };
+         
+                apply_footer($kapasiteSap,3);
+                apply_footer($kapasiteAbap,2);
 
-    };
+            };
 
-    var table = AJS.$('#example').DataTable({
-        select: true,
-        footerCallback: function(row, data, start, end, display) {
-            displayFooter();
-        }
-    });
+            var table = AJS.$('#example').DataTable({
+                select: true,
+                footerCallback: function(row, data, start, end, display) {
+                    displayFooter();
+                }
+            });
 
-    table.on('select.dt deselect.dt', function() {
-        displayFooter();
-    });
-});
+            table.on('select.dt deselect.dt', function() {
+                displayFooter();
+            });
+        });
     </script>
 </head>
 
 <body id="jira>
-    <div class="content-container">
+    <div class=" content-container">
         <div class="content-body">
             <div class="container">
-
-                <table class="aui" id="kapasiteTable">
-                    <tbody>
-                        <tr>
-                            <td headers="AbapKapasite">AbapKapasite</td>
-                            <td headers="SapKapasite">SapKapasite</td>
-                        </tr>
-                        <tr>
-                            <td headers="basic-number">40</td>
-                            <td headers="basic-number">40</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-           <table id="example" class="display nowrap" width="100%">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-
-          </tr>
-        </thead>
-
-        <tfoot>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-    
-          </tr>
-        </tfoot>
-
-        <tbody>
-            #foreach( $issue in $issues )
-                        <tr>
-                            <td>$issue.getKey()</td>
-                            <td>$issue.getSummary()</td>
-                            <td class="gerekliAbapEfor">$issue.getCustomFieldValue($gerekliAbapEforCf)</td>
-                            <td class="gerekliSapEfor">$issue.getCustomFieldValue($gerekliSapEforCf)</td>
-                        </tr>
-            #end   
-        </tbody>
-      </table>
-                <button class="aui-button" id="calculateButton">Calculate</button>
+                <div class="aui-group">
+                    <div class="aui-item" id="issueTableDiv">
+                        <table id="example" class="display nowrap" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Summary</th>
+                                    <th>Abap($kapasiteAbap)</th>
+                                    <th>Sap($kapasiteSap)</th>
+                                </tr>
+                            </thead>
+                        
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        
+                            <tbody>
+                                #foreach( $issue in $issues )
+                                <tr>
+                                    <td>$issue.getKey()</td>
+                                    <td>$issue.getSummary()</td>
+                                    <td class="gerekliAbapEfor">$issue.getCustomFieldValue($gerekliAbapEforCf)</td>
+                                    <td class="gerekliSapEfor">$issue.getCustomFieldValue($gerekliSapEforCf)</td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                        <button class="aui-button" id="calculateButton">Calculate</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
