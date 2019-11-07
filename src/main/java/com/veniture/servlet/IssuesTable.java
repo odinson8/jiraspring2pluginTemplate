@@ -59,14 +59,13 @@ public class IssuesTable extends HttpServlet {
                        SearchService searchService,
                        TemplateRenderer templateRenderer,
                        JiraAuthenticationContext authenticationContext,
-                       ConstantsManager constantsManager, IssueManager issueManager) {
+                       ConstantsManager constantsManager) {
         this.issueService = issueService;
         this.projectService = projectService;
         this.searchService = searchService;
         this.templateRenderer = templateRenderer;
         this.authenticationContext = authenticationContext;
         this.constantsManager = constantsManager;
-        this.issueManager = issueManager;
     }
 
     @Override
