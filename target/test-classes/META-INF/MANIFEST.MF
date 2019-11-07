@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Atlassian-Build-Date: 2019-11-07T19:02:08+0300
-

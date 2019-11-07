@@ -13,14 +13,13 @@
     <!-- add our web resources -->
     <web-resource key="resourceManagement-resources" name="resourceManagement Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        <dependency>com.atlassian.auiplugin:aui-table</dependency>
         <resource type="download" name="resourceManagement.css" location="/css/resourceManagement.css"/>
         <resource type="download" name="resourceManagement.js" location="/js/resourceManagement.js"/>
         <resource type="download" name="images/" location="/images"/>
         <context>atl.general</context>
     </web-resource>
 
-    <web-item key="helloworld-example" name="FLO" section="system.top.navigation.bar" weight="200"><description key="helloworld-item-desc">General description</description><label key="helloworld-item-label" /><link linkId="helloworld-item-link">/plugins/servlet/helloworld</link></web-item>
+    <web-item key="helloworld-example" name="FLO" section="system.top.navigation.bar" weight="200"><description key="helloworld-item-desc">General description</description><label key="FLO Demo" /><link linkId="helloworld-item-link">/plugins/servlet/helloworld</link></web-item>
 
     <servlet name="Hello World Servlet" key="helloWorld" class="com.veniture.servlet.IssuesTable">
         <description>Says Hello World, Australia or your name.</description>

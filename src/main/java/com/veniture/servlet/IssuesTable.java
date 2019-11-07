@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.veniture.constants.Constants.*;
 
@@ -51,6 +52,7 @@ public class IssuesTable extends HttpServlet {
     private JiraAuthenticationContext authenticationContext;
     @JiraImport
     private ConstantsManager constantsManager;
+    String action;
 
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/list.vm";
@@ -70,6 +72,8 @@ public class IssuesTable extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        action = Optional.ofNullable(req.getParameter("action")).orElse("");
         Map<String, Object> context = null;
         try {
             context = createContext();
@@ -84,7 +88,7 @@ public class IssuesTable extends HttpServlet {
     }
 
     private Map<String, Object> createContext() throws SearchException, JqlParseException {
-        // String action = Optional.ofNullable(req.getParameter("actionType")).orElse("");
+        // ).orElse("");
         Map<String, Object> context = new HashMap<String, Object>();
         JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
 
@@ -95,7 +99,7 @@ public class IssuesTable extends HttpServlet {
         CustomField gerekliSapEforCf = customFieldManager.getCustomFieldObject(gerekliSapEforCfId);
 
         try {
-            context = addIssuesToTheContext(context, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
+            context = addIssuesToTheContext(context,action, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
         } catch (SearchException e) {
             e.printStackTrace();
         } catch (JqlParseException e) {
@@ -105,9 +109,23 @@ public class IssuesTable extends HttpServlet {
         return context;
     }
 
-    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
+    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
         try {
-            Query conditionQuery = jqlQueryParser.parseQuery(Constants.QUERY);
+            Query conditionQuery;
+                    switch (action) {
+                case "WFA":
+                    conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
+                    break;
+                case "PLANLAMA":
+                    conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
+                    break;
+                case "SATISARTTIRAN":
+                    conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
+                    break;
+                default:
+                    conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
+
+            }
             CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
