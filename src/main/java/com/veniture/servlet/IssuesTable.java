@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.veniture.constants.Constants.kapasiteAbapCfId;
+import static com.veniture.constants.Constants.*;
 
 @Scanned
 public class IssuesTable extends HttpServlet {
@@ -86,10 +86,12 @@ public class IssuesTable extends HttpServlet {
 
         CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
         CustomField kapasiteAbapCf = customFieldManager.getCustomFieldObject(kapasiteAbapCfId);
-        CustomField kapasiteSapCf = customFieldManager.getCustomFieldObject(Constants.kapasiteSapCfId);
+        CustomField kapasiteSapCf = customFieldManager.getCustomFieldObject(kapasiteSapCfId);
+        CustomField gerekliAbapEforCf = customFieldManager.getCustomFieldObject(gerekliAbapEforCfId);
+        CustomField gerekliSapEforCf = customFieldManager.getCustomFieldObject(gerekliSapEforCfId);
 
         try {
-            context = addIssuesToTheContext(context, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf);
+            context = addIssuesToTheContext(context, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
         } catch (SearchException e) {
             e.printStackTrace();
         } catch (JqlParseException e) {
@@ -99,7 +101,7 @@ public class IssuesTable extends HttpServlet {
         return context;
     }
 
-    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf) throws SearchException, JqlParseException {
+    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
         try {
             Query conditionQuery = jqlQueryParser.parseQuery(Constants.QUERY);
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
@@ -110,6 +112,8 @@ public class IssuesTable extends HttpServlet {
             context.put("issues", results.getResults());
             context.put("kapasiteAbapCf", kapasiteAbapCf);
             context.put("kapasiteSapCf", kapasiteSapCf);
+            context.put("gerekliAbapEforCf", gerekliAbapEforCf);
+            context.put("gerekliSapEforCf", gerekliSapEforCf);
             return context;
 
         } catch (JqlParseException | SearchException e) {

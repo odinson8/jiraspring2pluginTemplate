@@ -13,6 +13,7 @@
     <!-- add our web resources -->
     <web-resource key="resourceManagement-resources" name="resourceManagement Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.auiplugin:aui-table</dependency>
         <resource type="download" name="resourceManagement.css" location="/css/resourceManagement.css"/>
         <resource type="download" name="resourceManagement.js" location="/js/resourceManagement.js"/>
         <resource type="download" name="images/" location="/images"/>
