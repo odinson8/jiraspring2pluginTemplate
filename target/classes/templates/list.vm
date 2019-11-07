@@ -59,7 +59,7 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
         };
         var apply_footer = function(col) {
             AJS.$(table.column(col).footer()).html(
-                'S: ' + totalize_selected(col)
+                'S: ' + (40 - totalize_selected(col))
             );
         };
         apply_footer(3);
