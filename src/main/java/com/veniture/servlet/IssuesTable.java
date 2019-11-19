@@ -77,9 +77,6 @@ public class IssuesTable extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        getAllTeamsfromTempo();
-
         action = Optional.ofNullable(req.getParameter("action")).orElse("");
         Map<String, Object> context = null;
         try {
@@ -89,19 +86,8 @@ public class IssuesTable extends HttpServlet {
         } catch (JqlParseException e) {
             e.printStackTrace();
         }
-
         resp.setContentType("text/html;charset=utf-8");
-
         templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
-
-    }
-
-
-    private void getAllTeamsfromTempo() throws URIException {
-
-        RemoteSearcher remoteSearcher =  new RemoteSearcher("asd",requestFactory);
-        remoteSearcher.search("","");
-        //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }
 
 //    public String getCurrentAppBaseUrl()

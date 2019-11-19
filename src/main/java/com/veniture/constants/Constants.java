@@ -11,4 +11,6 @@ public class Constants {
 
     public static final Integer ApproveWorkflowTransitionId = 181;
     public static final Integer DeclineWorkflowTransitionId = 201;
+    public static final String adminUsername = "berk.karabacak";
+    public static final String adminPassword = "asd";
 }

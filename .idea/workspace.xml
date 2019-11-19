@@ -2,17 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/Team.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/installScript.bat" beforeDir="false" afterPath="$PROJECT_DIR$/installScript.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/sadsa.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" beforeDir="false" afterPath="$PROJECT_DIR$/target/resourceManagement-1.0.0.obr" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,8 +55,8 @@
       <recent name="com.veniture" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
-      <recent name="com.veniture.rest.Transition" />
       <recent name="com.veniture.constants.Constants" />
+      <recent name="com.veniture.rest.Transition" />
       <recent name="com.veniture.servlet.IssuesTable" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -123,6 +119,7 @@
       <workItem from="1574147710203" duration="2907000" />
       <workItem from="1574150895685" duration="4872000" />
       <workItem from="1574159816801" duration="2849000" />
+      <workItem from="1574166541150" duration="1238000" />
     </task>
     <servers />
   </component>
@@ -155,18 +152,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
-          <line>42</line>
+          <line>36</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
-          <line>31</line>
+          <line>30</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
-          <line>39</line>
+          <line>35</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

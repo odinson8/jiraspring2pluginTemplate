@@ -60,11 +60,8 @@ public class Transition {
     }
 
     private void getAllTeamsfromTempo() throws URIException {
-
-        RemoteSearcher remoteSearcher =  new RemoteSearcher("asd",requestFactory);
-        remoteSearcher.search("","");
-
-
+        RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
+        remoteSearcher.search();
         //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }
 
