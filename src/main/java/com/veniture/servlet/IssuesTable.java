@@ -7,21 +7,23 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.jira.service.ServiceManager;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
+import com.atlassian.sal.api.ApplicationProperties;
+import com.atlassian.sal.api.net.Request;
+import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
+import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
+import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,8 +54,9 @@ public class IssuesTable extends HttpServlet {
     private JiraAuthenticationContext authenticationContext;
     @JiraImport
     private ConstantsManager constantsManager;
+    @JiraImport
+    private RequestFactory requestFactory;
     String action;
-
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/list.vm";
 
@@ -61,17 +64,21 @@ public class IssuesTable extends HttpServlet {
                        SearchService searchService,
                        TemplateRenderer templateRenderer,
                        JiraAuthenticationContext authenticationContext,
-                       ConstantsManager constantsManager) {
+                       ConstantsManager constantsManager,
+                       RequestFactory requestFactory) {
         this.issueService = issueService;
         this.projectService = projectService;
         this.searchService = searchService;
         this.templateRenderer = templateRenderer;
         this.authenticationContext = authenticationContext;
         this.constantsManager = constantsManager;
+        this.requestFactory = requestFactory;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        getAllTeamsfromTempo();
 
         action = Optional.ofNullable(req.getParameter("action")).orElse("");
         Map<String, Object> context = null;
@@ -82,10 +89,25 @@ public class IssuesTable extends HttpServlet {
         } catch (JqlParseException e) {
             e.printStackTrace();
         }
+
         resp.setContentType("text/html;charset=utf-8");
 
         templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
+
     }
+
+
+    private void getAllTeamsfromTempo() throws URIException {
+
+        RemoteSearcher remoteSearcher =  new RemoteSearcher("asd",requestFactory);
+        remoteSearcher.search("","");
+        //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
+    }
+
+//    public String getCurrentAppBaseUrl()
+//    {
+//        return applicationProperties.getBaseUrl();
+//    }
 
     private Map<String, Object> createContext() throws SearchException, JqlParseException {
         // ).orElse("");
@@ -108,7 +130,6 @@ public class IssuesTable extends HttpServlet {
 
         return context;
     }
-
     private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
         try {
             Query conditionQuery;
@@ -124,7 +145,6 @@ public class IssuesTable extends HttpServlet {
                     break;
                 default:
                     conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
-
             }
             CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 

@@ -24,71 +24,129 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
     <meta name="decorator" content="atl.general">
     <script>
         AJS.$(document).ready(function() {
-            displayFooter = function() {
+            var table;
+            displayFooter = function () {
                 table = AJS.$('#example').DataTable();
 
                 // Total over all pages
-                var intVal = function(i) {
+                var intVal = function (i) {
                     return typeof i === 'undefined' ? 0 : i * 1;
                 };
 
-                var totalize_filtered = function(col) {
+          /*      var totalize_filtered = function (col) {
                     var data = table.column(col, {
                         search: 'applied'
                     }).data();
                     if (typeof data != 'undefined') {
                         return data
-                            .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                },
-                                0);
+                                .reduce(function (a, b) {
+                                            return intVal(a) + intVal(b);
+                                        },
+                                        0);
                     } else {
                         return 0;
                     }
-                };
+                };*/
 
-                var totalize_selected = function(col) {
+                var totalize_selected = function (col) {
                     var data = table.cells('.selected', col).data();
                     if (typeof data != 'undefined') {
                         return data
-                            .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                },
-                                0);
+                                .reduce(function (a, b) {
+                                            return intVal(a) + intVal(b);
+                                        },
+                                        0);
                     } else {
                         return 0;
                     }
                 };
-                var apply_footer = function(kapasite,col) {
+                var apply_footer = function (kapasite, col) {
                     AJS.$(table.column(col).footer()).html(
-                        ' ' + (kapasite - totalize_selected(col))
+                            ' ' + (kapasite - totalize_selected(col))
                     );
                 };
-         
-                apply_footer($kapasiteSap,3);
-                apply_footer($kapasiteAbap,2);
+
+                apply_footer($kapasiteSap, 3);
+                apply_footer($kapasiteAbap, 2);
 
             };
 
             var table = AJS.$('#example').DataTable({
                 select: true,
-                footerCallback: function(row, data, start, end, display) {
+                footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
             });
 
-            table.on('select.dt deselect.dt', function() {
+            table.on('select.dt deselect.dt', function () {
                 displayFooter();
-               // AJS.$('#example').dataTable().fnClearTable();
+                // AJS.$('#example').dataTable().fnClearTable();
 
             });
 
             AJS.$("#select2").select2();
-            AJS.$('#select2').live('change', function(){
+            AJS.$('#select2').live('change', function () {
                 window.location.replace("https://jira.veniture.tk/plugins/servlet/helloworld?action=" + this.value);
-              //  AJS.$('#select2').val(this.value); // Change the value or make some change to the internal state
-              //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
+                //  AJS.$('#select2').val(this.value); // Change the value or make some change to the internal state
+                //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
             });
+
+            AJS.$('#ApproveButton').off().on("click", function () {
+
+               // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
+                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/workflowService/1.1/transition/transitionissues",
+                    type: 'GET',
+                    data: {
+                        issues: selectedCellsArray,
+                        action: "approve"
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+
+                        Swal.fire(
+                                'Approved!',
+                                'All selected projects approved!',
+                                'success'
+                        )
+                    }
+                });
+            })
+
+
+            AJS.$('#DeclineButton').off().on("click", function () {
+
+               // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
+                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/workflowService/1.1/transition/transitionissues",
+                    type: 'GET',
+                    data: {
+                        issues: selectedCellsArray,
+                        action: "decline"
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Declined',
+                            text: 'All selected projects declined!'})
+                    }
+                });
+            })
         });
     </script>
 </head>
@@ -130,16 +188,16 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
                         <table id="example" class="display nowrap" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Summary</th>
-                                    <th>Abap($kapasiteAbap)</th>
-                                    <th>Sap($kapasiteSap)</th>
+                                    <th style="text-align: left;">Name</th>
+                                    <th style="text-align: left;">Summary</th>
+                                    <th style="text-align: left;">Abap($kapasiteAbap)</th>
+                                    <th style="text-align: left;">Sap($kapasiteSap)</th>
                                 </tr>
                             </thead>
                         
                             <tfoot>
                                 <tr>
-                                    <th></th>
+                                    <th ></th>
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
@@ -168,7 +226,8 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
                                 #end
                             </tbody>
                         </table>
-                        <button class="aui-button aui-button-primary" id="transitionAll">Approve Selected Issues</button>
+                        <button class="aui-button aui-button-primary" id="ApproveButton">Approve Selected Issues</button>
+                        <button class="aui-button" id="DeclineButton">Decline Selected Issues</button>
                     </div>
                 </div>
             </div>

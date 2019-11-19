@@ -9,4 +9,6 @@ public class Constants {
     public static final long gerekliAbapEforCfId = 10814L;
     public static final long gerekliSapEforCfId = 10813L;
 
+    public static final Integer ApproveWorkflowTransitionId = 181;
+    public static final Integer DeclineWorkflowTransitionId = 201;
 }

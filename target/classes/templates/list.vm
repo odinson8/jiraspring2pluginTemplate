@@ -1,0 +1,238 @@
+<!-- 
+Written by Veniture
+
+TODO
+İssue Link olsun
+-->
+
+$webResourceManager.requireResource("com.veniture.resourceManagement:resourceManagement-resources")
+
+<html>
+
+<head>
+    <title>FLO DEMO</title>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <link href="https://nightly.datatables.net/select/css/select.dataTables.css?_=9a6592f8d74f8f520ff7b22342fa1183.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/select/js/dataTables.select.js?_=9a6592f8d74f8f520ff7b22342fa1183"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+
+    <meta name="decorator" content="atl.general">
+    <script>
+        AJS.$(document).ready(function() {
+            var table;
+            displayFooter = function () {
+                table = AJS.$('#example').DataTable();
+
+                // Total over all pages
+                var intVal = function (i) {
+                    return typeof i === 'undefined' ? 0 : i * 1;
+                };
+
+          /*      var totalize_filtered = function (col) {
+                    var data = table.column(col, {
+                        search: 'applied'
+                    }).data();
+                    if (typeof data != 'undefined') {
+                        return data
+                                .reduce(function (a, b) {
+                                            return intVal(a) + intVal(b);
+                                        },
+                                        0);
+                    } else {
+                        return 0;
+                    }
+                };*/
+
+                var totalize_selected = function (col) {
+                    var data = table.cells('.selected', col).data();
+                    if (typeof data != 'undefined') {
+                        return data
+                                .reduce(function (a, b) {
+                                            return intVal(a) + intVal(b);
+                                        },
+                                        0);
+                    } else {
+                        return 0;
+                    }
+                };
+                var apply_footer = function (kapasite, col) {
+                    AJS.$(table.column(col).footer()).html(
+                            ' ' + (kapasite - totalize_selected(col))
+                    );
+                };
+
+                apply_footer($kapasiteSap, 3);
+                apply_footer($kapasiteAbap, 2);
+
+            };
+
+            var table = AJS.$('#example').DataTable({
+                select: true,
+                footerCallback: function (row, data, start, end, display) {
+                    displayFooter();
+                }
+            });
+
+            table.on('select.dt deselect.dt', function () {
+                displayFooter();
+                // AJS.$('#example').dataTable().fnClearTable();
+
+            });
+
+            AJS.$("#select2").select2();
+            AJS.$('#select2').live('change', function () {
+                window.location.replace("https://jira.veniture.tk/plugins/servlet/helloworld?action=" + this.value);
+                //  AJS.$('#select2').val(this.value); // Change the value or make some change to the internal state
+                //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
+            });
+
+            AJS.$('#ApproveButton').off().on("click", function () {
+
+               // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
+                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/workflowService/1.0/transition/transitionissues",
+                    type: 'GET',
+                    data: {
+                        issues: selectedCellsArray,
+                        action: "approve"
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+
+                        Swal.fire(
+                                'Approved!',
+                                'All selected projects approved!',
+                                'success'
+                        )
+                    }
+                });
+            })
+
+
+            AJS.$('#DeclineButton').off().on("click", function () {
+
+               // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
+                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/workflowService/1.0/transition/transitionissues",
+                    type: 'GET',
+                    data: {
+                        issues: selectedCellsArray,
+                        action: "decline"
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Declined',
+                            text: 'All selected projects declined!'})
+                    }
+                });
+            })
+        });
+    </script>
+</head>
+
+<body id="jira>
+    <div class=" content-container">
+        <div class="content-body">
+            <div class="container">
+                <div class="aui-group">
+                    <header class="aui-page-header">
+                        <div class="aui-page-header-inner">
+                                <div class="aui-page-header-image">
+                                    <span class="aui-avatar aui-avatar-large aui-avatar-project">
+                                        <span class="aui-avatar-inner">
+                                            <img alt="FLO project" src="https://www.flo.com.tr/pub/assets/flo/img/logo.svg">
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="aui-page-header-main">
+                                <h1>Project Approval</h1>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <div class="aui-group">
+                    <div class="aui-item" id="jqlFilter">
+                        <form class="aui">
+                            <select id="select2" data-placeholder="Select a filter" style="width: 40%">
+                                <option></option>
+                                <option value="WFA">WFA</option>
+                                <option value="PLANLAMA">PLANLAMA</option>
+                                <option value="SATISARTTIRAN">SATISARTTIRAN</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="aui-group">
+                    <div class="aui-item" id="issueTableDiv">
+                        <table id="example" class="display nowrap" width="100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Name</th>
+                                    <th style="text-align: left;">Summary</th>
+                                    <th style="text-align: left;">Abap($kapasiteAbap)</th>
+                                    <th style="text-align: left;">Sap($kapasiteSap)</th>
+                                </tr>
+                            </thead>
+                        
+                            <tfoot>
+                                <tr>
+                                    <th ></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        
+                            <tbody>
+                                #foreach( $issue in $issues )
+                                <tr>
+                                    <td>$issue.getKey()</td>
+                                    <td>$issue.getSummary()</td>
+
+                                    #if( $issue.getCustomFieldValue($gerekliAbapEforCf))
+                                        <td style="max-width: 140px; word-wrap: break-word;">$issue.getCustomFieldValue($gerekliAbapEforCf)</td>
+                                    #else
+                                        <td style="max-width: 140px; word-wrap: break-word;"> </td>
+                                    #end
+
+                                    #if( $issue.getCustomFieldValue($gerekliSapEforCf))
+                                        <td style="max-width: 140px; word-wrap: break-word;">$issue.getCustomFieldValue($gerekliSapEforCf)</td>
+                                    #else
+                                        <td style="max-width: 140px; word-wrap: break-word;"> </td>
+                                    #end
+
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                        <button class="aui-button aui-button-primary" id="ApproveButton">Approve Selected Issues</button>
+                        <button class="aui-button" id="DeclineButton">Decline Selected Issues</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

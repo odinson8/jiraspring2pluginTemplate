@@ -29,4 +29,10 @@
             <param-value>Australia</param-value>
         </init-param>
     </servlet>
+
+    <rest name="TransitionService Rest Service" key="TransitionService" path="workflowService" version="1.1">
+        <description key="berk">The rest service for getting pages</description>
+    </rest>
+
+
 </atlassian-plugin>
