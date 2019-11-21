@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/Priority.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +117,7 @@
       <workItem from="1574159816801" duration="2849000" />
       <workItem from="1574166541150" duration="1238000" />
       <workItem from="1574315924851" duration="8000" />
-      <workItem from="1574315965535" duration="4915000" />
+      <workItem from="1574315965535" duration="7478000" />
     </task>
     <servers />
   </component>

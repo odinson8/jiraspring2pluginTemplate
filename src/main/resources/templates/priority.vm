@@ -11,137 +11,94 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
 Created using JS Bin
 http://jsbin.com
 
-Copyright (c) 2019 by odinson8 (http://jsbin.com/humoyaz/2/edit)
+Copyright (c) 2019 by venITure
 
 Released under the MIT license: http://jsbin.mit-license.org
 -->
 <html>
 
 <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest Sortable -->
+    <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
     <meta charset="utf-8">
-    <title>Priority DEMO</title>
+    <title>Priority Screen</title>
 
     <meta name="decorator" content="atl.general">
-    <style id="jsbin-css">
+    <style id="css">
         body {
             margin: 10px;
         }
 
-        .glyphicon-move {
+        #tableBody>tr {
             cursor: move;
             cursor: -webkit-grabbing;
         }
     </style>
 
     <script>
-        AJS.$(document).ready(function() {
-
+        AJS.$(document).ready(function () {
             // List with handle
-            Sortable.create(selections, {
-                handle: '.glyphicon-move',
+            Sortable.create(tableBody, {
+                handle: 'tr',
                 animation: 150,
-                onUpdate: function(evt) {
-                    updateIndexes();
+                onUpdate: function (evt) {
+                    updatePriorities();
                 }
             });
 
-            // Sortable.create(selections);
+            AJS.tablessortable.setTableSortable(AJS.$("#auiTable"));
 
-
-            // // List with handle
-            // Sortable.create(listWithHandle2, {
-            //     handle: '.glyphicon-move',
-            //     animation: 150,
-            //     onUpdate: function(evt) {
-            //         updateIndexes($(this));
-            //     }
-            // });
-
-            function updateIndexes() {
+            function updatePriorities() {
                 var i = 0;
-                var len = AJS.$('#selections > .selection').length;
-                console.log(len);
-                AJS.$('#selections > .selection').each(function() {
-                    AJS.$(this).find(".gmy").text(i + 1);
+
+                var len = AJS.$('#tableBody > tr').length;
+                var tableBody = AJS.$('#tableBody > tr');
+                var tableBodyLength = tableBody.length;
+                tableBody.each(function () {
+                    AJS.$(this).find(".age").text(i + 1);
                     i++;
                 });
+                console.log("Priorities are updated");
             }
         });
     </script>
 </head>
 
 <body>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<!-- Latest Sortable -->
-<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
-
-<div id="allList" class="list-group">
-
-    <!-- List with handle -->
-    <!-- <div id="listWithHandle" class="list-group">
-        <div class="list-group-item">
-            <span class="badge gmy">1</span>
-            <span class="badge direktorluk">1</span>
-            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 111
-        </div>
-        <div class="list-group-item">
-            <span class="badge gmy">2</span>
-            <span class="badge direktorluk">2</span>
-            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222
-        <div class="list-group-item">
-            <span class="badge gmy">3</span>
-            <span class="badge direktorluk">3</span>
-            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 333
-        </div>
-    </div>
-</div> -->
-
-    <table>
-        <tbody id="selections">
-        <tr class='selection'>
-            <td>
-                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 111111111111111111
-            </td>
-            <td>
-                <span class="badge gmy">1</span>
-                <span class="badge direktorluk">1</span>
-            </td>
+<div id="tableDiv" class="list-group">
+    <table class="aui" id="auiTable">
+        <thead>
+        <tr>
+            <th class="aui-table-column-issue-key">Issue key</th>
+            <th>Project</th>
+            <th class="aui-table-column-unsortable">Description</th>
+            <th>Priority</th>
+        <tr>
+        </thead>
+        <tbody id="tableBody">
+        <tr>
+            <td>TEST-12</td>
+            <td>Cannot sort tables</td>
+            <td>Table sorting should be allowed</td>
+            <td class="age">2</td>
         </tr>
-        <tr class='selection'>
-            <td>
-                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222
-            </td>
-            <td>
-                <span class="badge gmy">2</span>
-                <span class="badge direktorluk">2</span>
-            </td>
+        <tr>
+            <td>WIN-87</td>
+            <td>Issue Page doesn't load in IE</td>
+            <td>When loading issue page on IE it doesn't show</td>
+            <td class="age">7</td>
         </tr>
-        <tr class='selection'>
-            <td>
-                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 333
-            </td>
-            <td>
-                <span class="badge gmy">3</span>
-                <span class="badge direktorluk">3</span>
-            </td>
+        <tr>
+            <td>DRINK-7</td>
+            <td>Vending Machine is empty</td>
+            <td>Blocker</td>
+            <td class="age">1</td>
         </tr>
         </tbody>
     </table>
-
-    <!-- <ul id="items">
-    <li> <span class="badge"></span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle
-    </li>
-    <li> <span class="badge"></span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle</li>
-    <li> <span class="badge"></span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle</li>
-</ul> -->
-
 </body>
-
 </html>
