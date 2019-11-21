@@ -12,7 +12,6 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
 <head>
     <title>FLO DEMO</title>
 
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
     <link href="https://nightly.datatables.net/select/css/select.dataTables.css?_=9a6592f8d74f8f520ff7b22342fa1183.css" rel="stylesheet" type="text/css" />
@@ -24,6 +23,7 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
     <meta name="decorator" content="atl.general">
     <script>
         AJS.$(document).ready(function() {
+
             var table;
             displayFooter = function () {
                 table = AJS.$('#example').DataTable();

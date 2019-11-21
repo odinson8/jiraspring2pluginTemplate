@@ -1,0 +1,147 @@
+<!--
+Written by Veniture
+
+TODO
+İssue Link olsun
+-->
+
+$webResourceManager.requireResource("com.veniture.resourceManagement:resourceManagement-resources")
+
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2019 by odinson8 (http://jsbin.com/humoyaz/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Priority DEMO</title>
+
+    <meta name="decorator" content="atl.general">
+    <style id="jsbin-css">
+        body {
+            margin: 10px;
+        }
+
+        .glyphicon-move {
+            cursor: move;
+            cursor: -webkit-grabbing;
+        }
+    </style>
+
+    <script>
+        AJS.$(document).ready(function() {
+
+            // List with handle
+            Sortable.create(selections, {
+                handle: '.glyphicon-move',
+                animation: 150,
+                onUpdate: function(evt) {
+                    updateIndexes();
+                }
+            });
+
+            // Sortable.create(selections);
+
+
+            // // List with handle
+            // Sortable.create(listWithHandle2, {
+            //     handle: '.glyphicon-move',
+            //     animation: 150,
+            //     onUpdate: function(evt) {
+            //         updateIndexes($(this));
+            //     }
+            // });
+
+            function updateIndexes() {
+                var i = 0;
+                var len = AJS.$('#selections > .selection').length;
+                console.log(len);
+                AJS.$('#selections > .selection').each(function() {
+                    AJS.$(this).find(".gmy").text(i + 1);
+                    i++;
+                });
+            }
+        });
+    </script>
+</head>
+
+<body>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest Sortable -->
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+
+<div id="allList" class="list-group">
+
+    <!-- List with handle -->
+    <!-- <div id="listWithHandle" class="list-group">
+        <div class="list-group-item">
+            <span class="badge gmy">1</span>
+            <span class="badge direktorluk">1</span>
+            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 111
+        </div>
+        <div class="list-group-item">
+            <span class="badge gmy">2</span>
+            <span class="badge direktorluk">2</span>
+            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222
+        <div class="list-group-item">
+            <span class="badge gmy">3</span>
+            <span class="badge direktorluk">3</span>
+            <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 333
+        </div>
+    </div>
+</div> -->
+
+    <table>
+        <tbody id="selections">
+        <tr class='selection'>
+            <td>
+                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 111111111111111111
+            </td>
+            <td>
+                <span class="badge gmy">1</span>
+                <span class="badge direktorluk">1</span>
+            </td>
+        </tr>
+        <tr class='selection'>
+            <td>
+                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222
+            </td>
+            <td>
+                <span class="badge gmy">2</span>
+                <span class="badge direktorluk">2</span>
+            </td>
+        </tr>
+        <tr class='selection'>
+            <td>
+                <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 333
+            </td>
+            <td>
+                <span class="badge gmy">3</span>
+                <span class="badge direktorluk">3</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- <ul id="items">
+    <li> <span class="badge"></span>
+        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle
+        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle
+    </li>
+    <li> <span class="badge"></span>
+        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle</li>
+    <li> <span class="badge"></span>
+        <span class="glyphicon glyphicon-move" aria-hidden="true"></span> 222Drag me by the handle</li>
+</ul> -->
+
+</body>
+
+</html>
