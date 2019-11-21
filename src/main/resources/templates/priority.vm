@@ -21,6 +21,8 @@ Released under the MIT license: http://jsbin.mit-license.org
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/table-to-json@0.13.0/lib/jquery.tabletojson.min.js" integrity="sha256-AqDz23QC5g2yyhRaZcEGhMMZwQnp8fC6sCZpf+e7pnw=" crossorigin="anonymous"></script>
+
     <!-- Latest Sortable -->
     <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
     <meta charset="utf-8">
@@ -49,6 +51,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                 }
             });
 
+            updatePriorities();
+
             AJS.tablessortable.setTableSortable(AJS.$("#auiTable"));
 
             function updatePriorities() {
@@ -58,15 +62,22 @@ Released under the MIT license: http://jsbin.mit-license.org
                 var tableBody = AJS.$('#tableBody > tr');
                 var tableBodyLength = tableBody.length;
                 tableBody.each(function () {
-                    AJS.$(this).find(".age").text(i + 1);
+                    AJS.$(this).find(".companyPriority").text(i + 1);
                     i++;
                 });
                 console.log("Priorities are updated");
             }
+
+            $('#auiTable').click( function() {
+                var table = $('#auiTable').tableToJSON({
+                ignoreColumns: [1,2,3]
+            }); // Convert the table into a javascript object
+                console.log(table);
+                alert(JSON.stringify(table));
+            });
         });
     </script>
 </head>
-
 <body>
 
 <div id="tableDiv" class="list-group">
@@ -74,30 +85,24 @@ Released under the MIT license: http://jsbin.mit-license.org
         <thead>
         <tr>
             <th class="aui-table-column-issue-key">Issue key</th>
-            <th>Project</th>
+            <th>Summary</th>
             <th class="aui-table-column-unsortable">Description</th>
-            <th>Priority</th>
+            <th>Department</th>
+            <th>Department Priority</th>
+            <th>Company Priority</th>
         <tr>
         </thead>
         <tbody id="tableBody">
+        #foreach( $issue in $issues )
         <tr>
-            <td>TEST-12</td>
-            <td>Cannot sort tables</td>
-            <td>Table sorting should be allowed</td>
-            <td class="age">2</td>
+            <td>$issue.getKey()</td>
+            <td>$issue.getSummary()</td>
+            <td>$issue.getDescription()</td>
+            <td>Department</td>
+            <td>Department Priority</td>
+            <td class="companyPriority">Company Priority</td>
         </tr>
-        <tr>
-            <td>WIN-87</td>
-            <td>Issue Page doesn't load in IE</td>
-            <td>When loading issue page on IE it doesn't show</td>
-            <td class="age">7</td>
-        </tr>
-        <tr>
-            <td>DRINK-7</td>
-            <td>Vending Machine is empty</td>
-            <td>Blocker</td>
-            <td class="age">1</td>
-        </tr>
+        #end
         </tbody>
     </table>
 </body>
