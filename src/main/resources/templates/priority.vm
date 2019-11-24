@@ -70,10 +70,26 @@ Released under the MIT license: http://jsbin.mit-license.org
 
             $('#auiTable').click( function() {
                 var table = $('#auiTable').tableToJSON({
-                ignoreColumns: [1,2,3]
-            }); // Convert the table into a javascript object
+                    ignoreColumns: [1,2,3]
+                }); // Convert the table into a javascript object
                 console.log(table);
-                alert(JSON.stringify(table));
+                //alert(JSON.stringify(table));
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/workflowService/1.1/transition/json",
+                    type: 'GET',
+                    data: {
+                        jsontable: JSON.stringify(table)
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+                        console.log("sucesss");
+                    }
+                });
             });
         });
     </script>

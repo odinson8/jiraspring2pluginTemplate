@@ -1,5 +1,5 @@
 
-package com.veniture;
+package com.veniture.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -6,8 +6,8 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
+import com.veniture.pojo.Team;
 import org.apache.commons.httpclient.URIException;
-import org.apache.commons.httpclient.util.URIUtil;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -48,4 +48,6 @@ public class RemoteSearcher {
         }.getType();
         List<Team> posts = gson.fromJson(responseString, listType);
     }
+
+
 }
