@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/IssueTableData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/Tabledatum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/util/functions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -130,7 +123,7 @@
       <workItem from="1574315924851" duration="8000" />
       <workItem from="1574315965535" duration="8858000" />
       <workItem from="1574333334360" duration="13024000" />
-      <workItem from="1574578251229" duration="8573000" />
+      <workItem from="1574578251229" duration="10983000" />
     </task>
     <servers />
   </component>

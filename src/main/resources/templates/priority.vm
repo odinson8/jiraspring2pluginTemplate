@@ -48,6 +48,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 animation: 150,
                 onUpdate: function (evt) {
                     updatePriorities();
+                    updatePrioritiesInJIRA()
                 }
             });
 
@@ -68,11 +69,10 @@ Released under the MIT license: http://jsbin.mit-license.org
                 console.log("Priorities are updated");
             }
 
-            $('#auiTable').click( function() {
+            function updatePrioritiesInJIRA() {
                 var table = $('#auiTable').tableToJSON({
                     ignoreColumns: [1,2,3]
                 }); // Convert the table into a javascript object
-                console.log(table);
                 //alert(JSON.stringify(table));
 
                 jQuery.ajax({
@@ -87,11 +87,11 @@ Released under the MIT license: http://jsbin.mit-license.org
                     complete: function (response) {
                     },
                     success: function (response, status, jqXHR) {
-                        console.log("sucesss");
+                        console.log("success");
                     }
                 });
+            }
             });
-        });
     </script>
 </head>
 <body>
@@ -111,7 +111,7 @@ Released under the MIT license: http://jsbin.mit-license.org
         <tbody id="tableBody">
         #foreach( $issue in $issues )
         <tr>
-            <td>$issue.getKey()</td>
+            <td><a href="https://jira.veniture.tk/browse/$issue.getKey()">$issue.getKey()</a></td>
             <td>$issue.getSummary()</td>
             <td>$issue.getDescription()</td>
             <td>Department</td>
