@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< Updated upstream
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/Transition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/js/resourceManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/js/resourceManagement.js" afterDir="false" />
+>>>>>>> Stashed changes
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

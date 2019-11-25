@@ -149,6 +149,8 @@ public class IssuesTable extends HttpServlet {
             context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
             context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
             context.put("gerekliAbapEforCf", gerekliAbapEforCf);
+         //   context.put("issueService", issueService);
+         //   context.put("user", authenticationContext.getLoggedInUser());
             context.put("gerekliSapEforCf", gerekliSapEforCf);
 
             return context;

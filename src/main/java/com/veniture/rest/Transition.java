@@ -65,9 +65,10 @@ public class Transition {
     }
 
     @GET
-    @Path("/debug")
-    public String debug(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
-        return null;
+    @Path("/getCfValueFromIssue")
+    public String getCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
+        CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
+        return ISSUE_SERVICE.getIssue(CURRENT_USER,req.getParameterValues("issueKey")[0]).getIssue().getCustomFieldValue(customField).toString();
     }
 
     @GET
