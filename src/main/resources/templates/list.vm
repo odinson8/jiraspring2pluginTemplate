@@ -92,14 +92,15 @@ $webResourceManager.requireResource("com.veniture.resourceManagement:resourceMan
                 // AJS.$('#projectsTable').dataTable().fnClearTable();
             });
 
-            AJS.$("#select2").auiSelect2();
+            AJS.$("#select2").select2();
 
-            AJS.$("#customFieldList-select2").auiSelect2({
+            AJS.$("#customFieldList-select2").select2({
                 maximumSelectionLength: 6
             });
 
-            AJS.$("#customFieldList-select2").on("change", function(e) {
-                console.log("change "+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
+            AJS.$("#customFieldList-select2").on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
             });
 
             AJS.$('#select2').live('change', function () {

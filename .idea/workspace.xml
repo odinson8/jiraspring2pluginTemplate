@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00869c48-cb26-41ab-ab0e-d22be57f82e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/parsefoo.vm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/IssuesTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/util/functions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/util/functions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/priority.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
