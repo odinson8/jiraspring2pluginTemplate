@@ -58,7 +58,6 @@ Released under the MIT license: http://jsbin.mit-license.org
 
             function updatePriorities() {
                 var i = 0;
-
                 var len = AJS.$('#tableBody > tr').length;
                 var tableBody = AJS.$('#tableBody > tr');
                 var tableBodyLength = tableBody.length;

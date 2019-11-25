@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.veniture.constants.Constants.*;
+import static com.veniture.util.functions.getCustomFieldsInProject;
 
 @Scanned
 public class IssuesTable extends HttpServlet {
@@ -105,6 +106,8 @@ public class IssuesTable extends HttpServlet {
         CustomField kapasiteSapCf = customFieldManager.getCustomFieldObject(kapasiteSapCfId);
         CustomField gerekliAbapEforCf = customFieldManager.getCustomFieldObject(gerekliAbapEforCfId);
         CustomField gerekliSapEforCf = customFieldManager.getCustomFieldObject(gerekliSapEforCfId);
+        List<CustomField> projectCustomFields =  getCustomFieldsInProject("FP");
+
 
         try {
             context = addIssuesToTheContext(context,action, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
@@ -113,9 +116,11 @@ public class IssuesTable extends HttpServlet {
         } catch (JqlParseException e) {
             e.printStackTrace();
         }
-
+        context.put("projectCFs",projectCustomFields);
         return context;
     }
+
+
     private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
         try {
             Query conditionQuery;
