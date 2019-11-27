@@ -6,7 +6,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.veniture</groupId>
-    <artifactId>resourceManagement</artifactId>
+    <artifactId>PortfolioManagement</artifactId>
     <version>1.0.0</version>
 
     <organization>
@@ -14,8 +14,8 @@
         <url>http://www.venITure.net/</url>
     </organization>
 
-    <name>resourceManagement</name>
-    <description>This is the com.veniture:resourceManagement plugin for Atlassian JIRA.</description>
+    <name>PortfolioManagement</name>
+    <description>This is the com.veniture:PortfolioManagement plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>

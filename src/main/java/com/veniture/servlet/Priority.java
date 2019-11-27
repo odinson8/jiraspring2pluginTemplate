@@ -50,7 +50,7 @@ public class Priority extends HttpServlet {
     private RequestFactory requestFactory;
     String action;
 
-    private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/priority.vm";
+    private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
 
     public Priority(IssueService issueService, ProjectService projectService,
                        SearchService searchService,
