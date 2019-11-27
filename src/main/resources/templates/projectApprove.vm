@@ -10,7 +10,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 <html>
 
 <head>
-    <title>FLO DEMO</title>
+    <title>Flo Demo</title>
 
     <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>

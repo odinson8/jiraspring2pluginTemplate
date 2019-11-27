@@ -7,15 +7,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
 import com.veniture.pojo.Team;
+import com.veniture.pojo.TempoPlanner.IssueTableData;
 import org.apache.commons.httpclient.URIException;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class RemoteSearcher {
-    private static final String hostname = "jira.veniture.tk";
-    private static final String scheme = "https://";
-    private static final String QUERY = "/rest/tempo-teams/2/team";
     private final RequestFactory<?> requestFactory;
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
@@ -24,9 +22,9 @@ public class RemoteSearcher {
 
     public void search() throws URIException {
         //final String fullUrl = scheme + hostname + URIUtil.encodeWithinQuery(QUERY);
-        final String fullUrl = scheme + hostname + QUERY;
+        final String fullUrl = Constants.scheme + Constants.hostname + Constants.QUERY_AVAILABILTY;
         final Request request = requestFactory.createRequest(Request.MethodType.GET, fullUrl);
-        request.addBasicAuthentication(hostname, Constants.adminUsername, Constants.adminPassword);
+        request.addBasicAuthentication(Constants.hostname, Constants.adminUsername, Constants.adminPassword);
 
         try {
             // parse the response
@@ -37,17 +35,17 @@ public class RemoteSearcher {
 
             return;
         } catch (final ResponseException e) {
-            throw new RuntimeException("Search for " + QUERY + " on " + fullUrl + " failed.", e);
+            throw new RuntimeException("Search for " + Constants.QUERY_AVAILABILTY + " on " + fullUrl + " failed.", e);
         }
     }
 
     private void jsonToObject(String responseString) {
         Gson gson = new Gson();
 
-        Type listType = new TypeToken<List<Team>>() {
-        }.getType();
-        List<Team> posts = gson.fromJson(responseString, listType);
+        //Type tempoTeamAvailabilityDataType = new TypeToken<List<com.veniture.IssueTableData>>() {}.getType();
+       // List<com.veniture.IssueTableData> tempoTeamAvailabilityData = gson.fromJson(responseString, tempoTeamAvailabilityDataType);
+        //List<Team> posts = gson.fromJson(responseString, listType);
+
+        IssueTableData issueTableData = gson.fromJson(responseString, IssueTableData.class);
     }
-
-
 }

@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.veniture</groupId>
     <artifactId>PortfolioManagement</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
 
     <organization>
         <name>venITure</name>
@@ -15,7 +15,7 @@
     </organization>
 
     <name>PortfolioManagement</name>
-    <description>This is the com.veniture:PortfolioManagement plugin for Atlassian JIRA.</description>
+    <description>This is the Portfolio Management plugin for FLO developed by venITure.</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>

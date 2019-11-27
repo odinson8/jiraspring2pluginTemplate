@@ -3,7 +3,7 @@ package com.veniture.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class IssueTableData {
+public class ProjectsDetails {
 
     @SerializedName("Issue key")
     @Expose

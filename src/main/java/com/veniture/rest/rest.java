@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.veniture.pojo.IssueTableData;
+import com.veniture.pojo.ProjectsDetails;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
 import org.apache.commons.httpclient.URIException;
@@ -71,21 +71,29 @@ public class rest {
 
     @GET
     @Path("/setPriorityCfValuesInJira")
-    public String json(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException, IndexException {
+    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException, IndexException {
         String[] jsontableString = req.getParameterValues("jsontable");
         JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
         int x=0;
         for (JsonElement jsonElement:tableAsJsonArray){
             if (x==0){x++;continue;}
-            IssueTableData issueTableData = GSON.fromJson(jsonElement, IssueTableData.class);
+            ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
             CustomField oncelikBerkCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.öncelikBerkCfId);
-            MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER,issueTableData.getIssueKey()).getIssue();
-            com.veniture.util.functions.updateCustomFieldValue(issue,oncelikBerkCf,Double.valueOf(issueTableData.getCompanyPriority()),CURRENT_USER);
+            MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
+            com.veniture.util.functions.updateCustomFieldValue(issue,oncelikBerkCf,Double.valueOf(projectsDetails.getCompanyPriority()),CURRENT_USER);
         }
 
        // updateCustomFieldValue("key","asd","value");
         return null;
     }
+
+    @GET
+    @Path("/test")
+    public String test(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
+        getAllTeamsfromTempo();
+        return "sda";
+    }
+
 
     private void getAllTeamsfromTempo() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
