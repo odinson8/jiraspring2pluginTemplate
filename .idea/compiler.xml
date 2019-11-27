@@ -9,8 +9,5 @@
         <module name="PortfolioManagement" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="PortfolioManagement" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
