@@ -6,46 +6,43 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
-import com.veniture.pojo.Team;
 import com.veniture.pojo.TempoPlanner.IssueTableData;
+import com.veniture.pojo.TempoTeams.Team;
 import org.apache.commons.httpclient.URIException;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
+    private Gson gson = new Gson();
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
     }
 
-    public void search() throws URIException {
+    public IssueTableData getProjectTableData() throws URIException {
+        return gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY), IssueTableData.class);
+    }
+
+    public List<Integer> getAllTeamIds() throws URIException {
+        Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
+        List<Team> tempoTeamData = gson.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
+        List<Integer> ids = tempoTeamData.stream().map(x -> x.getId()).collect(Collectors.toList());
+        return ids;
+    }
+
+    public String getResponseString(String Query) throws URIException {
         //final String fullUrl = scheme + hostname + URIUtil.encodeWithinQuery(QUERY);
-        final String fullUrl = Constants.scheme + Constants.hostname + Constants.QUERY_AVAILABILTY;
+        final String fullUrl = Constants.scheme + Constants.hostname + Query;
         final Request request = requestFactory.createRequest(Request.MethodType.GET, fullUrl);
         request.addBasicAuthentication(Constants.hostname, Constants.adminUsername, Constants.adminPassword);
 
         try {
-            // parse the response
-            final String responseString = request.execute();
-            jsonToObject(responseString);
-
-            //BURADA KALDIM
-
-            return;
+            return request.execute();
         } catch (final ResponseException e) {
-            throw new RuntimeException("Search for " + Constants.QUERY_AVAILABILTY + " on " + fullUrl + " failed.", e);
+            throw new RuntimeException("Search for " + Query + " on " + fullUrl + " failed.", e);
         }
-    }
-
-    private void jsonToObject(String responseString) {
-        Gson gson = new Gson();
-
-        //Type tempoTeamAvailabilityDataType = new TypeToken<List<com.veniture.IssueTableData>>() {}.getType();
-       // List<com.veniture.IssueTableData> tempoTeamAvailabilityData = gson.fromJson(responseString, tempoTeamAvailabilityDataType);
-        //List<Team> posts = gson.fromJson(responseString, listType);
-
-        IssueTableData issueTableData = gson.fromJson(responseString, IssueTableData.class);
     }
 }

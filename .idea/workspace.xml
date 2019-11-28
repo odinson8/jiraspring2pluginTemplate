@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe9bf1f-e246-4c18-a16b-f5c3f8ea1a95" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/TempoTeams/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +28,7 @@
     </option>
     <option name="importingSettings">
       <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
         <option name="jdkForImporter" value="#JAVA_HOME" />
       </MavenImportingSettings>
     </option>
@@ -34,6 +41,11 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\veniture\PortfolioManagement\src\main\java\com\veniture\pojo\TempoTeams" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -57,7 +69,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1574864655660</updated>
-      <workItem from="1574864657466" duration="241000" />
+      <workItem from="1574864657466" duration="329000" />
+      <workItem from="1574920271769" duration="1175000" />
+      <workItem from="1574921538704" duration="2698000" />
     </task>
     <servers />
   </component>
@@ -69,7 +83,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

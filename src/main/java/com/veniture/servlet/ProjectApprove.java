@@ -104,7 +104,6 @@ public class ProjectApprove extends HttpServlet {
         CustomField gerekliSapEforCf = customFieldManager.getCustomFieldObject(gerekliSapEforCfId);
         List<CustomField> projectCustomFields =  getCustomFieldsInProject("FP");
 
-
         try {
             context = addIssuesToTheContext(context,action, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
         } catch (SearchException e) {
@@ -135,19 +134,26 @@ public class ProjectApprove extends HttpServlet {
             }
             CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
-            SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
-            List<Issue> issues = results.getResults();
 //            for (Issue issue : issues) {
 //                Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
 //            }
-            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
+//            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
+
+//            Map<String,String> asd;
+//
+//            for (CustomField customField:customFieldManager.getCustomFieldObjects()){
+//                asd.put(customField.getName(),)
+//            }
+
+            SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
             context.put("issues", results.getResults());
-            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
-            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
-            context.put("gerekliAbapEforCf", gerekliAbapEforCf);
-         //   context.put("issueService", issueService);
-         //   context.put("user", authenticationContext.getLoggedInUser());
-            context.put("gerekliSapEforCf", gerekliSapEforCf);
+            context.put("customFields", customFieldManager.getCustomFieldObjects());
+//            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
+//            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
+//            context.put("gerekliAbapEforCf", gerekliAbapEforCf);
+//         //   context.put("issueService", issueService);
+//         //   context.put("user", authenticationContext.getLoggedInUser());
+//            context.put("gerekliSapEforCf", gerekliSapEforCf);
 
             return context;
 

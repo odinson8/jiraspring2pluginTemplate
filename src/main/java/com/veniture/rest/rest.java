@@ -90,14 +90,15 @@ public class rest {
     @GET
     @Path("/test")
     public String test(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
-        getAllTeamsfromTempo();
+        getAllTeamIdsFromTempo();
         return "sda";
     }
-
-
-    private void getAllTeamsfromTempo() throws URIException {
+    @GET
+    @Path("/test2")
+    public String getAllTeamIdsFromTempo() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-        remoteSearcher.search();
+        return remoteSearcher.getAllTeamIds().toString();
+        //remoteSearcher.getResponseString();
         //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }
 
