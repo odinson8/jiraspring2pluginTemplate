@@ -266,8 +266,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                     #set ($issue=$IssueWithCF.getIssue())
                                     <td><a href="https://jira.veniture.tk/browse/$issue.getKey()">$issue.getKey()</a></td>
                                     <td>$issue.getSummary()</td>
-                                    #foreach( $entry in $IssueWithCF.getCustomFieldListWithValues().entrySet())
-                                        <td style="max-width: 199px; word-wrap: break-word;">deneme</td>
+                                    #foreach( $cfWithValue in $IssueWithCF.getCustomFieldListWithValues())
+                                        #set ($cfValue=$cfWithValue.getValue())
+                                        <td style="max-width: 199px; word-wrap: break-word;">$cfValue</td>
                                     #end
                                 </tr>
                                 #end

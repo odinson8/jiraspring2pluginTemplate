@@ -22,6 +22,7 @@ import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
 import jdk.nashorn.internal.runtime.ECMAException;
+import model.CfWithValue;
 import model.IssueWithCF;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -144,17 +145,22 @@ public class ProjectApprove extends HttpServlet {
 
             SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
             List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
+            //List<CustomField> customFieldsInProject = new ArrayList<>();
+            customFieldsInProject.add(kapasiteAbapCf);
+            customFieldsInProject.add(kapasiteSapCf);
+
             for (Issue issue : results.getResults()){
-                Map<CustomField,String> customFieldMapWithValues = new HashMap<CustomField, String>();
+                Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
+                ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
                 for (CustomField customField:customFieldsInProject){
                     try{
-                        customFieldMapWithValues.put(customField,customField.getValueFromIssue(issue));
+                        customFieldsWithValues.add(new CfWithValue(customField,issueFull.getCustomFieldValue(customField).toString()));
                     }
                     catch (Exception e){
-                        customFieldMapWithValues.put(customField,"");
+                        customFieldsWithValues.add(new CfWithValue(customField,"  "));
                     }
                 }
-                IssueWithCF issueWithCF= new IssueWithCF(issue,customFieldMapWithValues);
+                IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);
                 issuesWithCF.add(issueWithCF);
             }
 

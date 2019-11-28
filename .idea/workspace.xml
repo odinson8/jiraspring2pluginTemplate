@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe9bf1f-e246-4c18-a16b-f5c3f8ea1a95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/IssueWithCF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/CfWithValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/IssueWithCF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/IssueWithCF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PortfolioManagement.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PortfolioManagement.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,6 +16,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,7 +50,7 @@
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -64,7 +73,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Remote.MainDebug">
-    <configuration name="installScript" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+    <configuration name="installScript" type="BatchConfigurationType" factoryName="Batch">
       <module name="PortfolioManagement" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="C:\Users\veniture\PortfolioManagement" />
@@ -75,8 +84,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="projectApprove.vm" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:63342/PortfolioManagement/templates/projectApprove.vm" useBuiltInWebServerPort="true">
+    <configuration name="projectapprove" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="https://jira.veniture.tk/plugins/servlet/projectapprove">
       <method v="2" />
+    </configuration>
+    <configuration name="testBerk" type="JavascriptDebugType" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="https://jira.veniture.tk/plugins/servlet/projectapprove">
+      <method v="2">
+        <option name="RunConfigurationTask" enabled="true" run_configuration_name="installScript" run_configuration_type="BatchConfigurationType" />
+      </method>
     </configuration>
     <configuration name="MainDebug" type="Remote">
       <module name="PortfolioManagement" />
@@ -84,10 +98,10 @@
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" />
       <option name="HOST" value="62.108.36.188" />
-      <option name="PORT" value="8001" />
+      <option name="PORT" value="8002" />
       <option name="AUTO_RESTART" value="false" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="8001" />
+        <option name="DEBUG_PORT" value="8002" />
         <option name="LOCAL" value="false" />
       </RunnerSettings>
       <method v="2" />
@@ -103,13 +117,13 @@
     </configuration>
     <list>
       <item itemvalue="Batch.installScript" />
-      <item itemvalue="JavaScript Debug.projectApprove.vm" />
+      <item itemvalue="JavaScript Debug.testBerk" />
+      <item itemvalue="JavaScript Debug.projectapprove" />
       <item itemvalue="Remote.MainDebug" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Batch.installScript" />
-        <item itemvalue="JavaScript Debug.projectApprove.vm" />
+        <item itemvalue="JavaScript Debug.projectapprove" />
       </list>
     </recent_temporary>
   </component>
@@ -125,7 +139,7 @@
       <updated>1574864655660</updated>
       <workItem from="1574864657466" duration="329000" />
       <workItem from="1574920271769" duration="1175000" />
-      <workItem from="1574921538704" duration="10767000" />
+      <workItem from="1574921538704" duration="19685000" />
     </task>
     <servers />
   </component>
@@ -144,21 +158,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java</url>
-          <line>160</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java</url>
-          <line>146</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
