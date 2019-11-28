@@ -7,6 +7,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
@@ -20,6 +21,9 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
+import jdk.nashorn.internal.runtime.ECMAException;
+import model.IssueWithCF;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldsInProject;
@@ -130,7 +131,7 @@ public class ProjectApprove extends HttpServlet {
                     conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
                     break;
                 default:
-                    conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
+                    conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
             }
             CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
@@ -139,15 +140,26 @@ public class ProjectApprove extends HttpServlet {
 //            }
 //            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
 
-//            Map<String,String> asd;
-//
-//            for (CustomField customField:customFieldManager.getCustomFieldObjects()){
-//                asd.put(customField.getName(),)
-//            }
+            List<IssueWithCF> issuesWithCF= new ArrayList<>();
 
-            SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
-            context.put("issues", results.getResults());
-            context.put("customFields", customFieldManager.getCustomFieldObjects());
+            SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
+            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
+            for (Issue issue : results.getResults()){
+                Map<CustomField,String> customFieldMapWithValues = new HashMap<CustomField, String>();
+                for (CustomField customField:customFieldsInProject){
+                    try{
+                        customFieldMapWithValues.put(customField,customField.getValueFromIssue(issue));
+                    }
+                    catch (Exception e){
+                        customFieldMapWithValues.put(customField,"");
+                    }
+                }
+                IssueWithCF issueWithCF= new IssueWithCF(issue,customFieldMapWithValues);
+                issuesWithCF.add(issueWithCF);
+            }
+
+              context.put("issuesWithCF",issuesWithCF);
+              context.put("customFields", customFieldsInProject);
 //            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
 //            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
 //            context.put("gerekliAbapEforCf", gerekliAbapEforCf);

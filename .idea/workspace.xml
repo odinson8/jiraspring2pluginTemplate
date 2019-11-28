@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe9bf1f-e246-4c18-a16b-f5c3f8ea1a95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/TempoTeams/Team.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/IssueWithCF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/RemoteSearcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,12 +36,17 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs.protractor.protractor_package" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="model" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\veniture\PortfolioManagement\src\main\java\com\veniture\pojo\TempoTeams" />
     </key>
@@ -59,6 +63,56 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Remote.MainDebug">
+    <configuration name="installScript" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+      <module name="PortfolioManagement" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\veniture\PortfolioManagement" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="installScript.bat" />
+      <option name="PARAMETERS" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="projectApprove.vm" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:63342/PortfolioManagement/templates/projectApprove.vm" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="MainDebug" type="Remote">
+      <module name="PortfolioManagement" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="62.108.36.188" />
+      <option name="PORT" value="8001" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="8001" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="62.108.36.188" />
+      <option name="PORT" value="8001" />
+      <option name="AUTO_RESTART" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Batch.installScript" />
+      <item itemvalue="JavaScript Debug.projectApprove.vm" />
+      <item itemvalue="Remote.MainDebug" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Batch.installScript" />
+        <item itemvalue="JavaScript Debug.projectApprove.vm" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -71,7 +125,7 @@
       <updated>1574864655660</updated>
       <workItem from="1574864657466" duration="329000" />
       <workItem from="1574920271769" duration="1175000" />
-      <workItem from="1574921538704" duration="2698000" />
+      <workItem from="1574921538704" duration="10767000" />
     </task>
     <servers />
   </component>
@@ -90,5 +144,21 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java</url>
+          <line>160</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/veniture/servlet/ProjectApprove.java</url>
+          <line>146</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

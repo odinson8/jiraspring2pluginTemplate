@@ -25,7 +25,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         }
 
         .td {
-            max-width: 140px; word-wrap: break-word;
+            max-width: 199px; word-wrap: break-word;
         }
     </style>
 
@@ -75,8 +75,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     );
                 };
 
-                apply_footer($kapasiteSap, 3);
-                apply_footer($kapasiteAbap, 2);
+                ## apply_footer($kapasiteSap, 3);
+                ## apply_footer($kapasiteAbap, 2);
 
             };
 
@@ -88,7 +88,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             });
 
             table.on('select.dt deselect.dt', function () {
-                displayFooter();
+                // displayFooter();
                 // AJS.$('#projectsTable').dataTable().fnClearTable();
             });
 
@@ -216,9 +216,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <form class="aui">
                             <select id="select2" data-placeholder="Select a filter" style="width: 60%">
                                 <option></option>
-                                <option value="WFA">WFA</option>
                                 <option value="PLANLAMA">PLANLAMA</option>
                                 <option value="SATISARTTIRAN">SATISARTTIRAN</option>
+                                <option value="WFA">WFA</option>
                             </select>
                         </form>
                     </div>
@@ -241,30 +241,34 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <table id="projectsTable" class="display nowrap" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left;">Name</th>
+                                    <th style="text-align: left;">Key</th>
                                     <th style="text-align: left;">Summary</th>
-                                    <th style="text-align: left;">Abap($kapasiteAbap)</th>
-                                    <th style="text-align: left;">Sap($kapasiteSap)</th>
+                                    #foreach( $cf in $customFields)
+                                        #set ($cfName = $cf.getFieldName())
+                                        <td style="max-width: 199px; word-wrap: break-word;">#if($cfName)$cfName#end</td>
+                                    #end
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th></th>
+                                    #foreach( $cf in $customFields)
+                                        #set ($cfName = $cf.getFieldName())
+                                        <td style="max-width: 199px; word-wrap: break-word;"> </td>
+                                    #end
                                     <th>Total</th>
-                                    <th></th>
-                                    <th></th>
                                 </tr>
                             </tfoot>
                         
                             <tbody>
-                                #foreach( $issue in $issues )
+                                #foreach( $IssueWithCF in $issuesWithCF )
                                 <tr>
-                                    <td>$issue.getKey()</td>
+                                    #set ($issue=$IssueWithCF.getIssue())
+                                    <td><a href="https://jira.veniture.tk/browse/$issue.getKey()">$issue.getKey()</a></td>
                                     <td>$issue.getSummary()</td>
-                                    #set ($gerekliAbapEfor = $issue.getCustomFieldValue($gerekliAbapEforCf))
-                                    #set ($gerekliSapEfor = $issue.getCustomFieldValue($gerekliSapEforCf))
-                                    <td style="max-width: 140px; word-wrap: break-word;">#if( $gerekliAbapEfor)$gerekliAbapEfor#end</td>
-                                    <td style="max-width: 140px; word-wrap: break-word;">#if( $gerekliSapEfor)$gerekliSapEfor#end</td>
+                                    #foreach( $entry in $IssueWithCF.getCustomFieldListWithValues().entrySet())
+                                        <td style="max-width: 199px; word-wrap: break-word;">deneme</td>
+                                    #end
                                 </tr>
                                 #end
                             </tbody>

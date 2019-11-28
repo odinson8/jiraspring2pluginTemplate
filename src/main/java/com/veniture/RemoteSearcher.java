@@ -16,17 +16,18 @@ import java.util.stream.Collectors;
 
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
-    private Gson gson = new Gson();
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
     }
 
     public IssueTableData getProjectTableData() throws URIException {
+        Gson gson = new Gson();
         return gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY), IssueTableData.class);
     }
 
     public List<Integer> getAllTeamIds() throws URIException {
+        Gson gson = new Gson();
         Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
         List<Team> tempoTeamData = gson.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
         List<Integer> ids = tempoTeamData.stream().map(x -> x.getId()).collect(Collectors.toList());
