@@ -5,10 +5,14 @@ public class Constants {
     public static final String PLANLAMA = "project = FP AND issuetype = \"Project Card\" AND Departman = Planlama OR project = FP AND issuetype = \"Project Card\" AND Etiket = \"Satışı Arttıran\"";
     public static final String SATISARTTIRAN ="project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\" AND Etiket = \"Satışı Arttıran\"";
     public static final String PROJECTCARDS ="project = FP AND issuetype = \"Project Card\"";
+    public static final String TESTENVDeparment ="project = \"IT-PMO Portfolyo Talep Yönetimi Test\" and \"İlgili GMY\" =currentUser()";
     public static final long kapasiteSapCfId = 10808L;
     public static final long kapasiteAbapCfId = 10815L;
     public static final long gerekliAbapEforCfId = 10814L;
     public static final long öncelikBerkCfId = 11105L;
+    public static final long OncelikDepartmaId = 11403L;
+    public static final long onceliklendirildimiId = 11500L;
+    public static final long GMYOncelikID = 11501L;
     public static final long gerekliSapEforCfId = 10813L;
 
     public static final Integer ApproveWorkflowTransitionId = 181;
@@ -19,4 +23,5 @@ public class Constants {
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
+    public static final long TRUE_OPTION_ID = 11200L;
 }

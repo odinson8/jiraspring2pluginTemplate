@@ -76,11 +76,11 @@ public class rest {
         JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
         int x=0;
         for (JsonElement jsonElement:tableAsJsonArray){
-            if (x==0){x++;continue;}
             ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
-            CustomField oncelikBerkCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.öncelikBerkCfId);
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
-            com.veniture.util.functions.updateCustomFieldValue(issue,oncelikBerkCf,Double.valueOf(projectsDetails.getCompanyPriority()),CURRENT_USER);
+            //CustomField oncelikBerkCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.öncelikBerkCfId);
+            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.OncelikDepartmaId,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildimiId, Constants.TRUE_OPTION_ID,CURRENT_USER);
         }
 
        // updateCustomFieldValue("key","asd","value");

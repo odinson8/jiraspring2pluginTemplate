@@ -1,3 +1,4 @@
+
 package com.veniture.pojo;
 
 import com.google.gson.annotations.Expose;
@@ -8,12 +9,21 @@ public class ProjectsDetails {
     @SerializedName("Issue key")
     @Expose
     private String issueKey;
-    @SerializedName("Department Priority")
+    @SerializedName("Summary")
+    @Expose
+    private String summary;
+    @SerializedName("Description")
+    @Expose
+    private String description;
+    @SerializedName("Department")
+    @Expose
+    private String department;
+    @SerializedName("GMYPriority")
+    @Expose
+    private String gMYPriority;
+    @SerializedName("DepartmentPriority")
     @Expose
     private String departmentPriority;
-    @SerializedName("Company Priority")
-    @Expose
-    private String companyPriority;
 
     public String getIssueKey() {
         return issueKey;
@@ -23,20 +33,44 @@ public class ProjectsDetails {
         this.issueKey = issueKey;
     }
 
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getGMYPriority() {
+        return gMYPriority;
+    }
+
+    public void setGMYPriority(String gMYPriority) {
+        this.gMYPriority = gMYPriority;
+    }
+
     public String getDepartmentPriority() {
         return departmentPriority;
     }
 
     public void setDepartmentPriority(String departmentPriority) {
         this.departmentPriority = departmentPriority;
-    }
-
-    public String getCompanyPriority() {
-        return companyPriority;
-    }
-
-    public void setCompanyPriority(String companyPriority) {
-        this.companyPriority = companyPriority;
     }
 
 }

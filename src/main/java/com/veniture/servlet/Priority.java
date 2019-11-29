@@ -74,7 +74,8 @@ public class Priority extends HttpServlet {
         JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
         Query conditionQuery = null;
         try {
-            conditionQuery = jqlQueryParser.parseQuery(Constants.PROJECTCARDS);
+           // conditionQuery = jqlQueryParser.parseQuery(Constants.PROJECTCARDS);
+            conditionQuery = jqlQueryParser.parseQuery(Constants.TESTENVDeparment);
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
             List<Issue> issues = results.getResults();

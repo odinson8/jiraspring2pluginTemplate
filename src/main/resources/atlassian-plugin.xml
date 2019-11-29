@@ -13,12 +13,18 @@
   <!-- add our web resources -->  
   <web-resource key="PortfolioManagement-resources" name="PortfolioManagement Web Resources"> 
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <dependency>com.atlassian.auiplugin:table</dependency>  
-    <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>  
+    <dependency>com.atlassian.auiplugin:table</dependency>
+    <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>  
-    <resource type="download" name="images/" location="/images"/>  
-    <context>atl.general</context> 
-  </web-resource>  
+    <resource type="download" name="bootstrap.min.css" location="/js/bootstrap.min.css"/>
+<!--    <resource type="download" name="jquery.min.js" location="/js/jquery.min.js"/>-->
+     <resource type="download" name="jquery.tabletojson.min.js" location="/js/jquery.tabletojson.min.js"/>
+     <resource type="download" name="sweetalert2.all.js" location="/js/sweetalert2.all.js"/>
+     <resource type="download" name="sweetalert2.css" location="/js/sweetalert2.css"/>
+    <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>atl.general</context>
+  </web-resource>
   <web-item key="projectapprove-webitem" name="FLO" section="system.top.navigation.bar" weight="200"> 
     <description key="projectapprove-item-desc">projectapprove</description>  
     <label key="projectapprove"/>  
