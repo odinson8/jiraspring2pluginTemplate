@@ -41,6 +41,10 @@ Released under the MIT license: http://jsbin.mit-license.org
             cursor: move;
             cursor: -webkit-grabbing;
         }
+        .swal2-popup {
+            font-size: 1.2rem !important;
+        }
+
     </style>
 
     <script>
@@ -88,7 +92,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                     complete: function (response) {
                     },
                     success: function (response, status, jqXHR) {
-                        console.log(JSON.stringify(table));
+                        //console.log(JSON.stringify(table));
                         console.log("success");
                     }
                 });
@@ -98,10 +102,15 @@ Released under the MIT license: http://jsbin.mit-license.org
                 updatePrioritiesInJIRA();
                 console.log("JIRA'da Öncelikler update edildi.")
                 e.preventDefault();
-                Swal.fire(
-                        'Önceliklendirme Tamamlandı!',
-                        'success'
-                )
+
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Önceliklendirme Tamamlandı!',
+                    showConfirmButton: false,
+                    timer: 1900
+                })
+
             });
         });
     </script>

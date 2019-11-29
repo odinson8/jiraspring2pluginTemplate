@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9fe9bf1f-e246-4c18-a16b-f5c3f8ea1a95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/constants/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/pojo/ProjectsDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/rest/rest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/Priority.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/servlet/Priority.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/veniture/util/functions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/veniture/util/functions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/atlassian-plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/installScript.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/prioritization.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/prioritization.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/projectApprove.vm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
