@@ -125,6 +125,7 @@ Released under the MIT license: http://jsbin.mit-license.org
         </div>
     </div>
     <div class="aui-group list-group" id="tableDiv">
+
         <table class="aui" id="auiTable">
             <thead>
             <tr>
@@ -139,7 +140,7 @@ Released under the MIT license: http://jsbin.mit-license.org
             <tbody id="tableBody">
                 #foreach( $issue in $issues )
                 <tr>
-                    <td><a href="http://172.23.23.44:8080/browse/$issue.getKey()">$issue.getKey()</a></td>
+                    <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                     <td>$issue.getSummary()</td>
                     <td>$issue.getDescription()</td>
                     <td>Departman</td>

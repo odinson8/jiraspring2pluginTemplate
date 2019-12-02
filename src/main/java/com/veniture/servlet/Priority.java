@@ -75,7 +75,7 @@ public class Priority extends HttpServlet {
         Query conditionQuery = null;
         try {
            // conditionQuery = jqlQueryParser.parseQuery(Constants.PROJECTCARDS);
-            conditionQuery = jqlQueryParser.parseQuery(Constants.TESTENVDeparment);
+            conditionQuery = jqlQueryParser.parseQuery(Constants.testOrtamıSorgusu);
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
             List<Issue> issues = results.getResults();
@@ -83,6 +83,9 @@ public class Priority extends HttpServlet {
             for (Issue issue : issues) {
                 // Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
             }
+
+            String baseUrl = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
+            context.put("baseUrl",baseUrl);
         } catch (JqlParseException | SearchException e) {
             e.printStackTrace();
         }
