@@ -3,7 +3,9 @@ package com.veniture.constants;
 public class Constants {
 
     //Genel
-    public static final String currentEnv = "venitureJira";
+    public enum Environments {
+        VenitureJira, FloProd, FloTest
+    }
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
@@ -16,7 +18,10 @@ public class Constants {
     public static final long GMYOncelikID = 11501L;
     //Prod Ortamı
 
-    //Veniture Jira Ortamı
+    //Veniture Jira yeni Ortam
+    public static final String testJQL ="project = PF";
+
+    //Veniture Jira eski Ortam
     public static final String WFA = "project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\"";
     public static final String PLANLAMA = "project = FP AND issuetype = \"Project Card\" AND Departman = Planlama OR project = FP AND issuetype = \"Project Card\" AND Etiket = \"Satışı Arttıran\"";
     public static final String SATISARTTIRAN ="project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\" AND Etiket = \"Satışı Arttıran\"";

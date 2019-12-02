@@ -134,7 +134,6 @@ public class ProjectApprove extends HttpServlet {
                 default:
                     conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
             }
-            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
 //            for (Issue issue : issues) {
 //                Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
@@ -144,6 +143,7 @@ public class ProjectApprove extends HttpServlet {
             List<IssueWithCF> issuesWithCF= new ArrayList<>();
 
             SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
+            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
             List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
             //List<CustomField> customFieldsInProject = new ArrayList<>();
             customFieldsInProject.add(kapasiteAbapCf);

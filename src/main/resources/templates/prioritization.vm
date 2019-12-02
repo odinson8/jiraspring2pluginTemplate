@@ -16,10 +16,7 @@ Copyright (c) 2019 by venITure
 Released under the MIT license: http://jsbin.mit-license.org
 -->
 <html>
-
 <head>
-
-
 <!-- Latest compiled and minified CSS-->
     <!--
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
@@ -41,10 +38,15 @@ Released under the MIT license: http://jsbin.mit-license.org
             cursor: move;
             cursor: -webkit-grabbing;
         }
+
+        td {
+            min-width:20px;
+            max-width:550px;
+        }
+
         .swal2-popup {
             font-size: 1.2rem !important;
         }
-
     </style>
 
     <script>
@@ -59,7 +61,6 @@ Released under the MIT license: http://jsbin.mit-license.org
             });
 
             updatePriorities();
-
            // AJS.tablessortable.setTableSortable(AJS.$("#auiTable"));
 
             function updatePriorities() {
@@ -98,6 +99,12 @@ Released under the MIT license: http://jsbin.mit-license.org
                 });
             }
 
+            function hide() {
+                var tableBody = AJS.$('#tableBody > tr');
+                AJS.$('#tableBody tr td:nth-child(3), #auiTable > thead th:nth-child(3)').hide();
+                console.log("hided");
+            }
+
             AJS.$('#kaydetButton').off().on("click", function (e) {
                 updatePrioritiesInJIRA();
                 console.log("JIRA'da Öncelikler update edildi.")
@@ -110,7 +117,9 @@ Released under the MIT license: http://jsbin.mit-license.org
                     showConfirmButton: false,
                     timer: 1900
                 })
-
+            });
+            AJS.$('#hide').off().on("click", function (e) {
+                hide();
             });
         });
     </script>
@@ -125,7 +134,6 @@ Released under the MIT license: http://jsbin.mit-license.org
         </div>
     </div>
     <div class="aui-group list-group" id="tableDiv">
-
         <table class="aui" id="auiTable">
             <thead>
             <tr>
@@ -153,7 +161,8 @@ Released under the MIT license: http://jsbin.mit-license.org
     </div>
     <div class="aui-group" id="buttons">
         <button class="aui-button aui-button-primary" id="kaydetButton">Kaydet</button>
+##        <button class="aui-button aui-button-primary" id="hide">hide</button>
+##        <button class="aui-button aui-button-primary" id="show">show</button>
     </div>
-
 </body>
 </html>

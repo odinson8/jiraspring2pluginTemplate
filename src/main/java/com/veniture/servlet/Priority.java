@@ -5,7 +5,9 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -75,7 +77,7 @@ public class Priority extends HttpServlet {
         Query conditionQuery = null;
         try {
            // conditionQuery = jqlQueryParser.parseQuery(Constants.PROJECTCARDS);
-            conditionQuery = jqlQueryParser.parseQuery(Constants.testOrtamıSorgusu);
+            conditionQuery = jqlQueryParser.parseQuery(Constants.testJQL);
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
             List<Issue> issues = results.getResults();
@@ -86,6 +88,10 @@ public class Priority extends HttpServlet {
 
             String baseUrl = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
             context.put("baseUrl",baseUrl);
+            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
+            context.put("customFieldsInProject",customFieldsInProject);
+
         } catch (JqlParseException | SearchException e) {
             e.printStackTrace();
         }
