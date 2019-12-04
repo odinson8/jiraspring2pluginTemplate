@@ -9,7 +9,6 @@ public class Constants {
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
-    public static final long TRUE_OPTION_ID = 11200L;
 
     //Test Ortamı
     public static final String testOrtamıSorgusu ="project = \"IT-PMO Portfolyo Talep Yönetimi Test\" and \"İlgili GMY\" =currentUser()";
@@ -19,7 +18,12 @@ public class Constants {
     //Prod Ortamı
 
     //Veniture Jira yeni Ortam
-    public static final String testJQL ="project = PF";
+    public static final String testJQL ="project = PF and \"İlgili Direktör\" = currentUser()";
+    public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
+    public static final long onceliklendirildimiIdCanlıVeniture = 11500L;
+    public static final long OncelikDepartmaIdCanlıVeniture = 11403L;
+
+
 
     //Veniture Jira eski Ortam
     public static final String WFA = "project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\"";

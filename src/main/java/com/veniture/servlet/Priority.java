@@ -8,6 +8,7 @@ import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.search.SearchContext;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -83,13 +84,14 @@ public class Priority extends HttpServlet {
             List<Issue> issues = results.getResults();
             context.put("issues", issues);
             for (Issue issue : issues) {
-                // Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
+                //Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
             }
 
             String baseUrl = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
             context.put("baseUrl",baseUrl);
             CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
-            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
+            SearchContext searchContext=searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery("project = PF"));
+            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(searchContext);
             context.put("customFieldsInProject",customFieldsInProject);
 
         } catch (JqlParseException | SearchException e) {

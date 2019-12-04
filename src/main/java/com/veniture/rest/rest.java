@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import java.util.Arrays;
@@ -69,7 +70,7 @@ public class rest {
         return ISSUE_SERVICE.getIssue(CURRENT_USER,req.getParameterValues("issueKey")[0]).getIssue().getCustomFieldValue(customField).toString();
     }
 
-    @GET
+    @POST
     @Path("/setPriorityCfValuesInJira")
     public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException, IndexException {
         String[] jsontableString = req.getParameterValues("jsontable");
@@ -78,11 +79,9 @@ public class rest {
         for (JsonElement jsonElement:tableAsJsonArray){
             ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
-            //CustomField oncelikBerkCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.öncelikBerkCfId);
-            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.OncelikDepartmaId,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
-            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildimiId, Constants.TRUE_OPTION_ID,CURRENT_USER);
+            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.OncelikDepartmaIdCanlıVeniture,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildimiIdCanlıVeniture, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
-
        // updateCustomFieldValue("key","asd","value");
         return null;
     }

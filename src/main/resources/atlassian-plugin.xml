@@ -4,8 +4,8 @@
   <plugin-info> 
     <description>${project.description}</description>  
     <version>${project.version}</version>  
-    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
-    <param name="plugin-icon">images/pluginIcon.png</param>  
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
     <param name="plugin-logo">images/pluginLogo.png</param> 
   </plugin-info>  
   <!-- add our i18n resource -->  
@@ -14,6 +14,7 @@
   <web-resource key="PortfolioManagement-resources" name="PortfolioManagement Web Resources"> 
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
     <dependency>com.atlassian.auiplugin:table</dependency>
+    <dependency>com.atlassian.auiplugin:aui-select2</dependency>
     <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>  
     <resource type="download" name="bootstrap.min.css" location="/js/bootstrap.min.css"/>
@@ -21,7 +22,9 @@
      <resource type="download" name="jquery.tabletojson.min.js" location="/js/jquery.tabletojson.min.js"/>
      <resource type="download" name="sweetalert2.all.js" location="/js/sweetalert2.all.js"/>
      <resource type="download" name="sweetalert2.css" location="/js/sweetalert2.css"/>
-    <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
+     <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
+<!--    <resource type="download" name="select2.min.js" location="/js/select2.full.min.js"/>-->
+<!--    <resource type="download" name="select2.min.css" location="/js/select2.min.css"/>-->
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>
@@ -37,11 +40,11 @@
   </web-item>
 
   <servlet name="Project Approve Servlet" key="projectapprove" class="com.veniture.servlet.ProjectApprove"> 
-    <description>projectapprove</description>  
+    <description>projectapprove</description>
     <url-pattern>/projectapprove</url-pattern> 
   </servlet>  
   <servlet name="Priority Servlet" key="prioritization" class="com.veniture.servlet.Priority"> 
-    <description>prioritization</description>  
+    <description>prioritization</description>
     <url-pattern>/prioritization</url-pattern> 
   </servlet>  
   <rest name="FLO Rest Service" key="florestservice" path="florestservice" version="1.2"> 

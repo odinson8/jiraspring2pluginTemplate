@@ -4,9 +4,7 @@ Written by Veniture
 TODO
 İssue Link olsun
 -->
-
 $webResourceManager.requireResources("com.veniture.PortfolioManagement:PortfolioManagement-resources")
-
 <!--
 Created using JS Bin
 http://jsbin.com
@@ -18,13 +16,12 @@ Released under the MIT license: http://jsbin.mit-license.org
 <html>
 <head>
 <!-- Latest compiled and minified CSS-->
-    <!--
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/table-to-json@0.13.0/lib/jquery.tabletojson.min.js" integrity="sha256-AqDz23QC5g2yyhRaZcEGhMMZwQnp8fC6sCZpf+e7pnw=" crossorigin="anonymous"></script>
-
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>-->
+
     <meta charset="utf-8">
     <title>Proje Önceliklendirme</title>
 
@@ -51,6 +48,7 @@ Released under the MIT license: http://jsbin.mit-license.org
 
     <script>
         AJS.$(document).ready(function () {
+
             // List with handle
             Sortable.create(tableBody, {
                 handle: 'tr',
@@ -77,13 +75,16 @@ Released under the MIT license: http://jsbin.mit-license.org
 
             function updatePrioritiesInJIRA() {
                 var table = AJS.$('#auiTable').tableToJSON({
-                    ignoreEmptyRows : true
+                    ignoreEmptyRows : true,
+                    onlyColumns: [0,5]
                 }); // Convert the table into a javascript object
-                alert(JSON.stringify(table));
+                //alert(JSON.stringify(table));
+                console.log(JSON.stringify(table));
+
 
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/setPriorityCfValuesInJira",
-                    type: 'GET',
+                    type: 'POST',
                     data: {
                         jsontable: JSON.stringify(table)
                     },
@@ -118,9 +119,45 @@ Released under the MIT license: http://jsbin.mit-license.org
                     timer: 1900
                 })
             });
+
             AJS.$('#hide').off().on("click", function (e) {
                 hide();
             });
+
+            AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
+                console.log("selecting val="+ e.val);
+                console.log(getCfValueFromIssue("PF-581","customfield_11304"));
+            });
+
+            function getCfValueFromIssue(issueKey, customfieldId){
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/getCfValueFromIssue",
+                    type: 'GET',
+                    data: {
+                        issueKey: issueKey,
+                        customFieldId: customfieldId
+                    },
+                    async: false,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    success: function (response, status, jqXHR) {
+                        console.log("getCfValueFromIssue complete");
+                        return(response.toString());
+                    }
+                });
+            }
+
+            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
+                console.log ("removing val="+ e.val);
+            });
+
+            // AJS.$("#select2-customFields").on('select2-selecting', function (e) {
+            //     AJS.$('#tableBody tr td:nth-child(3), #auiTable > thead th:nth-child(3)').show();
+            // });
+
+            AJS.$("#customFieldList-select2").auiSelect2();
         });
     </script>
 </head>
@@ -129,20 +166,40 @@ Released under the MIT license: http://jsbin.mit-license.org
         <div class="aui-help aui-help-empty-state">
             <div class="aui-help-content">
                 <h1>Proje Önceliklendirme</h1>
-                <p>Projeleri sürekle-bırak yöntemi ile istediğiniz sıraya taşıyınız. Önceliklendirme bittikten sonra kaydet tuşuna basınız.</p>
+                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
+                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
+                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
+##                <p>Projeleri sürekle-bırak yöntemi ile istediğiniz sıraya taşıyınız. Önceliklendirme bittikten sonra kaydet tuşuna basınız.</p>
             </div>
+        </div>
+    </div>
+
+
+    <div class="aui-group">
+        <div class="aui-item" id="#select2-customFields">
+            <form class="aui">
+                <select id="customFieldList-select2" data-placeholder="Select Fields" multiple style="width: 40%">
+                    <option></option>
+                    #foreach($cf in $customFieldsInProject)
+                        <option value="$cf.getId()">$cf.getFieldName()</option>
+                    #end
+                </select>
+            </form>
         </div>
     </div>
     <div class="aui-group list-group" id="tableDiv">
         <table class="aui" id="auiTable">
             <thead>
             <tr>
-                <th class="aui-table-column-issue-key">Issue key</th>
+                <th class="aui-table-column-issue-key" data-override="key">Issue key</th>
                 <th data-override="Summary">Özet</th>
                 <th class="aui-table-column-unsortable" data-override="Description">Açıklama</th>
-                <th data-override="Department">Departman</th>
-                <th data-override="GMYPriority">Grup/GMY Önceliği</th>
-                <th data-override="DepartmentPriority">Departman Önceliği</th>
+                <th data-override="Dpmnt">Departman</th>
+                <th data-override="GM">Grup/GMY Önceliği</th>
+                <th data-override="DP">Departman Önceliği</th>
+##                #foreach($cf in $customFieldsInProject)
+##                    <th data-override="$cf.getId()">$cf.getName()</th>
+##                #end
             <tr>
             </thead>
             <tbody id="tableBody">
@@ -154,6 +211,9 @@ Released under the MIT license: http://jsbin.mit-license.org
                     <td>Departman</td>
                     <td>Grup/GMY Önceliği</td>
                     <td class="companyPriority">Departman Önceliği</td>
+##                    #foreach($cf in $customFieldsInProject)
+##                        <td class="$cf.getId()">-</td>
+##                    #end
                 </tr>
                 #end
             </tbody>
@@ -161,8 +221,8 @@ Released under the MIT license: http://jsbin.mit-license.org
     </div>
     <div class="aui-group" id="buttons">
         <button class="aui-button aui-button-primary" id="kaydetButton">Kaydet</button>
-##        <button class="aui-button aui-button-primary" id="hide">hide</button>
-##        <button class="aui-button aui-button-primary" id="show">show</button>
+##      <button class="aui-button aui-button-primary" id="hide">hide</button>
+##      <button class="aui-button aui-button-primary" id="show">show</button>
     </div>
 </body>
 </html>

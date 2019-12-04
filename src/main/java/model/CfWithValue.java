@@ -10,6 +10,7 @@ public class CfWithValue {
     @Expose
     private CustomField customField;
 
+
     @SerializedName("value")
     @Expose
     private String value;
