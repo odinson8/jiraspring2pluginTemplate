@@ -102,7 +102,7 @@ public class rest {
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
             com.veniture.util.functions.updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
             com.veniture.util.functions.updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
-            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildimiIdCanlıVeniture, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         return null;
     }

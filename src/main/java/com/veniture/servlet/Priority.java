@@ -6,8 +6,6 @@ import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchContext;
 import com.atlassian.jira.issue.search.SearchException;
@@ -43,32 +41,25 @@ public class Priority extends HttpServlet {
     @JiraImport
     private ProjectService projectService;
     @JiraImport
+    private ConstantsManager constantsManager;
+    @JiraImport
+    private RequestFactory requestFactory;
+    @JiraImport
     private SearchService searchService;
     @JiraImport
     private TemplateRenderer templateRenderer;
     @JiraImport
     private JiraAuthenticationContext authenticationContext;
-    @JiraImport
-    private ConstantsManager constantsManager;
-    @JiraImport
-    private RequestFactory requestFactory;
-    String restriction;
+    private String restriction;
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
 
-    public Priority(IssueService issueService, ProjectService projectService,
-                       SearchService searchService,
+    public Priority(   SearchService searchService,
                        TemplateRenderer templateRenderer,
-                       JiraAuthenticationContext authenticationContext,
-                       ConstantsManager constantsManager,
-                       RequestFactory requestFactory) {
-        this.issueService = issueService;
-        this.projectService = projectService;
+                       JiraAuthenticationContext authenticationContext) {
         this.searchService = searchService;
         this.templateRenderer = templateRenderer;
         this.authenticationContext = authenticationContext;
-        this.constantsManager = constantsManager;
-        this.requestFactory = requestFactory;
     }
 
     @Override
@@ -83,19 +74,19 @@ public class Priority extends HttpServlet {
             }  else if (restriction.equals("dp")) {
                 conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
             }
-            else {conditionQuery = jqlQueryParser.parseQuery("project = PF AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\"");}
+            else {conditionQuery = jqlQueryParser.parseQuery(Constants.TEST_SORGUSU);}
 
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
-            CustomFieldManager cfMngr = ComponentAccessor.getCustomFieldManager();
-            SearchContext searchContext=searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery("project = PF"));
-            List<CustomField> customFieldsInProject = cfMngr.getCustomFieldObjects(searchContext);
+            CustomFieldManager cfMgr = ComponentAccessor.getCustomFieldManager();
+            SearchContext searchContext=searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
+            List<CustomField> customFieldsInProject = cfMgr.getCustomFieldObjects(searchContext);
             context.put("issues", results.getResults());
             context.put("restriction",restriction);
             context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
             context.put("customFieldsInProject",customFieldsInProject);
-            context.put("departmanOncelikCF",cfMngr.getCustomFieldObject("customfield_11403"));
-            context.put("gmyOncelikCF",cfMngr.getCustomFieldObject("customfield_11501"));
+            context.put("birimOncelikCF",cfMgr.getCustomFieldObject(Constants.BIRIM_ONCELIK_ID_STRING));
+            context.put("gmyOncelikCF",cfMgr.getCustomFieldObject(Constants.GMY_ONCELIK_STRING));
 
         } catch (JqlParseException | SearchException e) {
             e.printStackTrace();

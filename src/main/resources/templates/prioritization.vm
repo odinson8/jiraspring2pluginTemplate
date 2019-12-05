@@ -29,8 +29,8 @@ Released under the MIT license: http://jsbin.mit-license.org
 
     <meta name="decorator" content="atl.general">
     <style id="css">
-        body {
-            margin: 10px;
+        #content {
+            margin: 12px;
         }
 
         #tableBody>tr {
@@ -38,14 +38,14 @@ Released under the MIT license: http://jsbin.mit-license.org
             cursor: -webkit-grabbing;
         }
 
-        #search-area-example {
+        #loading-spinner {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        #search-area-example aui-spinner {
+        #loading-spinner aui-spinner {
             margin: 1em;
         }
 
@@ -86,15 +86,14 @@ Released under the MIT license: http://jsbin.mit-license.org
 
             function updatePriorities(restriction) {
                 var i = 0;
-                var len = AJS.$('#tableBody > tr').length;
                 var tableBody = AJS.$('#tableBody > tr');
-                var tableBodyLength = tableBody.length;
                 tableBody.each(function () {
                     if (restriction === "gmy") {
                         AJS.$(this).find(".gmyPriority").text(i + 1);
                     } else if (restriction === "dp") {
                         AJS.$(this).find(".birimOncelik").text(i + 1);
                     }else {
+                        console.log("Running as admin");
                         AJS.$(this).find(".birimOncelik").text(i + 1);
                         AJS.$(this).find(".gmyPriority").text(i + 1);
                     }
@@ -107,8 +106,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                 var table = AJS.$('#auiTable').tableToJSON({
                     ignoreEmptyRows : true,
                     onlyColumns: [0,3,4]
+                    //Bu sıralama önemli
                 }); // Convert the table into a javascript object
-                //alert(JSON.stringify(table));
                 console.log(JSON.stringify(table));
 
                 jQuery.ajax({
@@ -147,25 +146,31 @@ Released under the MIT license: http://jsbin.mit-license.org
                 })
             });
 
-            AJS.$("#search-area-example").hide();
+            AJS.$("#loading-spinner").hide();
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
+
+                //Header'ı göster
                 AJS.$('#auiTable > thead  th[data-override*="'+e.val+'"]').show();
+
+                //custom Field td'leri çeker bu
                 var issueCFsectionInTable = AJS.$('#auiTable > tbody  tr td[class*="'+e.val+'"]');
-                var issueKeyArray =[];
+
+                var issueKeys =[];
                 issueCFsectionInTable.each(function () {
+
+                    //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
                     var issueKey=AJS.$(this).parent().children().first().children().first().prop( "innerHTML" );
-                    issueKeyArray.push(issueKey);
+                    issueKeys.push(issueKey);
                     AJS.$(this).show();
-
                 });
-                var cfValues=bulkGetCfValuesFromIssue(issueKeyArray.join(","),e.val);
 
+                console.log("asd");
+                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
+                //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
                 var array=cfValues.split(",,,");
-
                 for(var i = 0; i < array.length; i++) {
                     issueCFsectionInTable[i].innerHTML=array[i];
                 }
-                //var issueKeys=AJS.$('#auiTable > tbody  tr .issueKey').prop( "innerHTML" ).join( "|" );
             });
 
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
@@ -184,15 +189,15 @@ Released under the MIT license: http://jsbin.mit-license.org
                     },
                     async: false,
                     beforeSend: function () {
-                        AJS.$("#search-area-example").show();
+                        AJS.$("#loading-spinner").show();
                     },
                     error : function (response) {
                         value= "-";
-                        AJS.$("#search-area-example").hide();
+                        AJS.$("#loading-spinner").hide();
                     },
                     success: function (response, status, jqXHR) {
                         console.log("getCfValueFromIssue complete");
-                        AJS.$("#search-area-example").hide();
+                        AJS.$("#loading-spinner").hide();
                         value= response;
                     }
                 });
@@ -219,7 +224,7 @@ Released under the MIT license: http://jsbin.mit-license.org
     <div class="aui-group">
         <div class="aui-item" id="#select2-customFields">
             <form class="aui">
-                <select id="customFieldList-select2" data-placeholder="Select Fields" multiple style="width: 40%">
+                <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
                     <option></option>
                     #foreach($cf in $customFieldsInProject)
                         <option value="$cf.getId()">$cf.getFieldName()</option>
@@ -230,7 +235,7 @@ Released under the MIT license: http://jsbin.mit-license.org
     </div>
 
     <div class="aui-group">
-        <div id="search-area-example" class="custom-card-style">
+        <div id="loading-spinner" class="custom-card-style">
             <p>Loading results...</p>
             <aui-spinner size="large"></aui-spinner>
         </div>
@@ -262,7 +267,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                     <td>$issue.getSummary()</td>
                     <td>$issue.getDescription()</td>
                     <td class="gmyPriority">$issue.getCustomFieldValue($gmyOncelikCF)</td>
-                    <td class="birimOncelik">$issue.getCustomFieldValue($departmanOncelikCF)</td>
+                    <td class="birimOncelik">$issue.getCustomFieldValue($birimOncelikCF)</td>
                     #foreach($cf in $customFieldsInProject)
                         <td style="display:none;" class="$cf.getId()">-</td>
                     #end

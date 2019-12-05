@@ -2,6 +2,9 @@ package com.veniture.constants;
 
 public class Constants {
 
+
+    public static final String SC_SORGUSU = "project = PF";
+
     //Genel
     public enum Environments {
         VenitureJira, FloProd, FloTest
@@ -10,21 +13,16 @@ public class Constants {
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
 
-    //Test Ortamı
-    public static final String testOrtamıSorgusu ="project = \"IT-PMO Portfolyo Talep Yönetimi Test\" and \"İlgili GMY\" =currentUser()";
-    public static final long OncelikDepartmaId = 11403L;
-    public static final long onceliklendirildimiId = 11500L;
-    public static final long GMYOncelikID = 11501L;
-    //Prod Ortamı
-
-    //Veniture Jira yeni Ortam
+    //Veniture Jira - Prod Yeni Ortam
     public static final String departmanJQL ="project =PF and cf[11507] =currentUser()";
     public static final String gmyJQL ="project =PF and \"İlgili GMY\"=currentUser()";
-    //public static final String testJQL ="";
+    public static final String TEST_SORGUSU = "project = PF AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\" ORDER BY \"Birim Önceliği\"";
     public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
-    public static final long onceliklendirildimiIdCanlıVeniture = 11500L;
+    public static final long onceliklendirildiMiId = 11500L;
     public static final long BIRIM_ONCELIK_ID = 11403L;
+    public static final String BIRIM_ONCELIK_ID_STRING = "customfield_11403";
     public static final long GMY_ONCELIK_ID = 11501L;
+    public static final String GMY_ONCELIK_STRING = "customfield_11501";
 
     //Veniture Jira eski Ortam
     public static final String WFA = "project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\"";
