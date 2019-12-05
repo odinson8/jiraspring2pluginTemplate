@@ -18,12 +18,13 @@ public class Constants {
     //Prod Ortamı
 
     //Veniture Jira yeni Ortam
-    public static final String testJQL ="project = PF and \"İlgili Direktör\" = currentUser()";
+    public static final String departmanJQL ="project =PF and cf[11507] =currentUser()";
+    public static final String gmyJQL ="project =PF and \"İlgili GMY\"=currentUser()";
+    //public static final String testJQL ="";
     public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
     public static final long onceliklendirildimiIdCanlıVeniture = 11500L;
-    public static final long OncelikDepartmaIdCanlıVeniture = 11403L;
-
-
+    public static final long BIRIM_ONCELIK_ID = 11403L;
+    public static final long GMY_ONCELIK_ID = 11501L;
 
     //Veniture Jira eski Ortam
     public static final String WFA = "project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\"";

@@ -14,10 +14,15 @@ public class ProjectsDetails {
     @Expose
     private String departmentPriority;
 
+    @SerializedName("GM")
+    @Expose
+    private String GMYPriority;
+
     public String getIssueKey() {
         return issueKey;
     }
     public String getDepartmentPriority() {
         return departmentPriority;
     }
+    public String getGMYPriority() {  return GMYPriority; }
 }

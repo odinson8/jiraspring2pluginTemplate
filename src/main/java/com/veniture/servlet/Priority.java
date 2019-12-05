@@ -7,6 +7,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchContext;
 import com.atlassian.jira.issue.search.SearchException;
@@ -51,7 +52,7 @@ public class Priority extends HttpServlet {
     private ConstantsManager constantsManager;
     @JiraImport
     private RequestFactory requestFactory;
-    String action;
+    String restriction;
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
 
@@ -73,26 +74,28 @@ public class Priority extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> context = new HashMap<String, Object>();
-        action = Optional.ofNullable(req.getParameter("action")).orElse("");
+        restriction = Optional.ofNullable(req.getParameter("restriction")).orElse("");
         JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
-        Query conditionQuery = null;
+        Query conditionQuery;
         try {
-           // conditionQuery = jqlQueryParser.parseQuery(Constants.PROJECTCARDS);
-            conditionQuery = jqlQueryParser.parseQuery(Constants.testJQL);
+            if (restriction.equals("gmy")){
+                conditionQuery = jqlQueryParser.parseQuery(Constants.gmyJQL);
+            }  else if (restriction.equals("dp")) {
+                conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
+            }
+            else {conditionQuery = jqlQueryParser.parseQuery("project = PF AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\"");}
+
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
-            List<Issue> issues = results.getResults();
-            context.put("issues", issues);
-            for (Issue issue : issues) {
-                //Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
-            }
-
-            String baseUrl = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
-            context.put("baseUrl",baseUrl);
-            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+            CustomFieldManager cfMngr = ComponentAccessor.getCustomFieldManager();
             SearchContext searchContext=searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery("project = PF"));
-            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(searchContext);
+            List<CustomField> customFieldsInProject = cfMngr.getCustomFieldObjects(searchContext);
+            context.put("issues", results.getResults());
+            context.put("restriction",restriction);
+            context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
             context.put("customFieldsInProject",customFieldsInProject);
+            context.put("departmanOncelikCF",cfMngr.getCustomFieldObject("customfield_11403"));
+            context.put("gmyOncelikCF",cfMngr.getCustomFieldObject("customfield_11501"));
 
         } catch (JqlParseException | SearchException e) {
             e.printStackTrace();

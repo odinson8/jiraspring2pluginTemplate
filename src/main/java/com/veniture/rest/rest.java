@@ -29,7 +29,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Path("/rest")
@@ -63,7 +65,7 @@ public class rest {
         return "true";
     }
 
-    @GET
+    @POST
     @Path("/getCfValueFromIssue")
     public String getCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
         CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
@@ -71,18 +73,37 @@ public class rest {
     }
 
     @POST
+    @Path("/bulkGetCfValueFromIssue")
+    public String bulkGetCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
+        CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
+        String issueKeysJoined = req.getParameterValues("issueKey")[0];
+        String[] issueKeys = issueKeysJoined.split(",");
+        List<String> cfValues = new ArrayList<String>();
+        for (String issueKey:issueKeys){
+            String cfValue= null;
+            try {
+                cfValue = ISSUE_SERVICE.getIssue(CURRENT_USER,issueKey).getIssue().getCustomFieldValue(customField).toString();
+            } catch (Exception e) {
+                cfValue = "-";
+                e.printStackTrace();
+            }
+            cfValues.add(cfValue);
+        }
+        return String.join(",,,", cfValues); // "foo and bar and baz";
+    }
+
+    @POST
     @Path("/setPriorityCfValuesInJira")
     public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException, IndexException {
         String[] jsontableString = req.getParameterValues("jsontable");
         JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
-        int x=0;
         for (JsonElement jsonElement:tableAsJsonArray){
             ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
-            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.OncelikDepartmaIdCanlıVeniture,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
             com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildimiIdCanlıVeniture, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
-       // updateCustomFieldValue("key","asd","value");
         return null;
     }
 
