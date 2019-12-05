@@ -81,7 +81,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 }
             });
 
-            updatePriorities("$restriction");
+           // updatePriorities("$restriction");
            // AJS.tablessortable.setTableSortable(AJS.$("#auiTable"));
 
             function updatePriorities(restriction) {
@@ -266,8 +266,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                     <td><a href="$baseUrl/browse/$issue.getKey()" class="issueKey">$issue.getKey()</a></td>
                     <td style="font-weight:bold">$issue.getSummary()</td>
                     <td>$issue.getDescription()</td>
-                    <td><aui-badge class="gmyPriority">$issue.getCustomFieldValue($gmyOncelikCF)</aui-badge></td>
-                    <td><aui-badge class="birimOncelik">$issue.getCustomFieldValue($birimOncelikCF)</aui-badge></td>
+                    <td><aui-badge class="gmyPriority">#if( $issue.getCustomFieldValue($gmyOncelikCF) )$issue.getCustomFieldValue($gmyOncelikCF).intValue()#else - #end</aui-badge></td>
+                    <td><aui-badge class="birimOncelik">#if( $issue.getCustomFieldValue($birimOncelikCF) )$issue.getCustomFieldValue($birimOncelikCF).intValue()#else - #end</aui-badge></td>
                     #foreach($cf in $customFieldsInProject)
                         <td style="display:none;" class="$cf.getId()">-</td>
                     #end
