@@ -82,7 +82,13 @@ public class rest {
         for (String issueKey:issueKeys){
             String cfValue= null;
             try {
-                cfValue = ISSUE_SERVICE.getIssue(CURRENT_USER,issueKey).getIssue().getCustomFieldValue(customField).toString();
+                Issue issue= ISSUE_SERVICE.getIssue(CURRENT_USER,issueKey).getIssue();
+                if (customField.getCustomFieldType().getName().equals("User Picker (single user)")){
+                    ApplicationUser applicationUser=(ApplicationUser) issue.getCustomFieldValue(customField);
+                    cfValue=applicationUser.getDisplayName();
+                }else {
+                    cfValue = issue.getCustomFieldValue(customField).toString();
+                }
             } catch (Exception e) {
                 cfValue = "-";
                 e.printStackTrace();
