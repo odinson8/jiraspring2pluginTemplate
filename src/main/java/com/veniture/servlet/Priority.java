@@ -5,9 +5,7 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.search.SearchContext;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -20,6 +18,7 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
+import com.veniture.util.JiraUtilClasses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,11 +44,11 @@ public class Priority extends HttpServlet {
     @JiraImport
     private RequestFactory requestFactory;
     @JiraImport
-    private SearchService searchService;
+    public static SearchService searchService;
     @JiraImport
     private TemplateRenderer templateRenderer;
     @JiraImport
-    private JiraAuthenticationContext authenticationContext;
+    public static JiraAuthenticationContext authenticationContext;
     private String restriction;
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
@@ -57,9 +56,9 @@ public class Priority extends HttpServlet {
     public Priority(   SearchService searchService,
                        TemplateRenderer templateRenderer,
                        JiraAuthenticationContext authenticationContext) {
-        this.searchService = searchService;
+        Priority.searchService = searchService;
         this.templateRenderer = templateRenderer;
-        this.authenticationContext = authenticationContext;
+        Priority.authenticationContext = authenticationContext;
     }
 
     @Override
@@ -78,15 +77,13 @@ public class Priority extends HttpServlet {
 
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
-            CustomFieldManager cfMgr = ComponentAccessor.getCustomFieldManager();
-            SearchContext searchContext=searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
-            List<CustomField> customFieldsInProject = cfMgr.getCustomFieldObjects(searchContext);
+            List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInProjectContext().invoke();
             context.put("issues", results.getResults());
             context.put("restriction",restriction);
             context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
             context.put("customFieldsInProject",customFieldsInProject);
-            context.put("birimOncelikCF",cfMgr.getCustomFieldObject(Constants.BIRIM_ONCELIK_ID_STRING));
-            context.put("gmyOncelikCF",cfMgr.getCustomFieldObject(Constants.GMY_ONCELIK_STRING));
+            context.put("birimOncelikCF",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.BIRIM_ONCELIK_ID_STRING));
+            context.put("gmyOncelikCF",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.GMY_ONCELIK_STRING));
 
         } catch (JqlParseException | SearchException e) {
             e.printStackTrace();
@@ -95,4 +92,5 @@ public class Priority extends HttpServlet {
         resp.setContentType("text/html;charset=utf-8");
         templateRenderer.render(PRIORITIZATION_SCREEN_TEMPLATE,context,resp.getWriter());
     }
+
 }

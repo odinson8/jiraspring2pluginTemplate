@@ -7,7 +7,6 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
@@ -21,10 +20,9 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
-import jdk.nashorn.internal.runtime.ECMAException;
+import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
-import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,7 +130,7 @@ public class ProjectApprove extends HttpServlet {
                     conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
                     break;
                 default:
-                    conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
+                    conditionQuery = jqlQueryParser.parseQuery(TEST_SORGUSU);
             }
 
 //            for (Issue issue : issues) {
@@ -143,8 +141,7 @@ public class ProjectApprove extends HttpServlet {
             List<IssueWithCF> issuesWithCF= new ArrayList<>();
 
             SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
-            CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
-            List<CustomField> customFieldsInProject = customFieldManager.getCustomFieldObjects(10501L,"Project Card");
+            List<CustomField> customFieldsInProject = new JiraUtilClasses.gi().invoke();
             //List<CustomField> customFieldsInProject = new ArrayList<>();
             customFieldsInProject.add(kapasiteAbapCf);
             customFieldsInProject.add(kapasiteSapCf);

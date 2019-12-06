@@ -212,10 +212,7 @@ Released under the MIT license: http://jsbin.mit-license.org
         <div class="aui-help aui-help-empty-state">
             <div class="aui-help-content">
                 <h1>Proje Önceliklendirme</h1>
-                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
-                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
-                <h1>!!! TEST içindir,kullanmayınız !!!</h1>
-##                <p>Projeleri sürekle-bırak yöntemi ile istediğiniz sıraya taşıyınız. Önceliklendirme bittikten sonra kaydet tuşuna basınız.</p>
+                <p>Projeleri sürekle-bırak yöntemi ile istediğiniz sıraya taşıyınız. Önceliklendirme bittikten sonra kaydet tuşuna basınız.</p>
             </div>
         </div>
     </div>
@@ -266,8 +263,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                     <td><a href="$baseUrl/browse/$issue.getKey()" class="issueKey">$issue.getKey()</a></td>
                     <td style="font-weight:bold">$issue.getSummary()</td>
                     <td>$issue.getDescription()</td>
-                    <td><aui-badge class="gmyPriority">#if( $issue.getCustomFieldValue($gmyOncelikCF) )$issue.getCustomFieldValue($gmyOncelikCF).intValue()#else - #end</aui-badge></td>
-                    <td><aui-badge class="birimOncelik">#if( $issue.getCustomFieldValue($birimOncelikCF) )$issue.getCustomFieldValue($birimOncelikCF).intValue()#else - #end</aui-badge></td>
+                    <td><aui-badge class="gmyPriority">#if(  $issue.getCustomFieldValue($gmyOncelikCF  ))$issue.getCustomFieldValue($gmyOncelikCF  ).intValue()#else - #end</aui-badge></td>
+                    <td><aui-badge class="birimOncelik">#if( $issue.getCustomFieldValue($birimOncelikCF))$issue.getCustomFieldValue($birimOncelikCF).intValue()#else - #end</aui-badge></td>
                     #foreach($cf in $customFieldsInProject)
                         <td style="display:none;" class="$cf.getId()">-</td>
                     #end
