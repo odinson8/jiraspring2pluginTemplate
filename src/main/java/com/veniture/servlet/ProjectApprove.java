@@ -141,7 +141,7 @@ public class ProjectApprove extends HttpServlet {
             List<IssueWithCF> issuesWithCF= new ArrayList<>();
 
             SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
-            List<CustomField> customFieldsInProject = new JiraUtilClasses.gi().invoke();
+            List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInProjectContext().invoke();
             //List<CustomField> customFieldsInProject = new ArrayList<>();
             customFieldsInProject.add(kapasiteAbapCf);
             customFieldsInProject.add(kapasiteSapCf);
@@ -162,7 +162,9 @@ public class ProjectApprove extends HttpServlet {
             }
 
               context.put("issuesWithCF",issuesWithCF);
-              context.put("customFields", customFieldsInProject);
+              context.put("customFieldsInProject", customFieldsInProject);
+              context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
+
 //            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
 //            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
 //            context.put("gerekliAbapEforCf", gerekliAbapEforCf);

@@ -74,8 +74,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     );
                 };
 
-            ## apply_footer($kapasiteSap, 3);
-            ## apply_footer($kapasiteAbap, 2);
+             apply_footer(123, 3);
+             apply_footer(123, 2);
 
             };
 
@@ -86,12 +86,74 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 }
             });
 
+            table.on( 'select', function ( e, dt, type, indexes ) {
+                if ( type === 'row' ) {
+                    //var data = table.rows( indexes ).data().pluck( 'id' );
+                    displayFooter();
+                }
+            } );
+
             table.on('select.dt deselect.dt', function () {
                 // displayFooter();
                 // AJS.$('#projectsTable').dataTable().fnClearTable();
             });
 
             AJS.$("#select2").select2();
+
+            AJS.$("#customFieldList-select2").auiSelect2();
+            AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
+
+                //Header'ı göster
+                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
+
+                //custom Field td'leri çeker bu
+                var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]');
+
+                var issueKeys =[];
+                issueCFsectionInTable.each(function () {
+
+                    //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
+                    var issueKey=AJS.$(this).parent().children().first().children().first().prop( "innerHTML" );
+                    issueKeys.push(issueKey);
+                    AJS.$(this).show();
+                });
+
+                console.log("asd");
+                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
+                //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
+                var array=cfValues.split(",,,");
+                for(var i = 0; i < array.length; i++) {
+                    issueCFsectionInTable[i].innerHTML=array[i];
+                }
+            });
+            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
+                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
+                AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
+            });
+
+            function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
+                var value="-";
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
+                    type: 'POST',
+                    data: {
+                        issueKey: issueKeys,
+                        customFieldId: customfieldId
+                    },
+                    async: false,
+                    beforeSend: function () {
+                    },
+                    error : function (response) {
+                        value= "-";
+                    },
+                    success: function (response, status, jqXHR) {
+                        console.log("getCfValueFromIssue complete");
+                        value= response;
+                    }
+                });
+                return value;
+            }
+
 
             /*            AJS.$("#customFieldList-select2").select2({
                             maximumSelectionLength: 6
@@ -235,6 +297,20 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                        </form>
 ##                    </div>
 ##                </div>
+
+    <div class="aui-group">
+        <div class="aui-item" id="#select2-customFields">
+            <form class="aui">
+                <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
+                    <option></option>
+                    #foreach($cf in $customFieldsInProject)
+                        <option value="$cf.getId()">$cf.getFieldName()</option>
+                    #end
+                </select>
+            </form>
+        </div>
+    </div>
+
     <div class="aui-group">
         <div class="aui-item" id="issueTableDiv">
             <table id="projectsTable" class="display nowrap" width="100%">
@@ -242,12 +318,23 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
+                    <th style="text-align: left;">123</th>
+                    <th style="text-align: left;">123</th>
+                    #foreach($cf in $customFieldsInProject)
+                        <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
+                    #end
                 </tr>
+
                 </thead>
                 <tfoot>
                 <tr>
                     <th></th>
                     <th>Total</th>
+                    <th style="text-align: left;">123</th>
+                    <th style="text-align: left;">123</th>
+                    #foreach($cf in $customFieldsInProject)
+                        <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
+                    #end
                 </tr>
                 </tfoot>
 
@@ -255,9 +342,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #foreach( $IssueWithCF in $issuesWithCF )
                     <tr>
                         #set ($issue=$IssueWithCF.getIssue())
-                        <td><a href="https://jira.veniture.tk/browse/$issue.getKey()">$issue.getKey()</a></td>
+                        <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
-##                        #foreach( $cfWithValue in $IssueWithCF.getCustomFieldListWithValues())
+                        <td style="text-align: left;">123</td>
+                        <td style="text-align: left;">123</td>
+                        #foreach($cf in $customFieldsInProject)
+                            <td style="display:none;" class="$cf.getId()">-</td>
+                        #end
+
+                    ##                        #foreach( $cfWithValue in $IssueWithCF.getCustomFieldListWithValues())
 ##                            #set ($cfValue=$cfWithValue.getValue())
 ##                            <td style="max-width: 199px; word-wrap: break-word;">$cfValue</td>
 ##                        #end

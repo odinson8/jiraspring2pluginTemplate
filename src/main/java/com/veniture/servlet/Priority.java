@@ -51,7 +51,7 @@ public class Priority extends HttpServlet {
     public static JiraAuthenticationContext authenticationContext;
     private String restriction;
 
-    private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
+    private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/berk.vm";
 
     public Priority(   SearchService searchService,
                        TemplateRenderer templateRenderer,

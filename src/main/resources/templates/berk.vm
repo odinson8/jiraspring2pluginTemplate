@@ -1,0 +1,244 @@
+<!--
+Written by Veniture
+
+TODO
+İssue Link olsun
+-->
+$webResourceManager.requireResources("com.veniture.PortfolioManagement:PortfolioManagement-resources")
+
+
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2019 by venITure
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<html>
+<head>
+
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <link href="https://nightly.datatables.net/select/css/select.dataTables.css?_=9a6592f8d74f8f520ff7b22342fa1183.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/select/js/dataTables.select.js?_=9a6592f8d74f8f520ff7b22342fa1183"></script>
+<!-- Latest compiled and minified CSS-->
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/table-to-json@0.13.0/lib/jquery.tabletojson.min.js" integrity="sha256-AqDz23QC5g2yyhRaZcEGhMMZwQnp8fC6sCZpf+e7pnw=" crossorigin="anonymous"></script>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>-->
+
+    <meta charset="utf-8">
+    <title>Onay</title>
+
+    <meta name="decorator" content="atl.general">
+    <style id="css">
+        #content {
+            margin: 12px;
+        }
+
+
+        #loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loading-spinner aui-spinner {
+            margin: 1em;
+        }
+        th {
+            text-align: left;
+        }
+
+        .custom-card-style {
+            border-radius: 3px;
+            box-shadow:
+                    0 1px 1px rgba(9, 30, 66, 0.25),
+                    0 0 1px 0 rgba(9, 30, 66, 0.31);
+            margin: 0 auto;
+            padding: 10px;
+            width: 20em;
+        }
+
+        td {
+            min-width:15px;
+            max-width:550px;
+        }
+
+        .swal2-popup {
+            font-size: 1.2rem !important;
+        }
+    </style>
+
+    <script>
+        AJS.$(document).ready(function () {
+
+            AJS.$("#loading-spinner").hide();
+            AJS.$("#customFieldList-select2").auiSelect2();
+            AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
+
+                //Header'ı göster
+                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
+
+                //custom Field td'leri çeker bu
+                var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]');
+
+                var issueKeys =[];
+                issueCFsectionInTable.each(function () {
+
+                    //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
+                    var issueKey=AJS.$(this).parent().children().first().children().first().prop( "innerHTML" );
+                    issueKeys.push(issueKey);
+                    AJS.$(this).show();
+                });
+
+                console.log("asd");
+                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
+                //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
+                var array=cfValues.split(",,,");
+                for(var i = 0; i < array.length; i++) {
+                    issueCFsectionInTable[i].innerHTML=array[i];
+                }
+            });
+            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
+                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
+                AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
+            });
+            function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
+                var value="-";
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
+                    type: 'POST',
+                    data: {
+                        issueKey: issueKeys,
+                        customFieldId: customfieldId
+                    },
+                    async: false,
+                    beforeSend: function () {
+                        AJS.$("#loading-spinner").show();
+                    },
+                    error : function (response) {
+                        value= "-";
+                        AJS.$("#loading-spinner").hide();
+                    },
+                    success: function (response, status, jqXHR) {
+                        console.log("getCfValueFromIssue complete");
+                        AJS.$("#loading-spinner").hide();
+                        value= response;
+                    }
+                });
+                return value;
+            }
+
+             var table;
+             displayFooter = function () {
+                 table = AJS.$('#projectsTable').DataTable();
+
+                 // Total over all pages
+                 var intVal = function (i) {
+                     return typeof i === 'undefined' ? 0 : i * 1;
+                 };
+
+                 var totalize_selected = function (col) {
+                     var data = table.cells('.selected', col).data();
+                     if (typeof data != 'undefined') {
+                         return data
+                                 .reduce(function (a, b) {
+                                             return intVal(a) + intVal(b);
+                                         },
+                                         0);
+                     } else {
+                         return 0;
+                     }
+                 };
+                 var apply_footer = function (kapasite, col) {
+                     AJS.$(table.column(col).footer()).html(
+                             ' ' + (kapasite - totalize_selected(col))
+                     );
+                 };
+
+             apply_footer(222, 3);
+             apply_footer(223, 2);
+
+             };
+
+             table = AJS.$('#projectsTable').DataTable({
+                 select: true,
+                 footerCallback: function (row, data, start, end, display) {
+                     displayFooter();
+                 }
+             });
+
+        });
+    </script>
+</head>
+<body>
+    <div class="aui-group">
+        <div class="aui-help aui-help-empty-state">
+            <div class="aui-help-content">
+                <h1>Proje Onay</h1>
+                <p>Projeleri onayla.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="aui-group">
+        <div class="aui-item" id="#select2-customFields">
+            <form class="aui">
+                <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
+                    <option></option>
+                    #foreach($cf in $customFieldsInProject)
+                        <option value="$cf.getId()">$cf.getFieldName()</option>
+                    #end
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="aui-group">
+        <div id="loading-spinner" class="custom-card-style">
+            <p>Loading results...</p>
+            <aui-spinner size="large"></aui-spinner>
+        </div>
+    </div>
+    <div class="aui-group" id="buttons">
+        <button class="aui-button aui-button-primary" id="kaydetButton">Kaydet</button>
+##      <button class="aui-button aui-button-primary" id="hide">hide</button>
+##      <button class="aui-button aui-button-primary" id="show">show</button>
+    </div>
+
+    <div class="aui-group list-group" id="tableDiv">
+        <table id="projectsTable" class="aui aui-table-sortable" width="100%">
+            <thead>
+                <tr>
+                    <th class="aui-table-column-issue-key" data-override="key"         >Issue key</th>
+                    <th data-override="Summary"     >Özet</th>
+                    <th data-override="Description" >Açıklama</th>
+                    <th data-override="GM"          >Grup/GMY Önceliği</th>
+                    <th data-override="DP"          >Birim Önceliği</th>
+                    #foreach($cf in $customFieldsInProject)
+                        <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
+                    #end
+                <tr>
+            </thead>
+            <tbody id="tableBody">
+                #foreach( $issue in $issues )
+                <tr>
+                    <td><a href="$baseUrl/browse/$issue.getKey()" class="issueKey">$issue.getKey()</a></td>
+                    <td style="font-weight:bold">$issue.getSummary()</td>
+                    <td>$issue.getDescription()</td>
+                    <td><aui-badge class="gmyPriority">#if(  $issue.getCustomFieldValue($gmyOncelikCF  ))$issue.getCustomFieldValue($gmyOncelikCF  ).intValue()#else - #end</aui-badge></td>
+                    <td><aui-badge class="birimOncelik">#if( $issue.getCustomFieldValue($birimOncelikCF))$issue.getCustomFieldValue($birimOncelikCF).intValue()#else - #end</aui-badge></td>
+                    #foreach($cf in $customFieldsInProject)
+                        <td style="display:none;" class="$cf.getId()">-</td>
+                    #end
+                </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
