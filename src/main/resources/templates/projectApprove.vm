@@ -80,7 +80,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             };
 
             table = AJS.$('#projectsTable').DataTable({
+                "paging": false,
+                "ordering": false,
                 select: true,
+                // "columnDefs": [
+                //     { "orderable": true, "targets": [0, 2, 3,] }
+                // ],
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
@@ -105,33 +110,45 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 //Header'ı göster
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
+                // Get the column API object
+                console.log("asd");
+                // var column = table.column('.' + e.val);
+                //
+                // // Toggle the visibility
+                // column.visible( ! column.visible() );
 
+                updateCustomFieldTableDatas(e);
+                displayFooter();
+
+
+            });
+
+            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
+                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
+                AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
+            });
+
+            function updateCustomFieldTableDatas(e){
                 //custom Field td'leri çeker bu
                 var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]');
-
                 var issueKeys =[];
                 issueCFsectionInTable.each(function () {
-
                     //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
                     var issueKey=AJS.$(this).parent().children().first().children().first().prop( "innerHTML" );
                     issueKeys.push(issueKey);
                     AJS.$(this).show();
                 });
 
-                console.log("asd");
                 var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
                 //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
                 var array=cfValues.split(",,,");
                 for(var i = 0; i < array.length; i++) {
                     issueCFsectionInTable[i].innerHTML=array[i];
                 }
-            });
-            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
-                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
-                AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
-            });
+            }
 
-            function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
+
+                function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
                 var value="-";
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
@@ -313,23 +330,22 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
     <div class="aui-group">
         <div class="aui-item" id="issueTableDiv">
-            <table id="projectsTable" class="display nowrap" width="100%">
+            <table id="projectsTable" class="aui-table-sortable display nowrap" width="100%">
                 <thead>
                 <tr>
                     <th style="text-align: left;">Key</th>
-                    <th style="text-align: left;">Summary</th>
+                    <th class="aui-table-column-unsortable" style="text-align: left;">Summary</th>
                     <th style="text-align: left;">123</th>
                     <th style="text-align: left;">123</th>
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
                     #end
                 </tr>
-
                 </thead>
                 <tfoot>
                 <tr>
                     <th></th>
-                    <th>Total</th>
+                    <th class="aui-table-column-unsortable">Total</th>
                     <th style="text-align: left;">123</th>
                     <th style="text-align: left;">123</th>
                     #foreach($cf in $customFieldsInProject)
