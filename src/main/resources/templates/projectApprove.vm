@@ -28,7 +28,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         }
     </style>
 
-    <meta name="decorator" content="atl.general">
     <script>
         AJS.$(document).ready(function() {
 
@@ -74,13 +73,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     );
                 };
 
-             apply_footer(123, 3);
-             apply_footer(123, 2);
+                apply_footer(123, 3);
+                apply_footer(123, 2);
 
             };
 
             table = AJS.$('#projectsTable').DataTable({
-                "paging": false,
                 "ordering": false,
                 select: true,
                 // "columnDefs": [
@@ -88,6 +86,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // ],
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
+                },
+                "drawCallback": function( settings ) {
+                    onpageSwitch();
                 }
             });
 
@@ -111,16 +112,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 //Header'ı göster
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
                 // Get the column API object
-                console.log("asd");
                 // var column = table.column('.' + e.val);
                 //
                 // // Toggle the visibility
                 // column.visible( ! column.visible() );
 
-                updateCustomFieldTableDatas(e);
+                updateCustomFieldTableDatas(e.val);
                 displayFooter();
-
-
             });
 
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
@@ -128,27 +126,36 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
             });
 
-            function updateCustomFieldTableDatas(e){
+            function onpageSwitch(){
+                var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
+                dinamikEklenenlerTableHeaderlar.each(function () {
+                    var cfId=AJS.$(this).attr("data-override");
+                    updateCustomFieldTableDatas(cfId);
+                });
+            }
+
+                function updateCustomFieldTableDatas(cfId){
                 //custom Field td'leri çeker bu
-                var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]');
+                var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+cfId+'"]');
                 var issueKeys =[];
                 issueCFsectionInTable.each(function () {
                     //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
-                    var issueKey=AJS.$(this).parent().children().first().children().first().prop( "innerHTML" );
+                    var issueKey=AJS.$(this).parent().children().first().children().first().prop("innerHTML");
                     issueKeys.push(issueKey);
                     AJS.$(this).show();
                 });
 
-                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
+                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),cfId);
                 //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
                 var array=cfValues.split(",,,");
                 for(var i = 0; i < array.length; i++) {
                     issueCFsectionInTable[i].innerHTML=array[i];
+                    AJS.$(issueCFsectionInTable[i]).show();
                 }
             }
 
 
-                function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
+            function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
                 var value="-";
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
@@ -267,6 +274,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             })
         });
     </script>
+    <meta name="decorator" content="atl.general">
 </head>
 
 <body id="jira>
@@ -330,26 +338,26 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
     <div class="aui-group">
         <div class="aui-item" id="issueTableDiv">
-            <table id="projectsTable" class="aui-table-sortable display nowrap" width="100%">
+            <table id="projectsTable" class=" display nowrap" width="100%">
                 <thead>
                 <tr>
                     <th style="text-align: left;">Key</th>
-                    <th class="aui-table-column-unsortable" style="text-align: left;">Summary</th>
+                    <th style="text-align: left;">Summary</th>
                     <th style="text-align: left;">123</th>
                     <th style="text-align: left;">123</th>
                     #foreach($cf in $customFieldsInProject)
-                        <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
+                        <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th></th>
-                    <th class="aui-table-column-unsortable">Total</th>
+                    <th>Total</th>
                     <th style="text-align: left;">123</th>
                     <th style="text-align: left;">123</th>
                     #foreach($cf in $customFieldsInProject)
-                        <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
+                        <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
                 </tr>
                 </tfoot>
@@ -358,6 +366,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #foreach( $IssueWithCF in $issuesWithCF )
                     <tr>
                         #set ($issue=$IssueWithCF.getIssue())
+##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
                         <td style="text-align: left;">123</td>
