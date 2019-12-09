@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
+    private static final Gson GSON = new Gson();
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
@@ -27,11 +28,17 @@ public class RemoteSearcher {
     }
 
     public List<Integer> getAllTeamIds() throws URIException {
-        Gson gson = new Gson();
         Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
-        List<Team> tempoTeamData = gson.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
-        List<Integer> ids = tempoTeamData.stream().map(x -> x.getId()).collect(Collectors.toList());
+        List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
+        List<Integer> ids = tempoTeamData.stream().map(Team::getId).collect(Collectors.toList());
         return ids;
+    }
+
+    public List<Team> getAllTeams() throws URIException {
+        Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
+        List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
+      //  List<String> names = tempoTeamData.stream().map(Team::getName).collect(Collectors.toList());
+        return tempoTeamData;
     }
 
     public String getResponseString(String Query) throws URIException {

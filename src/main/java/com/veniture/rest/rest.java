@@ -123,7 +123,8 @@ public class rest {
     @Path("/test2")
     public String getAllTeamIdsFromTempo() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-        return remoteSearcher.getAllTeamIds().toString();
+       // return remoteSearcher.getAllTeamNames().toString();
+        return "remoteSearcher";
         //remoteSearcher.getResponseString();
         //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }

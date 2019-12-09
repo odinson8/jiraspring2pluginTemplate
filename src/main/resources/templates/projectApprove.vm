@@ -73,9 +73,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     );
                 };
 
-                apply_footer(123, 3);
-                apply_footer(123, 2);
-
+                table.columns('th[class*="takımlar"]').indexes().each(function (e) {
+                    apply_footer(123, e);
+                });
             };
 
             table = AJS.$('#projectsTable').DataTable({
@@ -127,6 +127,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             });
 
             function onpageSwitch(){
+
                 var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
                 dinamikEklenenlerTableHeaderlar.each(function () {
                     var cfId=AJS.$(this).attr("data-override");
@@ -343,8 +344,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
-                    <th style="text-align: left;">123</th>
-                    <th style="text-align: left;">123</th>
+                    #foreach($team in $teams)
+                        <th class="takımlar" >$team.getName()</th>
+                    #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
@@ -354,8 +356,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th></th>
                     <th>Total</th>
-                    <th style="text-align: left;">123</th>
-                    <th style="text-align: left;">123</th>
+                    #foreach($team in $teams)
+                        <th class="takımlar" >$team.getName()</th>
+                    #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
@@ -369,8 +372,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
-                        <td style="text-align: left;">123</td>
-                        <td style="text-align: left;">123</td>
+                        #foreach($team in $teams)
+                            <td class="takımlar">10</td>
+                        #end
                         #foreach($cf in $customFieldsInProject)
                             <td style="display:none;" class="$cf.getId()">-</td>
                         #end
