@@ -9,13 +9,13 @@ public class Footer {
 
     @SerializedName("columns")
     @Expose
-    private List<AvailabilityInfos2> columns = null;
+    private List<FooterTotalAvailabilityInfos> columns = null;
 
-    public List<AvailabilityInfos2> getColumns() {
+    public List<FooterTotalAvailabilityInfos> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<AvailabilityInfos2> columns) {
+    public void setColumns(List<FooterTotalAvailabilityInfos> columns) {
         this.columns = columns;
     }
 

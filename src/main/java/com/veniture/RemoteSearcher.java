@@ -6,12 +6,14 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
+import com.veniture.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
 import com.veniture.pojo.TempoPlanner.IssueTableData;
 import com.veniture.pojo.TempoTeams.Team;
 import org.apache.commons.httpclient.URIException;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RemoteSearcher {
@@ -22,9 +24,11 @@ public class RemoteSearcher {
         this.requestFactory = requestFactory;
     }
 
-    public IssueTableData getProjectTableData() throws URIException {
+    public Double getTotalRemainingTimeInYearForTeam() throws URIException {
         Gson gson = new Gson();
-        return gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY), IssueTableData.class);
+        List<FooterTotalAvailabilityInfos> totals = gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR), IssueTableData.class).getFooter().getColumns();
+        Double totalRemaining= totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
+        return totalRemaining;
     }
 
     public List<Integer> getAllTeamIds() throws URIException {

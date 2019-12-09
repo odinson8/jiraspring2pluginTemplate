@@ -116,15 +116,17 @@ public class rest {
     @GET
     @Path("/test")
     public String test(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
-        getAllTeamIdsFromTempo();
+       // getAllTeamIdsFromTempo();
         return "sda";
     }
     @GET
     @Path("/test2")
-    public String getAllTeamIdsFromTempo() throws URIException {
+    public String test2() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
        // return remoteSearcher.getAllTeamNames().toString();
-        return "remoteSearcher";
+
+        //burada kaldım test
+        return remoteSearcher.getTotalRemainingTimeInYearForTeam().toString();
         //remoteSearcher.getResponseString();
         //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }

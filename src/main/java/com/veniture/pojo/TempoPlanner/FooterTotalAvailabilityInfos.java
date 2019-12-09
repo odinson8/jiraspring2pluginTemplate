@@ -4,7 +4,7 @@ package com.veniture.pojo.TempoPlanner;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AvailabilityInfos2 {
+public class FooterTotalAvailabilityInfos {
 
     @SerializedName("allocated")
     @Expose

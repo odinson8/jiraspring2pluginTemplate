@@ -345,7 +345,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
                     #foreach($team in $teams)
-                        <th class="takımlar" >$team.getName()</th>
+                        <th class="takımlar">$team.getName()</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
