@@ -18,6 +18,7 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
+import com.veniture.rest.rest;
 import com.veniture.util.JiraUtilClasses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +34,15 @@ import java.util.Optional;
 
 @Scanned
 public class Priority extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(Priority.class);
 
-    @JiraImport
-    private IssueService issueService;
-    @JiraImport
-    private ProjectService projectService;
-    @JiraImport
-    private ConstantsManager constantsManager;
-    @JiraImport
-    private RequestFactory requestFactory;
+//    @JiraImport
+//    private IssueService issueService;
+//    @JiraImport
+//    private ProjectService projectService;
+//    @JiraImport
+//    private ConstantsManager constantsManager;
+//    @JiraImport
+//    private RequestFactory requestFactory;
     @JiraImport
     public static SearchService searchService;
     @JiraImport
@@ -50,6 +50,7 @@ public class Priority extends HttpServlet {
     @JiraImport
     public static JiraAuthenticationContext authenticationContext;
     private String restriction;
+    private static final Logger logger = LoggerFactory.getLogger(Priority.class);// The transition ID
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
 
@@ -86,7 +87,7 @@ public class Priority extends HttpServlet {
             context.put("gmyOncelikCF",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.GMY_ONCELIK_STRING));
 
         } catch (JqlParseException | SearchException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
         resp.setContentType("text/html;charset=utf-8");

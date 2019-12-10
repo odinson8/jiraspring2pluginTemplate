@@ -6,14 +6,13 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
-import com.veniture.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
-import com.veniture.pojo.TempoPlanner.IssueTableData;
-import com.veniture.pojo.TempoTeams.Team;
+import model.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
+import model.pojo.TempoPlanner.IssueTableData;
+import model.pojo.TempoTeams.Team;
 import org.apache.commons.httpclient.URIException;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RemoteSearcher {

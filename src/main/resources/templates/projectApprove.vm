@@ -286,31 +286,36 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         <header class="aui-page-header">
             <div class="aui-page-header-inner">
                 <div class="aui-page-header-image">
-                                    <span class="aui-avatar aui-avatar-large aui-avatar-project">
-                                        <span class="aui-avatar-inner">
-                                            <img alt="FLO project" src="https://www.flo.com.tr/pub/assets/flo/img/logo.svg">
-                                        </span>
-                                    </span>
+                    <span class="aui-avatar aui-avatar-large aui-avatar-project">
+                        <span class="aui-avatar-inner">
+                            <img alt="FLO project" src="https://www.flo.com.tr/pub/assets/flo/img/logo.svg">
+                        </span>
+                    </span>
                 </div>
                 <div class="aui-page-header-main">
-                    <h1>Project Approval</h1>
-##                    <h1>!!! TEST içindir,kullanmayınız !!!</h1>
+                    <div class="aui-help aui-help-empty-state">
+                        <div class="aui-help-content">
+                            <h1>Proje Onaylama</h1>
+                            <p>Projeleri seçiniz ve onayla butonuna basınız. Birden fazla proje seçmek için CTRL tuşuna basılı tutun.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
     </div>
-    <div class="aui-group">
-        <div class="aui-item" id="jqlFilter">
-            <form class="aui">
-                <select id="select2" data-placeholder="Select a filter" style="width: 60%">
-                    <option></option>
-                    <option value="PLANLAMA">PLANLAMA</option>
-                    <option value="SATISARTTIRAN">SATISARTTIRAN</option>
-                    <option value="WFA">WFA</option>
-                </select>
-            </form>
-        </div>
-    </div>
+
+##    <div class="aui-group">
+##        <div class="aui-item" id="jqlFilter">
+##            <form class="aui">
+##                <select id="select2" data-placeholder="Select a filter" style="width: 60%">
+##                    <option></option>
+##                    <option value="PLANLAMA">PLANLAMA</option>
+##                    <option value="SATISARTTIRAN">SATISARTTIRAN</option>
+##                    <option value="WFA">WFA</option>
+##                </select>
+##            </form>
+##        </div>
+##    </div>
 
 ##                <div class="aui-group">
 ##                    <div class="aui-item" id="customFieldList">
@@ -388,8 +393,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #end
                 </tbody>
             </table>
-            <button class="aui-button aui-button-primary" id="ApproveButton">Approve Selected Issues</button>
-            <button class="aui-button" id="DeclineButton">Decline Selected Issues</button>
+            <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
+            <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 
-package com.veniture.pojo.TempoPlanner;
+package model.pojo.TempoPlanner;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

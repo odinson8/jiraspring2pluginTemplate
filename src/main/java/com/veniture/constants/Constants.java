@@ -15,10 +15,11 @@ public class Constants {
     public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=2019-01-02&to=2020-01-02&period=P3m";
 
     //Veniture Jira - Prod Yeni Ortam
-    public static final String departmanJQL ="project =PF and cf[11507] =currentUser()";
-    public static final String gmyJQL ="project =PF and \"İlgili GMY\"=currentUser()";
-    //public static final String TEST_SORGUSU = "project = PF AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\" ORDER BY \"Birim Önceliği\"";
-    public static final String TEST_SORGUSU = "project = PF ORDER BY \"Birim Önceliği\"";
+    public static final String ProjectId = "PF";
+    public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser()";
+    public static final String gmyJQL ="project ="+ProjectId+" and \"İlgili GMY\"=currentUser()";
+    //public static final String TEST_SORGUSU = "project = " + ProjectId + " AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\" ORDER BY \"Birim Önceliği\"";
+    public static final String TEST_SORGUSU = "project = "+ProjectId+" ORDER BY \"Birim Önceliği\"";
     public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
     public static final long onceliklendirildiMiId = 11500L;
     public static final long BIRIM_ONCELIK_ID = 11403L;

@@ -5,7 +5,6 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
@@ -21,7 +20,7 @@ import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
-import com.veniture.pojo.TempoTeams.Team;
+import model.pojo.TempoTeams.Team;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
@@ -41,7 +40,6 @@ import static com.veniture.util.functions.getCustomFieldsInProject;
 
 @Scanned
 public class ProjectApprove extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(ProjectApprove.class);
 
     @JiraImport
     private IssueService issueService;
@@ -60,6 +58,7 @@ public class ProjectApprove extends HttpServlet {
     String action;
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
+    private static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);// The transition ID
 
     public ProjectApprove(IssueService issueService, ProjectService projectService,
                           SearchService searchService,
@@ -84,7 +83,7 @@ public class ProjectApprove extends HttpServlet {
             context = createContext();
         }
         catch (Exception e) {
-
+            logger.error(e.getMessage());
         }
         resp.setContentType("text/html;charset=utf-8");
         templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
@@ -93,39 +92,47 @@ public class ProjectApprove extends HttpServlet {
     private Map<String, Object> createContext() throws JqlParseException, SearchException, URIException {
 
         Map<String, Object> context = new HashMap<String, Object>();
-        JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
 
-        CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
-//        CustomField kapasiteAbapCf = customFieldManager.getCustomFieldObject(kapasiteAbapCfId);
-//        CustomField kapasiteSapCf = customFieldManager.getCustomFieldObject(kapasiteSapCfId);
-//        CustomField gerekliAbapEforCf = customFieldManager.getCustomFieldObject(gerekliAbapEforCfId);
-//        CustomField gerekliSapEforCf = customFieldManager.getCustomFieldObject(gerekliSapEforCfId);
-        List<CustomField> projectCustomFields =  getCustomFieldsInProject("FP");
-
-        SearchResults<Issue> results = searchService.search(authenticationContext.getLoggedInUser(), jqlQueryParser.parseQuery(TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
+        SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(), ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
         List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInProjectContext().invoke();
-        context.put("issuesWithCF",getIssueWithCFS(results, customFieldsInProject));
+        List<Team> teams= getTeamsAndSetRemaining();
+        context.put("issuesWithCF",getIssueWithCFS(IssueResults, customFieldsInProject));
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
-        context.put("teams", getTeamsAndSetRemainings());
-        context.put("programs", getTeamsAndSetRemainings().stream().map(Team::getProgram).collect(Collectors.toSet()));
-
-//        try {
-//            context = addIssuesToTheContext(context,action, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        context.put("projectCFs",projectCustomFields);
+        context.put("teams", teams);
+//        context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
+        context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
     }
 
-    private List<Team> getTeamsAndSetRemainings() throws URIException {
+    private List<Team> getTeamsAndSetRemaining() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
         List<Team> teams=remoteSearcher.getAllTeams();
         for (Team team:teams){
             team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
         }
         return teams;
+    }
+
+    private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
+        List<IssueWithCF> issuesWithCF= new ArrayList<>();
+        for (Issue issue : results.getResults()){
+            Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
+            ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
+            for (CustomField customField:customFieldsInProject){
+                try{
+                    customFieldsWithValues.add(new CfWithValue(customField,issueFull.getCustomFieldValue(customField).toString()));
+                }
+                catch (Exception e){
+                    customFieldsWithValues.add(new CfWithValue(customField," "));
+                    logger.error(e.getMessage());
+
+                }
+            }
+            IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);
+            issuesWithCF.add(issueWithCF);
+        }
+        return issuesWithCF;
     }
 
     private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
@@ -171,24 +178,5 @@ public class ProjectApprove extends HttpServlet {
             e.printStackTrace();
             throw e;
         }
-    }
-
-    private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
-        List<IssueWithCF> issuesWithCF= new ArrayList<>();
-        for (Issue issue : results.getResults()){
-            Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
-            ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
-            for (CustomField customField:customFieldsInProject){
-                try{
-                    customFieldsWithValues.add(new CfWithValue(customField,issueFull.getCustomFieldValue(customField).toString()));
-                }
-                catch (Exception e){
-                    customFieldsWithValues.add(new CfWithValue(customField," "));
-                }
-            }
-            IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);
-            issuesWithCF.add(issueWithCF);
-        }
-        return issuesWithCF;
     }
 }

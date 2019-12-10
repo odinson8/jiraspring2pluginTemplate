@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.veniture.pojo.ProjectsDetails;
+import model.pojo.ProjectsDetails;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
 import org.apache.commons.httpclient.URIException;
@@ -115,20 +115,9 @@ public class rest {
 
     @GET
     @Path("/test")
-    public String test(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
-       // getAllTeamIdsFromTempo();
-        return "sda";
-    }
-    @GET
-    @Path("/test2")
-    public String test2() throws URIException {
+    public String test() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-       // return remoteSearcher.getAllTeamNames().toString();
-
-        //burada kaldım test
         return remoteSearcher.getTotalRemainingTimeInYearForTeam(7).toString();
-        //remoteSearcher.getResponseString();
-        //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }
 
     private JsonArray jsonString2JsonArray(String responseString) {
