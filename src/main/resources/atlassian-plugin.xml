@@ -31,18 +31,14 @@
     <description key="projectapprove-item-desc">Proje Onay</description>
     <label key="Proje Onay"/>
     <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link>
-<!--    <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition"/>-->
     <condition class="com.veniture.condition.webItemConditions" />
-
   </web-item>
 
   <web-item key="prioritization-webitem" name="Önceliklendirme" section="system.top.navigation.bar" weight="200">
     <description key="prioritization-item-desc">Önceliklendirme</description>
     <label key="Önceliklendirme"/>
     <link linkId="prioritization-item-link">/plugins/servlet/prioritization</link>
-<!--    <condition class="com.atlassian.jira.plugin.webfragment.conditions.IsAdminCondition"/>-->
     <condition class="com.veniture.condition.webItemConditions" />
-
   </web-item>
 
   <servlet name="Project Approve Servlet" key="projectapprove" class="com.veniture.servlet.ProjectApprove">

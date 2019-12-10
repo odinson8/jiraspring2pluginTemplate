@@ -384,11 +384,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         #foreach($cf in $customFieldsInProject)
                             <td style="display:none;" class="$cf.getId()">-</td>
                         #end
-
-                    ##                        #foreach( $cfWithValue in $IssueWithCF.getCustomFieldListWithValues())
-##                            #set ($cfValue=$cfWithValue.getValue())
-##                            <td style="max-width: 199px; word-wrap: break-word;">$cfValue</td>
-##                        #end
                     </tr>
                     #end
                 </tbody>

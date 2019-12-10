@@ -57,9 +57,9 @@ public class Priority extends HttpServlet {
     public Priority(   SearchService searchService,
                        TemplateRenderer templateRenderer,
                        JiraAuthenticationContext authenticationContext) {
-        Priority.searchService = searchService;
+        this.searchService = searchService;
         this.templateRenderer = templateRenderer;
-        Priority.authenticationContext = authenticationContext;
+        this.authenticationContext = authenticationContext;
     }
 
     @Override
@@ -71,7 +71,8 @@ public class Priority extends HttpServlet {
         try {
             if (restriction.equals("gmy")){
                 conditionQuery = jqlQueryParser.parseQuery(Constants.gmyJQL);
-            }  else if (restriction.equals("dp")) {
+            }
+            else if (restriction.equals("dp")) {
                 conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
             }
             else {conditionQuery = jqlQueryParser.parseQuery(Constants.TEST_SORGUSU);}
