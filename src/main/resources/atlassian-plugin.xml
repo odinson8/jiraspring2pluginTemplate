@@ -26,15 +26,19 @@
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>
+
   <web-item key="projectapprove-webitem" name="FLO" section="system.top.navigation.bar" weight="200"> 
     <description key="projectapprove-item-desc">projectapprove</description>  
-    <label key="projectapprove"/>  
-    <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link> 
-  </web-item>  
+    <label key="projectapprove"/>
+    <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link>
+<!--    <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition"/>-->
+  </web-item>
+
   <web-item key="prioritization-webitem" name="FLO" section="system.top.navigation.bar" weight="200"> 
     <description key="prioritization-item-desc">prioritization</description>  
     <label key="prioritization"/>  
-    <link linkId="prioritization-item-link">/plugins/servlet/prioritization</link> 
+    <link linkId="prioritization-item-link">/plugins/servlet/prioritization</link>
+<!--    <condition class="com.atlassian.jira.plugin.webfragment.conditions.IsAdminCondition"/>-->
   </web-item>
 
   <servlet name="Project Approve Servlet" key="projectapprove" class="com.veniture.servlet.ProjectApprove"> 
