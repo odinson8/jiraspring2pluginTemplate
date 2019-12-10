@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldsInProject;
@@ -94,7 +93,7 @@ public class ProjectApprove extends HttpServlet {
         Map<String, Object> context = new HashMap<String, Object>();
 
         SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(), ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
-        List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInProjectContext().invoke();
+        List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
         List<Team> teams= getTeamsAndSetRemaining();
         context.put("issuesWithCF",getIssueWithCFS(IssueResults, customFieldsInProject));
         context.put("customFieldsInProject", customFieldsInProject);

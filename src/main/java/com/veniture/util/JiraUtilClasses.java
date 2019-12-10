@@ -8,16 +8,13 @@ import com.atlassian.jira.issue.search.SearchContext;
 import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
-import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.veniture.constants.Constants;
-import com.veniture.servlet.Priority;
 
 import java.util.List;
 
 public class JiraUtilClasses {
 
-    public static class GetCustomFieldsInProjectContext {
+    public static class GetCustomFieldsInSearchContext {
 
         private JqlQueryParser jqlQueryParser= ComponentAccessor.getComponent(JqlQueryParser.class);
         private CustomFieldManager cfMgr=ComponentAccessor.getCustomFieldManager();

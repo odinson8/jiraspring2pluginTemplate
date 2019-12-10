@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.veniture.util.functions.*;
+
 
 @Path("/rest")
 public class rest {
@@ -80,7 +82,7 @@ public class rest {
         String[] issueKeys = issueKeysJoined.split(",");
         List<String> cfValues = new ArrayList<String>();
         for (String issueKey:issueKeys){
-            String cfValue= null;
+            String cfValue;
             try {
                 Issue issue= ISSUE_SERVICE.getIssue(CURRENT_USER,issueKey).getIssue();
                 if (customField.getCustomFieldType().getName().equals("User Picker (single user)")){
@@ -91,24 +93,24 @@ public class rest {
                 }
             } catch (Exception e) {
                 cfValue = "-";
-                e.printStackTrace();
+//              This means Could not get CF value for this CF
             }
             cfValues.add(cfValue);
         }
-        return String.join(",,,", cfValues); // "foo and bar and baz";
+        return String.join(",,,", cfValues);
     }
 
     @POST
     @Path("/setPriorityCfValuesInJira")
-    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException, IndexException {
+    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         String[] jsontableString = req.getParameterValues("jsontable");
         JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
         for (JsonElement jsonElement:tableAsJsonArray){
             ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
-            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
-            com.veniture.util.functions.updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
-            com.veniture.util.functions.updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+            updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+            updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
+            updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         return null;
     }
