@@ -41,9 +41,9 @@ public class rest {
     @JiraImport
     private ApplicationProperties applicationProperties;
     private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
-    public static final Gson GSON = new Gson();
-    public static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
-    public static final ApplicationUser CURRENT_USER = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+    private static final Gson GSON = new Gson();
+    private static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
+    private static final ApplicationUser CURRENT_USER = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
 
     public rest(RequestFactory requestFactory){
         this.requestFactory = requestFactory;
@@ -126,7 +126,7 @@ public class rest {
        // return remoteSearcher.getAllTeamNames().toString();
 
         //burada kaldım test
-        return remoteSearcher.getTotalRemainingTimeInYearForTeam().toString();
+        return remoteSearcher.getTotalRemainingTimeInYearForTeam(7).toString();
         //remoteSearcher.getResponseString();
         //Request request = requestFactory.createRequest(Request.MethodType.GET, getCurrentAppBaseUrl());
     }
@@ -154,5 +154,4 @@ public class rest {
             logger.error(result.getErrorCollection().toString());
         }
     }
-
 }

@@ -73,8 +73,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     );
                 };
 
-                table.columns('th[class*="takımlar"]').indexes().each(function (e) {
-                    apply_footer(123, e);
+                table.columns('th[class*="teams"]').indexes().each(function (e) {
+                    console.log("Footer Totals are updated for column: " + e);
+                    apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
                 });
             };
 
@@ -345,7 +346,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
                     #foreach($team in $teams)
-                        <th class="takımlar">$team.getName()</th>
+                        <th class="teams" remainingTime="$team.getRemainingInAYear()">$team.getName() ($team.getRemainingInAYear())</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
@@ -357,7 +358,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <th></th>
                     <th>Total</th>
                     #foreach($team in $teams)
-                        <th class="takımlar" >$team.getName()</th>
+                        <th class="teams" >$team.getName() $team.getRemainingInAYear()</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
@@ -373,7 +374,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
                         #foreach($team in $teams)
-                            <td class="takımlar">10</td>
+                            <td class="teams">10</td>
                         #end
                         #foreach($cf in $customFieldsInProject)
                             <td style="display:none;" class="$cf.getId()">-</td>

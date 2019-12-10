@@ -24,6 +24,17 @@ public class Team {
     @SerializedName("isPublic")
     @Expose
     private Boolean isPublic;
+    @SerializedName("RemaningInAYear")
+    @Expose
+    private Double RemainingInAYear;
+
+    public void setRemainingInAYear(Double RemainingInAYear) {
+        this.RemainingInAYear = RemainingInAYear;
+    }
+
+    public Double getRemainingInAYear() {
+        return RemainingInAYear;
+    }
 
     public Integer getId() {
         return id;

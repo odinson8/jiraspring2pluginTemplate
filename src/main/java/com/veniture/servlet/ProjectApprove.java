@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static com.veniture.constants.Constants.*;
@@ -108,8 +107,8 @@ public class ProjectApprove extends HttpServlet {
         context.put("issuesWithCF",getIssueWithCFS(results, customFieldsInProject));
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
-        context.put("teams",getTeams());
-        context.put("programs",getTeams().stream().map(Team::getProgram).collect(Collectors.toSet()));
+        context.put("teams", getTeamsAndSetRemainings());
+        context.put("programs", getTeamsAndSetRemainings().stream().map(Team::getProgram).collect(Collectors.toSet()));
 
 //        try {
 //            context = addIssuesToTheContext(context,action, jqlQueryParser, kapasiteAbapCf,kapasiteSapCf,gerekliAbapEforCf,gerekliSapEforCf);
@@ -120,9 +119,13 @@ public class ProjectApprove extends HttpServlet {
         return context;
     }
 
-    private List<Team> getTeams() throws URIException {
+    private List<Team> getTeamsAndSetRemainings() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-        return remoteSearcher.getAllTeams();
+        List<Team> teams=remoteSearcher.getAllTeams();
+        for (Team team:teams){
+            team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
+        }
+        return teams;
     }
 
     private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {

@@ -24,9 +24,9 @@ public class RemoteSearcher {
         this.requestFactory = requestFactory;
     }
 
-    public Double getTotalRemainingTimeInYearForTeam() throws URIException {
+    public Double getTotalRemainingTimeInYearForTeam(Integer teamId) throws URIException {
         Gson gson = new Gson();
-        List<FooterTotalAvailabilityInfos> totals = gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR), IssueTableData.class).getFooter().getColumns();
+        List<FooterTotalAvailabilityInfos> totals = gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
         Double totalRemaining= totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
         return totalRemaining;
     }
