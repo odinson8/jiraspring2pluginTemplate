@@ -5,6 +5,7 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
@@ -99,18 +100,40 @@ public class ProjectApprove extends HttpServlet {
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         context.put("teams", teams);
-//        context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
+        context = addEforCfs(context);
+    //        context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
         context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
+        return context;
+    }
+
+    private Map<String, Object> addEforCfs (Map<String, Object> context){
+        context.put("ABAPeforCf",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ABAPeforCfId));
+        context.put("ANeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ANeforCfId));
+        context.put("BIeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(BIeforCfId));
+        context.put("ECeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ECeforCfId));
+        context.put("NSeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(NSeforCfId));
+        context.put("OPeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(OPeforCfId));
+        context.put("PMOeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(PMOeforCfId));
+        context.put("SapModEforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(SapModEforCfId));
+        context.put("SDeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(SDeforCfId));
+        context.put("UDeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(UDeforCfId));
+        context.put("YGeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(YGeforCfId));
+
         return context;
     }
 
     private List<Team> getTeamsAndSetRemaining() throws URIException {
         RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
         List<Team> teams=remoteSearcher.getAllTeams();
+        List<Team> teams2 = new ArrayList<Team>();
         for (Team team:teams){
-            team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
+            if (!team.getName().contains("Team")){
+                //Gereksiz takimlar vardı onları silmek için yaptım
+                team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
+                teams2.add(team);
+            }
         }
-        return teams;
+        return teams2;
     }
 
     private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
@@ -125,7 +148,6 @@ public class ProjectApprove extends HttpServlet {
                 catch (Exception e){
                     customFieldsWithValues.add(new CfWithValue(customField," "));
                     logger.error(e.getMessage());
-
                 }
             }
             IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);

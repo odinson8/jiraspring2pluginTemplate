@@ -26,13 +26,13 @@ public class Team {
     private Boolean isPublic;
     @SerializedName("RemaningInAYear")
     @Expose
-    private Double RemainingInAYear;
+    private Integer RemainingInAYear;
 
-    public void setRemainingInAYear(Double RemainingInAYear) {
+    public void setRemainingInAYear(Integer RemainingInAYear) {
         this.RemainingInAYear = RemainingInAYear;
     }
 
-    public Double getRemainingInAYear() {
+    public Integer getRemainingInAYear() {
         return RemainingInAYear;
     }
 

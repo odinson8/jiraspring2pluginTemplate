@@ -81,6 +81,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             table = AJS.$('#projectsTable').DataTable({
                 "ordering": false,
+                "scrollX": true,
                 select: true,
                 // "columnDefs": [
                 //     { "orderable": true, "targets": [0, 2, 3,] }
@@ -297,6 +298,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <div class="aui-help-content">
                             <h1>Proje Onaylama</h1>
                             <p>Projeleri seçiniz ve onayla butonuna basınız. Birden fazla proje seçmek için CTRL tuşuna basılı tutun.</p>
+                            <p>Sonradan eklenen Özel Alanlar tablonun sağ tarafına eklenecektir.</p>
                         </div>
                     </div>
                 </div>
@@ -361,7 +363,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tfoot>
                 <tr>
                     <th></th>
-                    <th>Total</th>
+                    <th>Kalan</th>
                     #foreach($team in $teams)
                         <th class="teams" >$team.getName() $team.getRemainingInAYear()</th>
                     #end
@@ -370,7 +372,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #end
                 </tr>
                 </tfoot>
-
                 <tbody>
                     #foreach( $IssueWithCF in $issuesWithCF )
                     <tr>
@@ -378,9 +379,17 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
-                        #foreach($team in $teams)
-                            <td class="teams">10</td>
-                        #end
+                        <td class="teams">#if(  $issue.getCustomFieldValue($ABAPeforCf))$issue.getCustomFieldValue($ABAPeforCf).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($ANeforCfId))$issue.getCustomFieldValue($ANeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($BIeforCfId))$issue.getCustomFieldValue($BIeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($ECeforCfId))$issue.getCustomFieldValue($ECeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($NSeforCfId))$issue.getCustomFieldValue($NSeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($OPeforCfId))$issue.getCustomFieldValue($OPeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($PMOeforCfId))$issue.getCustomFieldValue($PMOeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($SapModEforCfId))$issue.getCustomFieldValue($SapModEforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($SDeforCfId))$issue.getCustomFieldValue($SDeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($UDeforCfId))$issue.getCustomFieldValue($UDeforCfId).intValue()#else - #end</td>
+                        <td class="teams">#if(  $issue.getCustomFieldValue($YGeforCfId))$issue.getCustomFieldValue($YGeforCfId).intValue()#else - #end</td>
                         #foreach($cf in $customFieldsInProject)
                             <td style="display:none;" class="$cf.getId()">-</td>
                         #end

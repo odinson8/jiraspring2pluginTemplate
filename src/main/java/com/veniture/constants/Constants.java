@@ -9,6 +9,11 @@ public class Constants {
     public enum Environments {
         VenitureJira, FloProd, FloTest
     }
+
+    public static final String adminUsername = "venitureAdm";
+    public static final String adminPassword = "asd123";
+    public static final String hostname = "dev.veniture.tk";
+
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
@@ -32,11 +37,20 @@ public class Constants {
     public static final String PLANLAMA = "project = FP AND issuetype = \"Project Card\" AND Departman = Planlama OR project = FP AND issuetype = \"Project Card\" AND Etiket = \"Satışı Arttıran\"";
     public static final String SATISARTTIRAN ="project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\" AND Etiket = \"Satışı Arttıran\"";
     public static final String PROJECTCARDS ="project = FP AND issuetype = \"Project Card\"";
-    public static final String adminUsername = "berk.karabacak";
-    public static final String adminPassword = "asd";
-    public static final String hostname = "jira.veniture.tk";
     public static final Integer ApproveWorkflowTransitionId = 181;
     public static final Integer DeclineWorkflowTransitionId = 201;
+
+    public static final long ABAPeforCfId       = 11605L;
+    public static final long ANeforCfId         = 11606L;
+    public static final long ECeforCfId         = 11614L;
+    public static final long NSeforCfId         = 11611L;
+    public static final long OPeforCfId         = 11613L;
+    public static final long PMOeforCfId        = 11609L;
+    public static final long SapModEforCfId     = 11604L;
+    public static final long SDeforCfId         = 11610L;
+    public static final long UDeforCfId         = 11612L;
+    public static final long YGeforCfId         = 11606L;
+    public static final long BIeforCfId         = 11607L;
 
     public static final long kapasiteSapCfId = 10808L;
     public static final long kapasiteAbapCfId = 10815L;

@@ -4,6 +4,7 @@ import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.veniture.constants.Constants;
 import model.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
@@ -13,34 +14,38 @@ import org.apache.commons.httpclient.URIException;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
     }
 
-    public Double getTotalRemainingTimeInYearForTeam(Integer teamId) throws URIException {
-        Gson gson = new Gson();
-        List<FooterTotalAvailabilityInfos> totals = gson.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
-        Double totalRemaining= totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
-        return totalRemaining;
+    public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) throws URIException {
+        List<FooterTotalAvailabilityInfos> totals = GSON.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
+        Double totalRemaining= null;
+        try {
+            totalRemaining = totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
+        } catch (Exception e) {
+            //Buraya giriyorsa takımlarin kapasitesi set edilmemiştir demekttir, o halde kapasiteyi sıfır yap.
+            totalRemaining=0.0;
+        }
+        return totalRemaining.intValue();
     }
 
-    public List<Integer> getAllTeamIds() throws URIException {
-        Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
-        List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
-        List<Integer> ids = tempoTeamData.stream().map(Team::getId).collect(Collectors.toList());
-        return ids;
-    }
+//    public List<Integer> getAllTeamIds() throws URIException {
+//        Type tempoTeamDataType = new TypeToken<List<model.pojo.Team>>() {}.getType();
+//        List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
+//        List<Integer> ids = tempoTeamData.stream().map(model.pojo.Team::getId).collect(Collectors.toList());
+//        return ids;
+//    }
 
     public List<Team> getAllTeams() throws URIException {
         Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
         List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
-      //  List<String> names = tempoTeamData.stream().map(Team::getName).collect(Collectors.toList());
+        // List<String> names = tempoTeamData.stream().map(Team::getName).collect(Collectors.toList());
         return tempoTeamData;
     }
 
