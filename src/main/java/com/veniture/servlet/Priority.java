@@ -43,9 +43,8 @@ public class Priority extends HttpServlet {
     @JiraImport
     private TemplateRenderer templateRenderer;
     @JiraImport
-    public static JiraAuthenticationContext authenticationContext;
-    private String restriction;
-    private static final Logger logger = LoggerFactory.getLogger(Priority.class);// The transition ID
+    public  JiraAuthenticationContext authenticationContext;
+    private final Logger logger = LoggerFactory.getLogger(Priority.class);// The transition ID
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
 
@@ -60,7 +59,7 @@ public class Priority extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> context = new HashMap<String, Object>();
-        restriction = Optional.ofNullable(req.getParameter("restriction")).orElse("");
+        String restriction = Optional.ofNullable(req.getParameter("restriction")).orElse("");
         JqlQueryParser jqlQueryParser = ComponentAccessor.getComponent(JqlQueryParser.class);
         Query conditionQuery;
         try {
@@ -76,7 +75,7 @@ public class Priority extends HttpServlet {
 
             List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
             context.put("issues", results.getResults());
-            context.put("restriction",restriction);
+            context.put("restriction", restriction);
             context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
             context.put("customFieldsInProject",customFieldsInProject);
             context.put("birimOncelikCF",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.BIRIM_ONCELIK_ID_STRING));

@@ -96,54 +96,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 }
             });
 
-           // updatePriorities("$restriction");
-           // AJS.tablessortable.setTableSortable(AJS.$("#auiTable"));
-
-            function updatePriorities(restriction) {
-                var i = 0;
-                var tableBody = AJS.$('#tableBody > tr');
-                tableBody.each(function () {
-                    if (restriction === "gmy") {
-                        AJS.$(this).find(".gmyPriority").text(i + 1);
-                    } else if (restriction === "dp") {
-                        AJS.$(this).find(".birimOncelik").text(i + 1);
-                    }else {
-                        AJS.$(this).find(".birimOncelik").text(i + 1);
-                        AJS.$(this).find(".gmyPriority").text(i + 1);
-                    }
-                    i++;
-                });
-                console.log("Priorities are updated");
-            }
-
-            function updatePrioritiesInJIRA() {
-                var table = AJS.$('#auiTable').tableToJSON({
-                    ignoreEmptyRows : true,
-                    onlyColumns: [0,3,4]
-                    //Bu sıralama önemli
-                }); // Convert the table into a javascript object
-                console.log(JSON.stringify(table));
-
-                jQuery.ajax({
-                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/setPriorityCfValuesInJira",
-                    type: 'POST',
-                    data: {
-                        jsontable: JSON.stringify(table)
-                    },
-                    async: true,
-                    beforeSend: function () {
-                    },
-                    complete: function (response) {
-                    },
-                    error: function (response) {
-                        console.log("setPriorityCfValuesInJira has finished with ERROR !!!");
-                    },
-                    success: function (response, status, jqXHR) {
-                        console.log("setPriorityCfValuesInJira is successful");
-                    }
-                });
-            }
-
+            AJS.$("#customFieldList-select2").auiSelect2();
             AJS.$('#kaydetButton').off().on("click", function (e) {
                 updatePrioritiesInJIRA();
                 console.log("JIRA'da Öncelikler update edildi.")
@@ -159,7 +112,6 @@ Released under the MIT license: http://jsbin.mit-license.org
                     timer: 1900
                 })
             });
-
             AJS.$("#loading-spinner").hide();
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
 
@@ -186,7 +138,6 @@ Released under the MIT license: http://jsbin.mit-license.org
                     issueCFsectionInTable[i].innerHTML=array[i];
                 }
             });
-
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
                 AJS.$('#auiTable > thead  th[data-override*="'+e.val+'"]').hide();
                 AJS.$('#auiTable > tbody  tr td[class*="'+e.val+'"]').hide();
@@ -217,11 +168,54 @@ Released under the MIT license: http://jsbin.mit-license.org
                 });
                 return value;
             }
-            AJS.$("#customFieldList-select2").auiSelect2();
+            function updatePriorities(restriction) {
+                var i = 0;
+                var tableBody = AJS.$('#tableBody > tr');
+                tableBody.each(function () {
+                    if (restriction === "gmy") {
+                        AJS.$(this).find(".gmyPriority").text(i + 1);
+                    } else if (restriction === "dp") {
+                        AJS.$(this).find(".birimOncelik").text(i + 1);
+                    }else {
+                        AJS.$(this).find(".birimOncelik").text(i + 1);
+                        AJS.$(this).find(".gmyPriority").text(i + 1);
+                    }
+                    i++;
+                });
+                console.log("Priorities are updated");
+            }
+            function updatePrioritiesInJIRA() {
+                var table = AJS.$('#auiTable').tableToJSON({
+                    ignoreEmptyRows : true,
+                    onlyColumns: [0,3,4]
+                    //Bu sıralama önemli
+                }); // Convert the table into a javascript object
+                console.log(JSON.stringify(table));
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/setPriorityCfValuesInJira",
+                    type: 'POST',
+                    data: {
+                        jsontable: JSON.stringify(table)
+                    },
+                    async: true,
+                    beforeSend: function () {
+                    },
+                    complete: function (response) {
+                    },
+                    error: function (response) {
+                        console.log("setPriorityCfValuesInJira has finished with ERROR !!!");
+                    },
+                    success: function (response, status, jqXHR) {
+                        console.log("setPriorityCfValuesInJira is successful");
+                    }
+                });
+            }
         });
     </script>
 </head>
 <body>
+
     <div class="aui-group">
         <div class="aui-help aui-help-empty-state">
             <div class="aui-help-content">
@@ -250,6 +244,7 @@ Released under the MIT license: http://jsbin.mit-license.org
             <aui-spinner size="large"></aui-spinner>
         </div>
     </div>
+
     <div class="aui-group" id="buttons">
         <button class="aui-button aui-button-primary" id="kaydetButton">Kaydet</button>
 ##      <button class="aui-button aui-button-primary" id="hide">hide</button>
@@ -258,6 +253,7 @@ Released under the MIT license: http://jsbin.mit-license.org
 
     <div class="aui-group list-group" id="tableDiv">
         <table class="aui" id="auiTable">
+
             <thead>
             <tr>
                 <th class="aui-table-column-issue-key" data-override="key">Issue key</th>
@@ -270,6 +266,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 #end
             <tr>
             </thead>
+
             <tbody id="tableBody">
                 #foreach( $issue in $issues )
                 <tr>

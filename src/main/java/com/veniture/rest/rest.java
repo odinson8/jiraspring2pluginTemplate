@@ -6,7 +6,6 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.index.IndexException;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.workflow.TransitionOptions;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
@@ -16,9 +15,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import model.pojo.ProjectsDetails;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
+import model.pojo.ProjectsDetails;
 import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.veniture.util.functions.*;
+import static com.veniture.util.functions.updateCfValueForSelectList;
+import static com.veniture.util.functions.updateCustomFieldValue;
 
 
 @Path("/rest")
@@ -141,6 +141,8 @@ public class rest {
 
         if (result.isValid()) {
             issueService.transition(currentUser, result);
+            logger.error("Issue transition is successful");
+
         } else {
             logger.error(result.getErrorCollection().toString());
         }

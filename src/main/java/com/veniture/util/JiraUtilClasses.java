@@ -18,11 +18,11 @@ public class JiraUtilClasses {
 
         private JqlQueryParser jqlQueryParser= ComponentAccessor.getComponent(JqlQueryParser.class);
         private CustomFieldManager cfMgr=ComponentAccessor.getCustomFieldManager();
-        private SearchService searchService1=ComponentAccessor.getComponent(SearchService.class);
+        private SearchService searchService=ComponentAccessor.getComponent(SearchService.class);
         private JiraAuthenticationContext authenticationContext =ComponentAccessor.getJiraAuthenticationContext();
 
         public List<CustomField> invoke() throws JqlParseException {
-            SearchContext searchContext= searchService1.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
+            SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
             return cfMgr.getCustomFieldObjects(searchContext);
         }
     }
