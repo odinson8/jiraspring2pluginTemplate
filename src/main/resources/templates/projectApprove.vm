@@ -74,14 +74,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 };
 
                 table.columns('th[class*="teams"]').indexes().each(function (e) {
-                    console.log("Footer Totals are updated for column: " + e);
                     apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
                 });
             };
 
             table = AJS.$('#projectsTable').DataTable({
                 "ordering": false,
-                "scrollX": true,
                 select: true,
                 // "columnDefs": [
                 //     { "orderable": true, "targets": [0, 2, 3,] }
@@ -94,7 +92,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 }
             });
 
-            table.on( 'select', function ( e, dt, type, indexes ) {
+            table.on( 'select deselect', function ( e, dt, type, indexes ) {
                 if ( type === 'row' ) {
                     //var data = table.rows( indexes ).data().pluck( 'id' );
                     displayFooter();
@@ -378,19 +376,19 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($ABAPeforCf))$issue.getCustomFieldValue($ABAPeforCf).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($ANeforCfId))$issue.getCustomFieldValue($ANeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($BIeforCfId))$issue.getCustomFieldValue($BIeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($ECeforCfId))$issue.getCustomFieldValue($ECeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($NSeforCfId))$issue.getCustomFieldValue($NSeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($OPeforCfId))$issue.getCustomFieldValue($OPeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($PMOeforCfId))$issue.getCustomFieldValue($PMOeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($SapModEforCfId))$issue.getCustomFieldValue($SapModEforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($SDeforCfId))$issue.getCustomFieldValue($SDeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($UDeforCfId))$issue.getCustomFieldValue($UDeforCfId).intValue()#else - #end</td>
-                        <td class="teams">#if(  $issue.getCustomFieldValue($YGeforCfId))$issue.getCustomFieldValue($YGeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ABAPeforCf))$issue.getCustomFieldValue($ABAPeforCf).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ANeforCfId))$issue.getCustomFieldValue($ANeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($BIeforCfId))$issue.getCustomFieldValue($BIeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ECeforCfId))$issue.getCustomFieldValue($ECeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($NSeforCfId))$issue.getCustomFieldValue($NSeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($OPeforCfId))$issue.getCustomFieldValue($OPeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($PMOeforCfId))$issue.getCustomFieldValue($PMOeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SapModEforCfId))$issue.getCustomFieldValue($SapModEforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SDeforCfId))$issue.getCustomFieldValue($SDeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($UDeforCfId))$issue.getCustomFieldValue($UDeforCfId).intValue()#else - #end</td>
+                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($YGeforCfId))$issue.getCustomFieldValue($YGeforCfId).intValue()#else - #end</td>
                         #foreach($cf in $customFieldsInProject)
-                            <td style="display:none;" class="$cf.getId()">-</td>
+                            <td style="display:none; text-align: center;" class="$cf.getId()">-</td>
                         #end
                     </tr>
                     #end
