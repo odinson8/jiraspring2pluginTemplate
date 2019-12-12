@@ -68,9 +68,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 };
                 var apply_footer = function (kapasite, col) {
-                    AJS.$(table.column(col).footer()).html(
-                            ' ' + (kapasite - totalize_selected(col))
-                    );
+                    var remaining=kapasite - totalize_selected(col);
+                    var innerHtml;
+                    if (remaining<0){
+                        innerHtml= '' +'<aui-badge style="background: #c50409; color: #ffffff;">' +remaining + '</aui-badge>';
+                    } else {
+                        innerHtml= ' ' + (kapasite - totalize_selected(col));
+                    }
+                    AJS.$(table.column(col).footer()).html(innerHtml);
                 };
 
                 table.columns('th[class*="teams"]').indexes().each(function (e) {
@@ -362,7 +367,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <th></th>
                     <th>Kalan</th>
                     #foreach($team in $teams)
-                        <th class="teams" >$team.getName() $team.getRemainingInAYear()</th>
+                        <th class="teams" style="text-align: center;">$team.getRemainingInAYear()</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
