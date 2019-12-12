@@ -84,12 +84,13 @@ public class ProjectApprove extends HttpServlet {
         }
         catch (Exception e) {
             logger.error(e.getMessage());
+            logger.error(e.getStackTrace().toString());
         }
         resp.setContentType("text/html;charset=utf-8");
         templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
     }
 
-    private Map<String, Object> createContext() throws JqlParseException, SearchException, URIException {
+    private Map<String, Object> createContext() throws JqlParseException, SearchException {
 
         Map<String, Object> context = new HashMap<String, Object>();
 
@@ -122,16 +123,21 @@ public class ProjectApprove extends HttpServlet {
         return context;
     }
 
-    private List<Team> getTeamsAndSetRemaining() throws URIException {
-        RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-        List<Team> teams=remoteSearcher.getAllTeams();
-        List<Team> teams2 = new ArrayList<Team>();
-        for (Team team:teams){
-            if (!team.getName().contains("Team")){
-                //Gereksiz takimlar vardı onları silmek için yaptım
-                team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
-                teams2.add(team);
+    private List<Team> getTeamsAndSetRemaining() {
+        List<Team> teams2 = new ArrayList<>();
+
+        try {
+            RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
+            List<Team> teams=remoteSearcher.getAllTeams();
+            for (Team team:teams){
+                if (!team.getName().contains("Team")){
+                    //Gereksiz takimlar vardı onları silmek için yaptım
+                    team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
+                    teams2.add(team);
+                }
             }
+        } catch (Exception e) {
+            logger.error("Error at "+"getTeamsAndSetRemaining");
         }
         return teams2;
     }

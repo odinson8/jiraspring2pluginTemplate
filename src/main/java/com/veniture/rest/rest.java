@@ -104,13 +104,28 @@ public class rest {
     @Path("/setPriorityCfValuesInJira")
     public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         String[] jsontableString = req.getParameterValues("jsontable");
+        String gmyOrBirim = null;
+        try {
+            gmyOrBirim = req.getParameterValues("gmyOrBirim")[0];
+        } catch (Exception e) {
+            gmyOrBirim = "";
+        }
         JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
         for (JsonElement jsonElement:tableAsJsonArray){
             ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
             MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
-            updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
-            updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
-            updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+
+            if(gmyOrBirim.equalsIgnoreCase("gmy")){
+                updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
+                updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+            }
+            else if (gmyOrBirim.equalsIgnoreCase("dp")){
+                updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
+                updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+            }
+            else {
+                logger.error("neither gmy nor dp");
+            }
         }
         return null;
     }

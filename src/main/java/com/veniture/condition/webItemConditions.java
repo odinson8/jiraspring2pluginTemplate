@@ -13,6 +13,7 @@ public class webItemConditions implements Condition {
 
     @Override
     public boolean shouldDisplay(Map<String, Object> map) {
-        return ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser().getDisplayName().contains("enitur");
+        String username=ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser().getUsername();
+        return (username.contains("enitur")||username.contains("song"));
     }
 }

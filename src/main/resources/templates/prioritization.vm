@@ -98,7 +98,9 @@ Released under the MIT license: http://jsbin.mit-license.org
 
             AJS.$("#customFieldList-select2").auiSelect2();
             AJS.$('#kaydetButton').off().on("click", function (e) {
-                updatePrioritiesInJIRA();
+                var params = new window.URLSearchParams(window.location.search);
+                console.log(params.get('restriction'));
+                updatePrioritiesInJIRA(params.get('restriction'));
                 console.log("JIRA'da Öncelikler update edildi.")
                 e.preventDefault();
 
@@ -130,7 +132,6 @@ Released under the MIT license: http://jsbin.mit-license.org
                     AJS.$(this).show();
                 });
 
-                console.log("asd");
                 var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),e.val);
                 //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
                 var array=cfValues.split(",,,");
@@ -184,7 +185,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 });
                 console.log("Priorities are updated");
             }
-            function updatePrioritiesInJIRA() {
+            function updatePrioritiesInJIRA(gmyOrBirim) {
                 var table = AJS.$('#auiTable').tableToJSON({
                     ignoreEmptyRows : true,
                     onlyColumns: [0,3,4]
@@ -196,7 +197,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/setPriorityCfValuesInJira",
                     type: 'POST',
                     data: {
-                        jsontable: JSON.stringify(table)
+                        jsontable: JSON.stringify(table),
+                        gmyOrBirim : gmyOrBirim
                     },
                     async: true,
                     beforeSend: function () {
@@ -253,7 +255,6 @@ Released under the MIT license: http://jsbin.mit-license.org
 
     <div class="aui-group list-group" id="tableDiv">
         <table class="aui" id="auiTable">
-
             <thead>
             <tr>
                 <th class="aui-table-column-issue-key" data-override="key">Issue key</th>

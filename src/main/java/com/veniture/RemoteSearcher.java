@@ -11,6 +11,8 @@ import model.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
 import model.pojo.TempoPlanner.IssueTableData;
 import model.pojo.TempoTeams.Team;
 import org.apache.commons.httpclient.URIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -18,13 +20,20 @@ import java.util.List;
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
+    private static final Logger logger = LoggerFactory.getLogger(RemoteSearcher.class);// The transition ID
+
 
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
     }
 
-    public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) throws URIException {
-        List<FooterTotalAvailabilityInfos> totals = GSON.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
+    public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
+        List<FooterTotalAvailabilityInfos> totals = null;
+        try {
+            totals = GSON.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
+        } catch (URIException e) {
+            logger.error("No Capacity set for team with Id : "+teamId.toString()+" at Tempo Planning Teams");
+        }
         Double totalRemaining= null;
         try {
             totalRemaining = totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);

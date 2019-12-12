@@ -13,6 +13,7 @@ public class Constants {
     public static final String adminUsername = "venitureAdm";
     public static final String adminPassword = "asd123";
     public static final String hostname = "dev.veniture.tk";
+    //public static final String hostname = "jira.flo.com.tr";
 
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
@@ -21,12 +22,14 @@ public class Constants {
 
     //Veniture Jira - Prod Yeni Ortam
     public static final String ProjectId = "PF";
-    public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser()";
-    public static final String gmyJQL ="project ="+ProjectId+" and \"İlgili GMY\"=currentUser()";
+    public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser() ORDER BY \"Departman Önceliği\"";
+    public static final String gmyJQL ="project ="+ProjectId+" and \"İlgili GMY\"=currentUser() and status = \"Grup/GMY Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
     //public static final String TEST_SORGUSU = "project = " + ProjectId + " AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\" ORDER BY \"Birim Önceliği\"";
-    public static final String TEST_SORGUSU = "project = "+ProjectId+" ORDER BY \"Birim Önceliği\"";
+    public static final String TEST_SORGUSU = "project = "+ProjectId+" AND status=\"Onay Bekleniyor\" ORDER BY \"Birim Önceliği\"";
     public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
+    public static final long GENEL_TRUE_OPTION_ID_CanliVeniture = 11404L;
     public static final long onceliklendirildiMiId = 11500L;
+    public static final long genelOnceliklendirildiMiId = 11615L;
     public static final long BIRIM_ONCELIK_ID = 11403L;
     public static final String BIRIM_ONCELIK_ID_STRING = "customfield_11403";
     public static final long GMY_ONCELIK_ID = 11501L;

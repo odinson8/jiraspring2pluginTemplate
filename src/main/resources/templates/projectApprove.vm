@@ -157,7 +157,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 }
             }
 
-
             function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
                 var value="-";
                 jQuery.ajax({

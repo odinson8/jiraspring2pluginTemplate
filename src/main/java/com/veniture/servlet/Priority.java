@@ -39,11 +39,11 @@ public class Priority extends HttpServlet {
 //    @JiraImport
 //    private RequestFactory requestFactory;
     @JiraImport
-    public static SearchService searchService;
+    private  SearchService searchService;
     @JiraImport
     private TemplateRenderer templateRenderer;
     @JiraImport
-    public  JiraAuthenticationContext authenticationContext;
+    private  JiraAuthenticationContext authenticationContext;
     private final Logger logger = LoggerFactory.getLogger(Priority.class);// The transition ID
 
     private static final String PRIORITIZATION_SCREEN_TEMPLATE = "/templates/prioritization.vm";
