@@ -18,6 +18,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <script src="https://nightly.datatables.net/select/js/dataTables.select.js?_=9a6592f8d74f8f520ff7b22342fa1183"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <style id="css">
         .th {
             text-align: left;
@@ -26,6 +29,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         .td {
             max-width: 199px; word-wrap: break-word;
         }
+
     </style>
 
     <script>
@@ -222,9 +226,52 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
             });
 
+            // AJS.$('#oncelik-range').jRange({
+            //     from: 1,
+            //     to: 10,
+            //     step: 1,
+            //     scale: [0,5,10],
+            //     format: '%s',
+            //     width: 300,
+            //     showLabels: true,
+            //     isRange : true
+            // });
+
+            // var handle = AJS.$( "#custom-handle" );
+            // AJS.$( "#slider" ).slider({
+            //     max: 50,
+            //     create: function() {
+            //         handle.text( $( this ).slider( "value" ) );
+            //     },
+            //     slide: function( event, ui ) {
+            //         handle.text( ui.value );
+            //     }
+            // });
+
+            AJS.$( "#slider-range" ).slider({
+                range: true,
+                min: 1,
+                max: 500,
+                step: 1,
+                values: [ 1, 10 ],
+                slide: function( event, ui ) {
+                    AJS.$( "#amount" ).val( ui.values[ 0 ] + "-" +  ui.values[ 1 ] );
+                }
+            });
+
+            AJS.$( "#amount" ).val( "" + AJS.$( "#slider-range" ).slider( "values", 0 ) +
+                    "-" + AJS.$( "#slider-range" ).slider( "values", 1 ) );
+
+            AJS.$( "#slider-range" ).on( "slidechange", function( event, ui ) {
+                var values = AJS.$( "#slider-range" ).slider( "option", "values" );
+                console.log(values);
+            } );
+
             AJS.$('#ApproveButton').off().on("click", function () {
+                var berk = table.cells('.selected', 0);
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+                console.log("asd");
 
                 var selectedCellsArray = table.cells('.selected', 0).data().toArray();
 
@@ -237,14 +284,21 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     async: true,
                     beforeSend: function () {
+                        console.log(selectedCellsArray);
+
                     },
                     complete: function (response) {
+                    },
+                    error: function (response) {
+                        Swal.fire(
+                                'Hata!'
+                        )
                     },
                     success: function (response, status, jqXHR) {
 
                         Swal.fire(
-                                'Approved!',
-                                'All selected projects approved!',
+                                'Başarılı!',
+                                'Projeler Onaylandı!',
                                 'success'
                         )
                     }
@@ -255,10 +309,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 
-                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
+                var selectedCellsArray = table.cells('.selected', 0).data().innerHTML.toArray();
 
                 jQuery.ajax({
-                    url: AJS.params.baseURL + "/rest/rest/1.1/florestservice/transitionissues",
+                    url: AJS.params.baseURL + "/rest/rest/1.2/florestservice/transitionissues",
                     type: 'GET',
                     data: {
                         issues: selectedCellsArray,
@@ -269,11 +323,16 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     complete: function (response) {
                     },
+                    error: function (response) {
+                        Swal.fire(
+                                'Hata!'
+                        )
+                    },
                     success: function (response, status, jqXHR) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Declined',
-                            text: 'All selected projects declined!'})
+                            title: 'Reddedildi',
+                            text: 'Projeler reddedildi!'})
                     }
                 });
             })
@@ -344,6 +403,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #end
                 </select>
             </form>
+        </div>
+        <div class="aui-item" id="#oncelikler-aui-item">
+            <p>
+                <label for="amount">Öncelik Aralığı:</label>
+                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p>
+            <div id="slider-range"></div>
         </div>
     </div>
 

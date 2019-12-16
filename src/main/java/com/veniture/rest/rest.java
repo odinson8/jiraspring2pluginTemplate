@@ -31,6 +31,7 @@ import javax.ws.rs.core.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.veniture.util.functions.updateCfValueForSelectList;
 import static com.veniture.util.functions.updateCustomFieldValue;
@@ -56,13 +57,14 @@ public class rest {
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
         String[] issues = req.getParameterValues("issues");
+        ArrayList<String> issues2 = (ArrayList<String>) Arrays.stream(issues).map(element -> element.substring(element.indexOf(">",element.indexOf("<",7)), 3)).collect(Collectors.toList());
         String[] action = req.getParameterValues("action");
         ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         if (action[0].equals("approve")){
-            Arrays.stream(issues).forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
+            issues2.stream().forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
         }
         else if (action[0].equals("decline")){
-            Arrays.stream(issues).forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+            issues2.stream().forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
         }
         return "true";
     }

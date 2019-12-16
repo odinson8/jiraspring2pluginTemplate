@@ -2,7 +2,6 @@ package com.veniture.constants;
 
 public class Constants {
 
-
     public static final String SC_SORGUSU = "project = PF";
 
     //Genel
@@ -13,7 +12,7 @@ public class Constants {
     public static final String adminUsername = "venitureAdm";
     public static final String adminPassword = "asd123";
     public static final String hostname = "dev.veniture.tk";
-    //public static final String hostname = "jira.flo.com.tr";
+   // public static final String hostname = "jira.flo.com.tr";
 
     public static final String scheme = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
@@ -22,10 +21,11 @@ public class Constants {
 
     //Veniture Jira - Prod Yeni Ortam
     public static final String ProjectId = "PF";
-    public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser() ORDER BY \"Departman Önceliği\"";
+    public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser() and status=\"Departman Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
     public static final String gmyJQL ="project ="+ProjectId+" and \"İlgili GMY\"=currentUser() and status = \"Grup/GMY Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
-    //public static final String TEST_SORGUSU = "project = " + ProjectId + " AND component = \"E-TİCARET IT DİREKTÖRLÜĞÜ\" ORDER BY \"Birim Önceliği\"";
-    public static final String TEST_SORGUSU = "project = "+ProjectId+" AND status=\"Onay Bekleniyor\" ORDER BY \"Birim Önceliği\"";
+    public static final String DEMO_JQL ="project ="+ProjectId;
+    public static final String TEST_SORGUSU = "project = "+ProjectId+" AND status=\"Onay Bekleniyor\"";
+    public static final String DEVORTAMI_TEST_SORGUSU = "project = "+ProjectId;
     public static final long TRUE_OPTION_ID_CanliVeniture = 11200L;
     public static final long GENEL_TRUE_OPTION_ID_CanliVeniture = 11404L;
     public static final long onceliklendirildiMiId = 11500L;
@@ -40,8 +40,8 @@ public class Constants {
     public static final String PLANLAMA = "project = FP AND issuetype = \"Project Card\" AND Departman = Planlama OR project = FP AND issuetype = \"Project Card\" AND Etiket = \"Satışı Arttıran\"";
     public static final String SATISARTTIRAN ="project = FP AND issuetype = \"Project Card\" AND status = \"Waiting for approval\" AND Etiket = \"Satışı Arttıran\"";
     public static final String PROJECTCARDS ="project = FP AND issuetype = \"Project Card\"";
-    public static final Integer ApproveWorkflowTransitionId = 181;
-    public static final Integer DeclineWorkflowTransitionId = 201;
+    public static final Integer ApproveWorkflowTransitionId = 121;
+    public static final Integer DeclineWorkflowTransitionId = 151;
 
     public static final long ABAPeforCfId       = 11605L;
     public static final long ANeforCfId         = 11606L;

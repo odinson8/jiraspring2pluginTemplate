@@ -94,7 +94,7 @@ public class ProjectApprove extends HttpServlet {
 
         Map<String, Object> context = new HashMap<String, Object>();
 
-        SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(), ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
+        SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(), ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
         List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
         List<Team> teams= getTeamsAndSetRemaining();
         context.put("issuesWithCF",getIssueWithCFS(IssueResults, customFieldsInProject));
@@ -176,7 +176,8 @@ public class ProjectApprove extends HttpServlet {
                     conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
                     break;
                 default:
-                    conditionQuery = jqlQueryParser.parseQuery(TEST_SORGUSU);
+                     conditionQuery = jqlQueryParser.parseQuery(TEST_SORGUSU);
+                    //conditionQuery = jqlQueryParser.parseQuery(DEVORTAMI_TEST_SORGUSU);
             }
 
 //            for (Issue issue : issues) {
