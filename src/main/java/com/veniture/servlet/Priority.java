@@ -65,9 +65,13 @@ public class Priority extends HttpServlet {
         try {
             if (restriction.equals("gmy")){
                 conditionQuery = jqlQueryParser.parseQuery(Constants.gmyJQL);
+                //conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);
+
             }
             else if (restriction.equals("dp")) {
-                conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
+               conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
+                //conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);
+
             }
             else {
                 conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);

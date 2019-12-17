@@ -99,7 +99,7 @@ Released under the MIT license: http://jsbin.mit-license.org
             AJS.$("#customFieldList-select2").auiSelect2();
             AJS.$('#kaydetButton').off().on("click", function (e) {
                 var params = new window.URLSearchParams(window.location.search);
-                console.log(params.get('restriction'));
+                console.log("restriction = "+ params.get('restriction'));
                 updatePrioritiesInJIRA(params.get('restriction'));
                 console.log("JIRA'da Öncelikler update edildi.")
                 e.preventDefault();

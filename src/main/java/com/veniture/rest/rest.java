@@ -7,6 +7,9 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.util.json.JSONArray;
+import com.atlassian.jira.util.json.JSONException;
+import com.atlassian.jira.util.json.JSONObject;
 import com.atlassian.jira.workflow.TransitionOptions;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.sal.api.ApplicationProperties;
@@ -28,10 +31,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import static com.veniture.util.functions.updateCfValueForSelectList;
 import static com.veniture.util.functions.updateCustomFieldValue;
@@ -105,30 +111,42 @@ public class rest {
     @POST
     @Path("/setPriorityCfValuesInJira")
     public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        String[] jsontableString = req.getParameterValues("jsontable");
+        String[] jsonTable = req.getParameterValues("jsontable");
         String gmyOrBirim = null;
         try {
             gmyOrBirim = req.getParameterValues("gmyOrBirim")[0];
         } catch (Exception e) {
             gmyOrBirim = "";
+            logger.error("gmyOrBirim parameter is null  ";
         }
-        JsonArray tableAsJsonArray = jsonString2JsonArray(jsontableString[0]);
-        for (JsonElement jsonElement:tableAsJsonArray){
-            ProjectsDetails projectsDetails = GSON.fromJson(jsonElement, ProjectsDetails.class);
-            MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getIssueKey()).getIssue();
+        //logger.debug("jsonTable  " +jsonTable[0]);
+        JSONArray tableAsJSONarray = jsonString2JsonArray(jsonTable[0]);
+        ObjectMapper mapper = new ObjectMapper();
 
-            if(gmyOrBirim.equalsIgnoreCase("gmy")){
-                updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGMYPriority()),CURRENT_USER);
-                updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
-            }
-            else if (gmyOrBirim.equalsIgnoreCase("dp")){
-                updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDepartmentPriority()),CURRENT_USER);
-                updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
-            }
-            else {
-                logger.error("neither gmy nor dp");
+        //logger.debug(tableAsJSONarray.toString());
+        for (int i = 0; i < tableAsJSONarray.length(); i++) {
+            try {
+                JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
+                ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
+
+                MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getKey()).getIssue();
+                if(gmyOrBirim.equalsIgnoreCase("gmy")){
+                    updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGM()),CURRENT_USER);
+                    updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+                }
+                else if (gmyOrBirim.equalsIgnoreCase("dp")){
+                    updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDP()),CURRENT_USER);
+                    updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+                }
+                else {
+                    logger.error("Neither gmy nor dp restriction set");
+                }
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+                logger.error("JSONObject'i POJO'ya çevirirken hata oldu: " +e.getMessage());
             }
         }
+
         return null;
     }
 
@@ -139,11 +157,19 @@ public class rest {
         return remoteSearcher.getTotalRemainingTimeInYearForTeam(7).toString();
     }
 
-    private JsonArray jsonString2JsonArray(String responseString) {
-        JsonParser parser = new JsonParser();
-        JsonElement jsonElement = parser.parse(responseString);
-        JsonArray jsonArray = jsonElement.getAsJsonArray();
-        return jsonArray;
+    private JSONArray jsonString2JsonArray(String responseString) {
+
+        //JSONArray jsonArr = new JSONArray(data);
+        try {
+            JSONArray jsonArr = new JSONArray(responseString);
+            return jsonArr;
+        } catch (JSONException e) {
+            return null;
+        }
+//        JsonParser parser = new JsonParser();
+//        JsonElement jsonElement = parser.parse(responseString);
+//        JsonArray jsonArray = jsonElement.getAsJsonArray();
+//        return jsonArray;
     }
 
     private void transitionIssue(IssueService issueService, ApplicationUser currentUser, Issue issue, Integer workflowTransitionId) {
