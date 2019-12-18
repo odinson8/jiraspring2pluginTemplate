@@ -154,9 +154,6 @@ public class rest {
             updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         else if (gmyOrBirim.equalsIgnoreCase("dp")){
-            logger.error(projectsDetails.getDP());
-            logger.error(projectsDetails.getGM());
-            logger.error(projectsDetails.getKey());
             updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDP()),CURRENT_USER);
             updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
