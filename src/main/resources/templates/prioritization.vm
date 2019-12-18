@@ -84,6 +84,8 @@ Released under the MIT license: http://jsbin.mit-license.org
     <script>
         AJS.$(document).ready(function () {
 
+            window.onbeforeunload = null;
+
             // List with handle
             Sortable.create(tableBody, {
                 scroll: true,

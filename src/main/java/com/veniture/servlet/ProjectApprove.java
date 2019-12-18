@@ -5,7 +5,6 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
@@ -25,7 +24,6 @@ import model.pojo.TempoTeams.Team;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
-import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +92,9 @@ public class ProjectApprove extends HttpServlet {
 
         Map<String, Object> context = new HashMap<String, Object>();
 
-        SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(), ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU), PagerFilter.getUnlimitedFilter());
+        Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
+
+        SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
         List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
         List<Team> teams= getTeamsAndSetRemaining();
         context.put("issuesWithCF",getIssueWithCFS(IssueResults, customFieldsInProject));
@@ -176,7 +176,7 @@ public class ProjectApprove extends HttpServlet {
                     conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
                     break;
                 default:
-                     conditionQuery = jqlQueryParser.parseQuery(TEST_SORGUSU);
+                     conditionQuery = jqlQueryParser.parseQuery(ProjectApproveJQL);
                     //conditionQuery = jqlQueryParser.parseQuery(DEVORTAMI_TEST_SORGUSU);
             }
 

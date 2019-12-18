@@ -14,6 +14,7 @@ import com.atlassian.jira.workflow.TransitionOptions;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.sal.api.ApplicationProperties;
 import com.atlassian.sal.api.net.RequestFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -63,7 +64,10 @@ public class rest {
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
         String[] issues = req.getParameterValues("issues");
-        ArrayList<String> issues2 = (ArrayList<String>) Arrays.stream(issues).map(element -> element.substring(element.indexOf(">",element.indexOf("<",7)), 3)).collect(Collectors.toList());
+        ArrayList<String> issues2 = (ArrayList<String>) Arrays.stream(issues).map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7))).collect(Collectors.toList());
+        for (String asd:issues2){
+            //logger.error("--------"+asd);
+        }
         String[] action = req.getParameterValues("action");
         ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         if (action[0].equals("approve")){
@@ -110,44 +114,55 @@ public class rest {
 
     @POST
     @Path("/setPriorityCfValuesInJira")
-    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws JSONException, JsonProcessingException {
         String[] jsonTable = req.getParameterValues("jsontable");
         String gmyOrBirim = null;
         try {
             gmyOrBirim = req.getParameterValues("gmyOrBirim")[0];
         } catch (Exception e) {
             gmyOrBirim = "";
-            logger.error("gmyOrBirim parameter is null  ";
+            logger.error("gmyOrBirim parameter is null");
         }
         //logger.debug("jsonTable  " +jsonTable[0]);
         JSONArray tableAsJSONarray = jsonString2JsonArray(jsonTable[0]);
         ObjectMapper mapper = new ObjectMapper();
 
         //logger.debug(tableAsJSONarray.toString());
+        int failTryCount=4;
         for (int i = 0; i < tableAsJSONarray.length(); i++) {
             try {
-                JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
-                ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
-
-                MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getKey()).getIssue();
-                if(gmyOrBirim.equalsIgnoreCase("gmy")){
-                    updateCustomFieldValue(issue,Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGM()),CURRENT_USER);
-                    updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
-                }
-                else if (gmyOrBirim.equalsIgnoreCase("dp")){
-                    updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDP()),CURRENT_USER);
-                    updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
-                }
-                else {
-                    logger.error("Neither gmy nor dp restriction set");
-                }
+                parseJsonAndSetPriorityCFs(gmyOrBirim, tableAsJSONarray, mapper, i);
             } catch (JSONException | IOException e) {
-                e.printStackTrace();
+                failTryCount--;
+                if (failTryCount>0){
+                    parseJsonAndSetPriorityCFs(gmyOrBirim, tableAsJSONarray, mapper, i);
+                }
                 logger.error("JSONObject'i POJO'ya çevirirken hata oldu: " +e.getMessage());
             }
         }
 
         return null;
+    }
+
+    private void parseJsonAndSetPriorityCFs(String gmyOrBirim, JSONArray tableAsJSONarray, ObjectMapper mapper, int i) throws JSONException, com.fasterxml.jackson.core.JsonProcessingException {
+        JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
+        ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
+
+        MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getKey()).getIssue();
+        if(gmyOrBirim.equalsIgnoreCase("gmy")){
+            updateCustomFieldValue(issue, Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGM()),CURRENT_USER);
+            updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+        }
+        else if (gmyOrBirim.equalsIgnoreCase("dp")){
+            logger.error(projectsDetails.getDP());
+            logger.error(projectsDetails.getGM());
+            logger.error(projectsDetails.getKey());
+            updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDP()),CURRENT_USER);
+            updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
+        }
+        else {
+            logger.error("Neither gmy nor dp restriction set");
+        }
     }
 
     @GET
