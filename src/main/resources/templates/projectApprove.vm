@@ -64,6 +64,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     if (typeof data != 'undefined') {
                         return data
                                 .reduce(function (a, b) {
+                                    // console.log(" ------");
+                                    // console.log("a = "+a);
+                                    // console.log("b = "+b);
+                                    // console.log(" ------");
+                                    if (b==="-"){
+                                        b="0"
+                                    }
                                             return intVal(a) + intVal(b);
                                         },
                                         0);
@@ -406,12 +413,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         </div>
         <div class="aui-item" id="#oncelikler-aui-item">
             <p>
-                <label for="amount">Öncelik Aralığı:</label>
+                <label for="amount">WIP: Öncelik Aralığı:</label>
                 <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
             </p>
             <div id="slider-range"></div>
         </div>
     </div>
+
+    <a id="clickable-label" class="aui-label" href="projectapprove">WIP: Satış arttıran</a>
+    <a id="clickable-label" class="aui-label" href="projectapprove">WIP: Maliyet Azaltan</a>
 
     <div class="aui-group">
         <div class="aui-item" id="issueTableDiv">

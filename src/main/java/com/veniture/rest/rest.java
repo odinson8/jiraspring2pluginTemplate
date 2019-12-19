@@ -4,6 +4,7 @@ package com.veniture.rest;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
@@ -21,11 +22,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
-import model.pojo.ProjectsDetails;
 import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -50,6 +49,7 @@ public class rest {
     private RequestFactory requestFactory;
     @JiraImport
     private ApplicationProperties applicationProperties;
+    private IssueManager issueManager;
     private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
     private static final Gson GSON = new Gson();
     private static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
@@ -57,6 +57,7 @@ public class rest {
 
     public rest(RequestFactory requestFactory){
         this.requestFactory = requestFactory;
+        this.issueManager= ComponentAccessor.getIssueManager();
     }
 
     @GET
@@ -114,7 +115,7 @@ public class rest {
 
     @POST
     @Path("/setPriorityCfValuesInJira")
-    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws JSONException, JsonProcessingException {
+    public String setPriorityCfValuesInJira(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws Exception {
         String[] jsonTable = req.getParameterValues("jsontable");
         String gmyOrBirim = null;
         try {
@@ -132,7 +133,7 @@ public class rest {
         for (int i = 0; i < tableAsJSONarray.length(); i++) {
             try {
                 parseJsonAndSetPriorityCFs(gmyOrBirim, tableAsJSONarray, mapper, i);
-            } catch (JSONException | IOException e) {
+            } catch (Exception e) {
                 failTryCount--;
                 if (failTryCount>0){
                     parseJsonAndSetPriorityCFs(gmyOrBirim, tableAsJSONarray, mapper, i);
@@ -144,17 +145,36 @@ public class rest {
         return null;
     }
 
-    private void parseJsonAndSetPriorityCFs(String gmyOrBirim, JSONArray tableAsJSONarray, ObjectMapper mapper, int i) throws JSONException, com.fasterxml.jackson.core.JsonProcessingException {
+    private void parseJsonAndSetPriorityCFs(String gmyOrBirim, JSONArray tableAsJSONarray, ObjectMapper mapper, int i) throws Exception {
         JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
-        ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
+        //ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
 
-        MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, projectsDetails.getKey()).getIssue();
+        //MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, jsonObj.getString("key")).getIssue();
+        MutableIssue issue = issueManager.getIssueByKeyIgnoreCase(jsonObj.getString("key"));
+
+        if (issue==null){
+            logger.error("ISSUE FROM JSON = " + jsonObj.getString("key"));
+            logger.error("CANNOT GET ISSUE CRITICAL ERROR");
+            throw new Exception();
+        }
         if(gmyOrBirim.equalsIgnoreCase("gmy")){
-            updateCustomFieldValue(issue, Constants.GMY_ONCELIK_ID,Double.valueOf(projectsDetails.getGM()),CURRENT_USER);
+            if (jsonObj.getString("GM")==null){
+                logger.error("GM priority is null");
+                throw new Exception();
+            }
+            logger.error("---- Issue =" + issue);
+            logger.error("---- GM =" + jsonObj.getString("GM"));
+            updateCustomFieldValue(issue, Constants.GMY_ONCELIK_ID,Double.valueOf(jsonObj.getString("GM")),CURRENT_USER);
             updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         else if (gmyOrBirim.equalsIgnoreCase("dp")){
-            updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(projectsDetails.getDP()),CURRENT_USER);
+            logger.error("---- Issue =" + issue);
+            logger.error("---- DP =" + jsonObj.getString("DP"));
+            if (jsonObj.getString("DP")==null){
+                logger.error("DP priority is null");
+                throw new Exception();
+            }
+            updateCustomFieldValue(issue,Constants.BIRIM_ONCELIK_ID,Double.valueOf(jsonObj.getString("DP")),CURRENT_USER);
             updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         else {

@@ -66,12 +66,10 @@ public class Priority extends HttpServlet {
             if (restriction.equals("gmy")){
                 conditionQuery = jqlQueryParser.parseQuery(Constants.gmyJQL);
                 //conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);
-
             }
             else if (restriction.equals("dp")) {
                conditionQuery = jqlQueryParser.parseQuery(Constants.departmanJQL);
                 //conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);
-
             }
             else {
                 conditionQuery = jqlQueryParser.parseQuery(Constants.DEMO_JQL);
@@ -90,7 +88,6 @@ public class Priority extends HttpServlet {
         } catch (JqlParseException | SearchException e) {
             logger.error(e.getMessage());
         }
-
         resp.setContentType("text/html;charset=utf-8");
         templateRenderer.render(PRIORITIZATION_SCREEN_TEMPLATE,context,resp.getWriter());
     }

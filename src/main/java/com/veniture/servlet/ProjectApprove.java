@@ -56,7 +56,8 @@ public class ProjectApprove extends HttpServlet {
     String action;
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
-    private static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);// The transition ID
+    private static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
+    // The transition ID
 
     public ProjectApprove(IssueService issueService, ProjectService projectService,
                           SearchService searchService,
@@ -102,7 +103,7 @@ public class ProjectApprove extends HttpServlet {
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         context.put("teams", teams);
         context = addEforCfs(context);
-    //        context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
+      //context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
         context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
     }
@@ -125,7 +126,6 @@ public class ProjectApprove extends HttpServlet {
 
     private List<Team> getTeamsAndSetRemaining() {
         List<Team> teams2 = new ArrayList<>();
-
         try {
             RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
             List<Team> teams=remoteSearcher.getAllTeams();
@@ -137,7 +137,7 @@ public class ProjectApprove extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error at "+"getTeamsAndSetRemaining");
+            logger.error("Error at getTeamsAndSetRemaining");
         }
         return teams2;
     }
@@ -153,7 +153,7 @@ public class ProjectApprove extends HttpServlet {
                 }
                 catch (Exception e){
                     customFieldsWithValues.add(new CfWithValue(customField," "));
-                    logger.error(e.getMessage());
+                    //Bu satırı commentledim,çünkü çok fazla log basiyor.Log dosyasini çöp yaptı.Her boş cf için log atiyor sanırım.... logger.error("Error at getIssueWithCFS= " +e.getMessage());
                 }
             }
             IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);
@@ -203,6 +203,7 @@ public class ProjectApprove extends HttpServlet {
             return context;
 
         } catch (JqlParseException e) {
+            logger.error("JqlParseException error at project approve" + e.getParseErrorMessage());
             e.printStackTrace();
             throw e;
         }
