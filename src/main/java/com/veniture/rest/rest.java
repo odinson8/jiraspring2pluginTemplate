@@ -15,29 +15,24 @@ import com.atlassian.jira.workflow.TransitionOptions;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.sal.api.ApplicationProperties;
 import com.atlassian.sal.api.net.RequestFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
 import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import static com.veniture.util.functions.updateCfValueForSelectList;
 import static com.veniture.util.functions.updateCustomFieldValue;
@@ -48,10 +43,10 @@ public class rest {
     @JiraImport
     private RequestFactory requestFactory;
     @JiraImport
-    private ApplicationProperties applicationProperties;
+//    private ApplicationProperties applicationProperties;
     private IssueManager issueManager;
     private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
-    private static final Gson GSON = new Gson();
+//    private static final Gson GSON = new Gson();
     private static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
     private static final ApplicationUser CURRENT_USER = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
 
@@ -64,18 +59,20 @@ public class rest {
     @Path("/transitionissues")
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
-        String[] issues = req.getParameterValues("issues");
-        ArrayList<String> issues2 = (ArrayList<String>) Arrays.stream(issues).map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7))).collect(Collectors.toList());
-        for (String asd:issues2){
-            //logger.error("--------"+asd);
-        }
+        String[] issueHtml = req.getParameterValues("issues");
+        logger.error(issueHtml.toString());
+        ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
+                .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
+                .collect(Collectors.toList());
         String[] action = req.getParameterValues("action");
         ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         if (action[0].equals("approve")){
-            issues2.stream().forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
+            issues.stream()
+                    .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
         }
         else if (action[0].equals("decline")){
-            issues2.stream().forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+            issues.stream()
+                    .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
         }
         return "true";
     }
@@ -93,7 +90,7 @@ public class rest {
         CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
         String issueKeysJoined = req.getParameterValues("issueKey")[0];
         String[] issueKeys = issueKeysJoined.split(",");
-        List<String> cfValues = new ArrayList<String>();
+        List<String> cfValues = new ArrayList<>();
         for (String issueKey:issueKeys){
             String cfValue;
             try {
@@ -141,7 +138,6 @@ public class rest {
                 logger.error("JSONObject'i POJO'ya çevirirken hata oldu: " +e.getMessage());
             }
         }
-
         return null;
     }
 
@@ -153,23 +149,19 @@ public class rest {
         MutableIssue issue = issueManager.getIssueByKeyIgnoreCase(jsonObj.getString("key"));
 
         if (issue==null){
-            logger.error("ISSUE FROM JSON = " + jsonObj.getString("key"));
-            logger.error("CANNOT GET ISSUE CRITICAL ERROR");
+            logger.error("CANNOT GET ISSUE "+jsonObj.getString("key")+" CRITICAL ERROR");
             throw new Exception();
         }
+
         if(gmyOrBirim.equalsIgnoreCase("gmy")){
             if (jsonObj.getString("GM")==null){
                 logger.error("GM priority is null");
                 throw new Exception();
             }
-            logger.error("---- Issue =" + issue);
-            logger.error("---- GM =" + jsonObj.getString("GM"));
             updateCustomFieldValue(issue, Constants.GMY_ONCELIK_ID,Double.valueOf(jsonObj.getString("GM")),CURRENT_USER);
             updateCfValueForSelectList(issue,Constants.genelOnceliklendirildiMiId, Constants.GENEL_TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         else if (gmyOrBirim.equalsIgnoreCase("dp")){
-            logger.error("---- Issue =" + issue);
-            logger.error("---- DP =" + jsonObj.getString("DP"));
             if (jsonObj.getString("DP")==null){
                 logger.error("DP priority is null");
                 throw new Exception();
@@ -190,8 +182,6 @@ public class rest {
     }
 
     private JSONArray jsonString2JsonArray(String responseString) {
-
-        //JSONArray jsonArr = new JSONArray(data);
         try {
             JSONArray jsonArr = new JSONArray(responseString);
             return jsonArr;

@@ -10,7 +10,6 @@ public class CfWithValue {
     @Expose
     private CustomField customField;
 
-
     @SerializedName("value")
     @Expose
     private String value;
@@ -30,7 +29,7 @@ public class CfWithValue {
 
     public String getValue() {
 
-        if(value.length()>23){
+        if(value.length()>100){
             //return value.substring(0,23);
             return " ";
         }

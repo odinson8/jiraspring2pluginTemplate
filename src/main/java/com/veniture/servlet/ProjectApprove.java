@@ -1,11 +1,11 @@
 package com.veniture.servlet;
 
-import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
@@ -20,10 +20,10 @@ import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.RemoteSearcher;
 import com.veniture.constants.Constants;
-import model.pojo.TempoTeams.Team;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
+import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ import static com.veniture.util.functions.getCustomFieldsInProject;
 public class ProjectApprove extends HttpServlet {
 
     @JiraImport
-    private IssueService issueService;
+    private IssueManager issueManager;
     @JiraImport
     private ProjectService projectService;
     @JiraImport
@@ -59,13 +59,13 @@ public class ProjectApprove extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
     // The transition ID
 
-    public ProjectApprove(IssueService issueService, ProjectService projectService,
+    public ProjectApprove(IssueManager issueManager, ProjectService projectService,
                           SearchService searchService,
                           TemplateRenderer templateRenderer,
                           JiraAuthenticationContext authenticationContext,
                           ConstantsManager constantsManager,
                           RequestFactory requestFactory) {
-        this.issueService = issueService;
+        this.issueManager = issueManager;
         this.projectService = projectService;
         this.searchService = searchService;
         this.templateRenderer = templateRenderer;
@@ -92,7 +92,6 @@ public class ProjectApprove extends HttpServlet {
     private Map<String, Object> createContext() throws JqlParseException, SearchException {
 
         Map<String, Object> context = new HashMap<String, Object>();
-
         Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
 
         SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
@@ -144,8 +143,10 @@ public class ProjectApprove extends HttpServlet {
 
     private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
         List<IssueWithCF> issuesWithCF= new ArrayList<>();
-        for (Issue issue : results.getResults()){
-            Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
+        for (Issue issue : results.getResults()) {
+            //Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
+//            Issue issueFull = issueManager.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
+            Issue issueFull = issueManager.getIssueByKeyIgnoreCase(issue.getKey());
             ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
             for (CustomField customField:customFieldsInProject){
                 try{
