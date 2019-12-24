@@ -10,6 +10,7 @@ import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.veniture.constants.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JiraUtilClasses {
@@ -23,7 +24,10 @@ public class JiraUtilClasses {
 
         public List<CustomField> invoke() throws JqlParseException {
             SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
-            return cfMgr.getCustomFieldObjects(searchContext);
+            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
+//            ArrayList<CustomField> list = new ArrayList<>();
+//            list.add(cfMgr.getCustomFieldObject(11501L));
+//            return list;
         }
     }
 }

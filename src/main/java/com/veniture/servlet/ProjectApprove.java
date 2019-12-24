@@ -23,6 +23,7 @@ import com.veniture.constants.Constants;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
+import model.pojo.Program;
 import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldsInProject;
@@ -92,6 +94,7 @@ public class ProjectApprove extends HttpServlet {
     private Map<String, Object> createContext() throws JqlParseException, SearchException {
 
         Map<String, Object> context = new HashMap<String, Object>();
+//        Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
         Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
 
         SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
@@ -101,10 +104,40 @@ public class ProjectApprove extends HttpServlet {
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         context.put("teams", teams);
-        context = addEforCfs(context);
-      //context.put("programs", teams.stream().map(Team::getProgram).collect(Collectors.toSet()));
+//        context = addEforCfs(context);
+        Set<Program> BasicPrograms = getPrograms(teams);
+        final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
+        context.put("programs", programsWithCapacities);
         context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
+    }
+
+    private Set<Program> getPrograms(List<Team> teams) {
+        HashSet<Program> programs = new HashSet<>();
+        Set<String> programNames = teams.stream().map(Team::getProgram).collect(Collectors.toSet());
+        programNames.remove(null);
+        for (String programName: programNames){
+            programs.add(new Program(programName,0));
+        }
+        return programs;
+    }
+
+    private Set<Program> getProgramsWithCapacities(List<Team> teams,Set<Program> Programs) {
+        for (Team team:teams){
+            for (Program program:Programs){
+                try {
+                    if (team.getProgram().equalsIgnoreCase(program.getName())){
+                        Programs.remove(program);
+                        program.addMoreCapacity(team.getRemainingInAYear());
+                        Programs.add(program);
+                        break;
+                    }
+                } catch (Exception e) {
+                    logger.debug("This team does not have any program related to it");
+                }
+            }
+        }
+        return Programs;
     }
 
     private Map<String, Object> addEforCfs (Map<String, Object> context){
@@ -124,28 +157,22 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private List<Team> getTeamsAndSetRemaining() {
-        List<Team> teams2 = new ArrayList<>();
+        List<Team> teams=null;
         try {
             RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-            List<Team> teams=remoteSearcher.getAllTeams();
+            teams=remoteSearcher.getAllTeams();
             for (Team team:teams){
-                if (!team.getName().contains("Team")){
-                    //Gereksiz takimlar vardı onları silmek için yaptım
                     team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
-                    teams2.add(team);
-                }
             }
         } catch (Exception e) {
             logger.error("Error at getTeamsAndSetRemaining");
         }
-        return teams2;
+        return teams;
     }
 
     private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
         List<IssueWithCF> issuesWithCF= new ArrayList<>();
         for (Issue issue : results.getResults()) {
-            //Issue issueFull = issueService.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
-//            Issue issueFull = issueManager.getIssue(authenticationContext.getLoggedInUser(),issue.getId()).getIssue();
             Issue issueFull = issueManager.getIssueByKeyIgnoreCase(issue.getKey());
             ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
             for (CustomField customField:customFieldsInProject){
@@ -163,50 +190,50 @@ public class ProjectApprove extends HttpServlet {
         return issuesWithCF;
     }
 
-    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
-        try {
-            Query conditionQuery;
-                    switch (action) {
-                case "WFA":
-                    conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
-                    break;
-                case "PLANLAMA":
-                    conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
-                    break;
-                case "SATISARTTIRAN":
-                    conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
-                    break;
-                default:
-                     conditionQuery = jqlQueryParser.parseQuery(ProjectApproveJQL);
-                    //conditionQuery = jqlQueryParser.parseQuery(DEVORTAMI_TEST_SORGUSU);
-            }
-
-//            for (Issue issue : issues) {
-//                Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
+//    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
+//        try {
+//            Query conditionQuery;
+//                    switch (action) {
+//                case "WFA":
+//                    conditionQuery = jqlQueryParser.parseQuery(Constants.WFA);
+//                    break;
+//                case "PLANLAMA":
+//                    conditionQuery = jqlQueryParser.parseQuery(Constants.PLANLAMA);
+//                    break;
+//                case "SATISARTTIRAN":
+//                    conditionQuery = jqlQueryParser.parseQuery(Constants.SATISARTTIRAN);
+//                    break;
+//                default:
+//                     //conditionQuery = jqlQueryParser.parseQuery(ProjectApproveJQL);
+//                   // conditionQuery = jqlQueryParser.parseQuery(DEVORTAMI_TEST_SORGUSU);
 //            }
-//            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
-
-
-            //List<CustomField> customFieldsInProject = new ArrayList<>();
-//            customFieldsInProject.add(kapasiteAbapCf);
-//            customFieldsInProject.add(kapasiteSapCf);
-
-
-
-
-//            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
-//            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
-//            context.put("gerekliAbapEforCf", gerekliAbapEforCf);
-//         // context.put("issueService", issueService);
-//         // context.put("user", authenticationContext.getLoggedInUser());
-//            context.put("gerekliSapEforCf", gerekliSapEforCf);
-
-            return context;
-
-        } catch (JqlParseException e) {
-            logger.error("JqlParseException error at project approve" + e.getParseErrorMessage());
-            e.printStackTrace();
-            throw e;
-        }
-    }
+//
+////            for (Issue issue : issues) {
+////                Object kapasiteABAPvalue = kapasiteAbapCf.getValue(issue);
+////            }
+////            IssueService.IssueResult kapasiteIssue = issueService.getIssue(authenticationContext.getLoggedInUser(),"FP-17");
+//
+//
+//            //List<CustomField> customFieldsInProject = new ArrayList<>();
+////            customFieldsInProject.add(kapasiteAbapCf);
+////            customFieldsInProject.add(kapasiteSapCf);
+//
+//
+//
+//
+////            context.put("kapasiteAbap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteAbapCf));
+////            context.put("kapasiteSap",kapasiteIssue.getIssue().getCustomFieldValue(kapasiteSapCf));
+////            context.put("gerekliAbapEforCf", gerekliAbapEforCf);
+////         // context.put("issueService", issueService);
+////         // context.put("user", authenticationContext.getLoggedInUser());
+////            context.put("gerekliSapEforCf", gerekliSapEforCf);
+//
+//            return context;
+//
+//        } catch (JqlParseException e) {
+//            logger.error("JqlParseException error at project approve" + e.getParseErrorMessage());
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 }

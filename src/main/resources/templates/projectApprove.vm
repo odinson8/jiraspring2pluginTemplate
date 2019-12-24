@@ -64,10 +64,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     if (typeof data != 'undefined') {
                         return data
                                 .reduce(function (a, b) {
-                                    // console.log(" ------");
-                                    // console.log("a = "+a);
-                                    // console.log("b = "+b);
-                                    // console.log(" ------");
                                     if (b==="-"){
                                         b="0"
                                     }
@@ -115,35 +111,36 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 }
             } );
 
-            table.on('select.dt deselect.dt', function () {
-                // displayFooter();
-                // AJS.$('#projectsTable').dataTable().fnClearTable();
-            });
+            // table.on('select.dt deselect.dt', function () {
+            //     // displayFooter();
+            //     // AJS.$('#projectsTable').dataTable().fnClearTable();
+            // });
 
             AJS.$("#select2").select2();
 
             AJS.$("#customFieldList-select2").auiSelect2();
-            AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
+            // AJS.$("#customFieldList-select2").find('option').prop('selected', 'selected');
 
+
+            AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
                 //Header'ı göster
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
-                // Get the column API object
-                // var column = table.column('.' + e.val);
-                //
-                // // Toggle the visibility
-                // column.visible( ! column.visible() );
-
                 updateCustomFieldTableDatas(e.val);
                 displayFooter();
             });
 
+            // AJS.$( "#customFieldList-select2 > option").each(function(index) {
+            //     AJS.$(this).prop("selected" , true);
+            //     AJS.$("#customFieldList-select2").trigger("change");
+            // });
+
+            //AJS.$("#customFieldList-select2").trigger("select2:select");
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
                 AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
             });
 
             function onpageSwitch(){
-
                 var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
                 dinamikEklenenlerTableHeaderlar.each(function () {
                     var cfId=AJS.$(this).attr("data-override");
@@ -430,8 +427,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
-                    #foreach($team in $teams)
-                        <th class="teams" remainingTime="$team.getRemainingInAYear()">$team.getName() ($team.getRemainingInAYear())</th>
+                    #foreach($program in $programs)
+                        <th class="program" style="text-align: center;">$program.getName()</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
@@ -442,8 +439,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th></th>
                     <th>Kalan</th>
-                    #foreach($team in $teams)
-                        <th class="teams" style="text-align: center;">$team.getRemainingInAYear()</th>
+                    #foreach($program in $programs)
+                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
                     #end
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
@@ -457,17 +454,21 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ABAPeforCf))$issue.getCustomFieldValue($ABAPeforCf).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ANeforCfId))$issue.getCustomFieldValue($ANeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($BIeforCfId))$issue.getCustomFieldValue($BIeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ECeforCfId))$issue.getCustomFieldValue($ECeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($NSeforCfId))$issue.getCustomFieldValue($NSeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($OPeforCfId))$issue.getCustomFieldValue($OPeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($PMOeforCfId))$issue.getCustomFieldValue($PMOeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SapModEforCfId))$issue.getCustomFieldValue($SapModEforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SDeforCfId))$issue.getCustomFieldValue($SDeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($UDeforCfId))$issue.getCustomFieldValue($UDeforCfId).intValue()#else - #end</td>
-                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($YGeforCfId))$issue.getCustomFieldValue($YGeforCfId).intValue()#else - #end</td>
+                        #foreach($program in $programs)
+                            <td class="program" style="text-align: center;">--</td>
+                        #end
+
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ABAPeforCf))$issue.getCustomFieldValue($ABAPeforCf).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ANeforCfId))$issue.getCustomFieldValue($ANeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($BIeforCfId))$issue.getCustomFieldValue($BIeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($ECeforCfId))$issue.getCustomFieldValue($ECeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($NSeforCfId))$issue.getCustomFieldValue($NSeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($OPeforCfId))$issue.getCustomFieldValue($OPeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($PMOeforCfId))$issue.getCustomFieldValue($PMOeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SapModEforCfId))$issue.getCustomFieldValue($SapModEforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($SDeforCfId))$issue.getCustomFieldValue($SDeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($UDeforCfId))$issue.getCustomFieldValue($UDeforCfId).intValue()#else - #end</td>
+##                        <td class="teams" style="text-align: center;">#if(  $issue.getCustomFieldValue($YGeforCfId))$issue.getCustomFieldValue($YGeforCfId).intValue()#else - #end</td>
                         #foreach($cf in $customFieldsInProject)
                             <td style="display:none; text-align: center;" class="$cf.getId()">-</td>
                         #end
