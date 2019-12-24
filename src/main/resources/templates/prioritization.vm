@@ -96,6 +96,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                 }
             });
 
+            updatePriorities("$restriction");
+
             AJS.$("#customFieldList-select2").auiSelect2();
             AJS.$('#kaydetButton').off().on("click", function (e) {
                 var params = new window.URLSearchParams(window.location.search);
@@ -209,7 +211,6 @@ Released under the MIT license: http://jsbin.mit-license.org
                     onlyColumns: [0,3,4]
                     //Bu sıralama önemli
                 }); // Convert the table into a javascript object
-                console.log(JSON.stringify(table));
 
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/setPriorityCfValuesInJira",
