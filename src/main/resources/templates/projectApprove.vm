@@ -127,6 +127,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
                 updateCustomFieldTableDatas(e.val);
                 displayFooter();
+                hideTableRowsAccordingToOncelikSlider(1);
             });
 
             // AJS.$( "#customFieldList-select2 > option").each(function(index) {
@@ -138,6 +139,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
                 AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
+                hideTableRowsAccordingToOncelikSlider(1);
             });
 
             function onpageSwitch(){
@@ -146,6 +148,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     var cfId=AJS.$(this).attr("data-override");
                     updateCustomFieldTableDatas(cfId);
                 });
+                hideTableRowsAccordingToOncelikSlider(1);
             }
 
                 function updateCustomFieldTableDatas(cfId){
@@ -159,13 +162,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     AJS.$(this).show();
                 });
 
-                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),cfId);
-                //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
-                var array=cfValues.split(",,,");
-                for(var i = 0; i < array.length; i++) {
-                    issueCFsectionInTable[i].innerHTML=array[i];
-                    AJS.$(issueCFsectionInTable[i]).show();
-                }
+                    var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),cfId);
+                    //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
+                    var array=cfValues.split(",,,");
+                    for(var i = 0; i < array.length; i++) {
+                        issueCFsectionInTable[i].innerHTML=array[i];
+                        AJS.$(issueCFsectionInTable[i]).show();
+                    }
             }
 
             function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
@@ -179,9 +182,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     async: false,
                     beforeSend: function () {
+                        console.log("getCfValueFromIssue function started!");
+
                     },
                     error : function (response) {
                         value= "-";
+                        console.log("getCfValueFromIssue ERROR!!!");
                     },
                     success: function (response, status, jqXHR) {
                         console.log("getCfValueFromIssue complete");
@@ -190,7 +196,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 });
                 return value;
             }
-
 
             /*            AJS.$("#customFieldList-select2").select2({
                             maximumSelectionLength: 6
@@ -255,9 +260,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$( "#slider-range" ).slider({
                 range: true,
                 min: 1,
-                max: 500,
+                max: 100,
                 step: 1,
-                values: [ 1, 10 ],
+                values: [ 1, 100 ],
                 slide: function( event, ui ) {
                     AJS.$( "#amount" ).val( ui.values[ 0 ] + "-" +  ui.values[ 1 ] );
                 }
@@ -268,8 +273,38 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             AJS.$( "#slider-range" ).on( "slidechange", function( event, ui ) {
                 var values = AJS.$( "#slider-range" ).slider( "option", "values" );
+                hideTableRowsAccordingToOncelikSlider(1);
                 console.log(values);
             } );
+
+            function hideTableRowsAccordingToOncelikSlider(cfId){
+                try {
+                    showHiddenTableRows();
+                    //custom Field td'leri çeker bu
+                    var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="customfield_11403"]');
+                    issueCFsectionInTable.each(function () {
+                        //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
+                        var tableRow=AJS.$(this).parent();
+                        var number=AJS.$(this).prop("innerHTML");
+                        var integer = parseInt(number, 10);
+                        var lowerBound = parseInt(AJS.$( "#slider-range" ).slider( "values", 0 ), 10);
+                        var upperBound = parseInt(AJS.$( "#slider-range" ).slider( "values", 1 ), 10);
+
+                        if(integer<= lowerBound|| integer>=upperBound){
+                            tableRow.hide();
+                        }
+                    });                }
+                catch(error) {
+                    console.error(error);
+                    // expected output: ReferenceError: nonExistentFunction is not defined
+                    // Note - error messages will vary depending on browser
+                }
+
+            }
+
+            function showHiddenTableRows(){
+                AJS.$('#projectsTable > tbody tr:hidden').show();
+            }
 
             AJS.$('#ApproveButton').off().on("click", function () {
                 var berk = table.cells('.selected', 0);
