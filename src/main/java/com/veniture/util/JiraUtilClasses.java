@@ -24,7 +24,7 @@ public class JiraUtilClasses {
 
         public List<CustomField> invoke() throws JqlParseException {
             SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
-//            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
+            //            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
             return cfMgr.getCustomFieldObjects(searchContext);
 //            ArrayList<CustomField> list = new ArrayList<>();
 //            list.add(cfMgr.getCustomFieldObject(11501L));

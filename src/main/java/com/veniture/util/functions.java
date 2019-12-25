@@ -29,6 +29,11 @@ public class functions {
         ComponentAccessor.getIssueManager().updateIssue(user, issue, EventDispatchOption.ISSUE_UPDATED, false);
     }
 
+    public static String getCustomFieldValueFromIssue(MutableIssue issue,Long cfId){
+        CustomField cf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
+        return cf.getValue(issue).toString();
+    }
+
     public static List<CustomField> getCustomFieldsInProject(String projectKey){
         Long projectId = ComponentAccessor.getProjectManager().getProjectByCurrentKey(projectKey).getId();
         return ComponentAccessor.getCustomFieldManager().getCustomFieldObjects(projectId, ConstantsManager.ALL_ISSUE_TYPES);

@@ -4,8 +4,10 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
@@ -35,7 +37,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.veniture.constants.Constants.*;
+import static com.veniture.constants.Constants.DEVORTAMI_TEST_SORGUSU;
+import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 import static com.veniture.util.functions.getCustomFieldsInProject;
 
 @Scanned
@@ -104,11 +107,11 @@ public class ProjectApprove extends HttpServlet {
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         context.put("teams", teams);
-//        context = addEforCfs(context);
+        context = addEforCfs(context);
         Set<Program> BasicPrograms = getPrograms(teams);
         final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
         context.put("programs", programsWithCapacities);
-        context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
+        //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
     }
 
@@ -141,17 +144,21 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> addEforCfs (Map<String, Object> context){
-        context.put("ABAPeforCf",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ABAPeforCfId));
-        context.put("ANeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ANeforCfId));
-        context.put("BIeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(BIeforCfId));
-        context.put("ECeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(ECeforCfId));
-        context.put("NSeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(NSeforCfId));
-        context.put("OPeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(OPeforCfId));
-        context.put("PMOeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(PMOeforCfId));
-        context.put("SapModEforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(SapModEforCfId));
-        context.put("SDeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(SDeforCfId));
-        context.put("UDeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(UDeforCfId));
-        context.put("YGeforCfId",ComponentAccessor.getCustomFieldManager().getCustomFieldObject(YGeforCfId));
+        CustomFieldManager cfMgr=ComponentAccessor.getCustomFieldManager();
+        CustomField projeYonetimEforCf = cfMgr.getCustomFieldObject(11802l);
+        CustomField sapAbapEforCf = cfMgr.getCustomFieldObject(11803l);
+        CustomField yazılımGeliştirmeEforCf = cfMgr.getCustomFieldObject(11805l);
+        CustomField sapUygulamaEforCf = cfMgr.getCustomFieldObject(11804l);
+        CustomField işZekasıVeRaporlamaEforCf = cfMgr.getCustomFieldObject(11806l);
+
+        ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
+        customFieldArrayList.add(projeYonetimEforCf);
+        customFieldArrayList.add(sapAbapEforCf);
+        customFieldArrayList.add(yazılımGeliştirmeEforCf);
+        customFieldArrayList.add(sapUygulamaEforCf);
+        customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
+
+        context.put("eforCfs",customFieldArrayList);
 
         return context;
     }
@@ -173,11 +180,12 @@ public class ProjectApprove extends HttpServlet {
     private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {
         List<IssueWithCF> issuesWithCF= new ArrayList<>();
         for (Issue issue : results.getResults()) {
-            Issue issueFull = issueManager.getIssueByKeyIgnoreCase(issue.getKey());
+            MutableIssue issueFull = issueManager.getIssueByKeyIgnoreCase(issue.getKey());
             ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
             for (CustomField customField:customFieldsInProject){
                 try{
-                    customFieldsWithValues.add(new CfWithValue(customField,issueFull.getCustomFieldValue(customField).toString()));
+//                    ofBizCustomFieldValuePersister.getValues(cfStable,issueFull.getId(), PersistenceFieldType.TYPE_UNLIMITED_TEXT);
+                    customFieldsWithValues.add(new CfWithValue(customField,getCustomFieldValueFromIssue(issueFull,customField.getIdAsLong())));
                 }
                 catch (Exception e){
                     customFieldsWithValues.add(new CfWithValue(customField," "));
@@ -185,6 +193,22 @@ public class ProjectApprove extends HttpServlet {
                 }
             }
             IssueWithCF issueWithCF= new IssueWithCF(issueFull,customFieldsWithValues);
+            int departmanOnceligi = 0;
+            try {
+                departmanOnceligi = Integer.parseInt(getCustomFieldValueFromIssue(issueFull, 11403L));
+            } catch (Exception e) {
+                logger.error("Cannot get and set  departmanOnceligi ");
+                e.printStackTrace();
+            }
+            issueWithCF.setDepartmanOnceligi(departmanOnceligi);
+            int gmyOnceligi = 0;
+            try {
+                gmyOnceligi = Integer.parseInt(getCustomFieldValueFromIssue(issueFull, 11501L));
+            } catch (Exception e) {
+                logger.error("Cannot get and set gmyOnceligi ");
+            }
+            issueWithCF.setGmyOnceligi(gmyOnceligi);
+            issueWithCF.setProjeYili(2019);
             issuesWithCF.add(issueWithCF);
         }
         return issuesWithCF;

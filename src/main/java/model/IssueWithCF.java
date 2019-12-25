@@ -19,6 +19,18 @@ public class IssueWithCF {
     @Expose
     private List<CfWithValue> customFieldListWithValues;
 
+    @SerializedName("projeYili")
+    @Expose
+    private Integer projeYili;
+
+    @SerializedName("departmanOnceligi")
+    @Expose
+    private Integer departmanOnceligi;
+
+    @SerializedName("gmyOnceligi")
+    @Expose
+    private Integer gmyOnceligi;
+
     public IssueWithCF(Issue issue, List<CfWithValue> customFieldListWithValues) {
         this.issue = issue;
         this.customFieldListWithValues = customFieldListWithValues;
@@ -34,6 +46,30 @@ public class IssueWithCF {
 
     public List<CfWithValue> getCustomFieldListWithValues() {
         return customFieldListWithValues;
+    }
+
+    public Integer getProjeYili() {
+        return projeYili;
+    }
+
+    public void setProjeYili(Integer projeYili) {
+        this.projeYili = projeYili;
+    }
+
+    public Integer getDepartmanOnceligi() {
+        return departmanOnceligi;
+    }
+
+    public void setDepartmanOnceligi(Integer departmanOnceligi) {
+        this.departmanOnceligi = departmanOnceligi;
+    }
+
+    public Integer getGmyOnceligi() {
+        return gmyOnceligi;
+    }
+
+    public void setGmyOnceligi(Integer gmyOnceligi) {
+        this.gmyOnceligi = gmyOnceligi;
     }
 
     public void setCustomFieldListWithValues(List<CfWithValue> customFieldListWithValues) {
