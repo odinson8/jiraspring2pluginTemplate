@@ -19,6 +19,7 @@
     <dependency>com.atlassian.auiplugin:table</dependency>
     <dependency>com.atlassian.auiplugin:aui-select2</dependency>
     <dependency>com.atlassian.auiplugin:aui-table-sortable</dependency>
+    <dependency>com.atlassian.auiplugin:aui-spinner</dependency>
     <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>  
     <resource type="download" name="bootstrap.min.css" location="/js/bootstrap.min.css"/>

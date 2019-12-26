@@ -91,6 +91,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             };
 
             table = AJS.$('#projectsTable').DataTable({
+                "pageLength": 20,
                 "ordering": false,
                 select: true,
                 // "columnDefs": [
@@ -310,8 +311,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 var berk = table.cells('.selected', 0);
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-                console.log("asd");
-
                 var selectedCellsArray = table.cells('.selected', 0).data().toArray();
 
                 jQuery.ajax({
@@ -323,18 +322,20 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     async: true,
                     beforeSend: function () {
-                        console.log(selectedCellsArray);
-
+                        Swal.showLoading()
                     },
                     complete: function (response) {
+                        Swal.hideLoading()
                     },
                     error: function (response) {
-                        Swal.fire(
-                                'Hata!'
-                        )
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
+                        })
                     },
                     success: function (response, status, jqXHR) {
-
                         Swal.fire(
                                 'Başarılı!',
                                 'Projeler Onaylandı!',
@@ -359,13 +360,18 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     async: true,
                     beforeSend: function () {
+                        Swal.showLoading()
                     },
                     complete: function (response) {
+                        Swal.hideLoading()
                     },
                     error: function (response) {
-                        Swal.fire(
-                                'Hata!'
-                        )
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
+                        })
                     },
                     success: function (response, status, jqXHR) {
                         Swal.fire({

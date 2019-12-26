@@ -123,16 +123,6 @@ Released under the MIT license: http://jsbin.mit-license.org
                 //                 console.log("fail");
                 //             }
                 //         })
-
-                Swal.fire({
-                    position: 'center',
-                    imageUrl: 'https://icon-library.net/images/successful-icon/successful-icon-9.jpg',
-                    imageWidth: 200,
-                    imageHeight: 200,
-                    title: 'Önceliklendirme Tamamlandı!',
-                    showConfirmButton: false,
-                    timer: 1900
-                })
             });
             AJS.$("#loading-spinner").hide();
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
@@ -203,7 +193,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                     }
                     i++;
                 });
-                console.log("Priorities are updated");
+                console.log("Priorities are updated (Not in JIRA DB))");
             }
             function updatePrioritiesInJIRA(gmyOrBirim) {
                 var table = AJS.$('#auiTable').tableToJSON({
@@ -221,14 +211,32 @@ Released under the MIT license: http://jsbin.mit-license.org
                     },
                     async: true,
                     beforeSend: function () {
+                        Swal.showLoading()
                     },
                     complete: function (response) {
+                        Swal.hideLoading()
                     },
                     error: function (response) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
+                        })
                         console.log("setPriorityCfValuesInJira has finished with ERROR !!!");
                     },
                     success: function (response, status, jqXHR) {
                         console.log("setPriorityCfValuesInJira is successful");
+                        Swal.fire({
+                            position: 'center',
+                            imageUrl: 'https://icon-library.net/images/successful-icon/successful-icon-9.jpg',
+                            imageWidth: 150,
+                            imageHeight: 150,
+                            title: 'Önceliklendirme Tamamlandı!',
+                            showConfirmButton: false,
+                            timer: 1900
+                        })
+                        window.location.reload();
                     }
                 });
             }
