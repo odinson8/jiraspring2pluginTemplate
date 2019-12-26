@@ -85,7 +85,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     AJS.$(table.column(col).footer()).html(innerHtml);
                 };
 
-                table.columns('th[class*="teams"]').indexes().each(function (e) {
+                table.columns('th[class*="program"]').indexes().each(function (e) {
                     apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
                 });
             };
@@ -500,7 +500,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <td>$issue.getSummary()</td>
                         #foreach($eforCf in $eforCfs)
                             <td class="eforCf" style="text-align: center;">
-                                #if($eforCf.getValue($issue)) $eforCf.getValue($issue) #else - #end
+                                #if($eforCf.getValue($issue)) $eforCf.getValue($issue).intValue() #else 0 #end
                             </td>
                         #end
 

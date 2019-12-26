@@ -21,7 +21,6 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.RemoteSearcher;
-import com.veniture.constants.Constants;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
@@ -39,10 +38,9 @@ import java.util.stream.Collectors;
 
 import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
-import static com.veniture.util.functions.getCustomFieldsInProject;
 
 @Scanned
-public class ProjectApprove extends CustomFieldForProgramWithName {
+public class ProjectApprove extends HttpServlet {
 
     @JiraImport
     private IssueManager issueManager;
