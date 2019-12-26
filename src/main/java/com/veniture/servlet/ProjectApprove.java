@@ -37,12 +37,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.veniture.constants.Constants.DEVORTAMI_TEST_SORGUSU;
+import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 import static com.veniture.util.functions.getCustomFieldsInProject;
 
 @Scanned
-public class ProjectApprove extends HttpServlet {
+public class ProjectApprove extends CustomFieldForProgramWithName {
 
     @JiraImport
     private IssueManager issueManager;
@@ -97,8 +97,8 @@ public class ProjectApprove extends HttpServlet {
     private Map<String, Object> createContext() throws JqlParseException, SearchException {
 
         Map<String, Object> context = new HashMap<String, Object>();
-        Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
-//        Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
+       // Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
+        Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
 
         SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
         List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();

@@ -462,9 +462,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th style="text-align: left;">Key</th>
                     <th style="text-align: left;">Summary</th>
-                    #foreach($program in $programs)
-                        <th class="program" style="text-align: center;">$program.getName()</th>
-                    #end
+##                    #foreach($program in $programs) #end
+                    <th class="program" style="text-align: center;">Proje Yönetimi</th>
+                    <th class="program" style="text-align: center;">SAP Abap</th>
+                    <th class="program" style="text-align: center;">Yazılım Geliştirme</th>
+                    <th class="program" style="text-align: center;">SAP Uygulama</th>
+                    <th class="program" style="text-align: center;">İş Zekası ve Raporlama</th>
+
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
@@ -474,9 +478,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 <tr>
                     <th></th>
                     <th>Kalan</th>
-                    #foreach($program in $programs)
-                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
-                    #end
+##                    #foreach($program in $programs)
+##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
+##                    #end
+                    <th class="program" style="text-align: center;">Proje Yönetimi</th>
+                    <th class="program" style="text-align: center;">SAP Abap</th>
+                    <th class="program" style="text-align: center;">Yazılım Geliştirme</th>
+                    <th class="program" style="text-align: center;">SAP Uygulama</th>
+                    <th class="program" style="text-align: center;">İş Zekası ve Raporlama</th>
                     #foreach($cf in $customFieldsInProject)
                         <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                     #end
@@ -486,11 +495,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #foreach( $IssueWithCF in $issuesWithCF )
                     <tr>
                         #set ($issue=$IssueWithCF.getIssue())
-##                        Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
+##                      Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
                         <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
                         <td>$issue.getSummary()</td>
                         #foreach($eforCf in $eforCfs)
-                            <td class="eforCf" style="text-align: center;">#if( $eforCf.getValue($issue) )  $eforCf.getValue($issue) #else "888" #end</td>
+                            <td class="eforCf" style="text-align: center;">
+                                #if($eforCf.getValue($issue)) $eforCf.getValue($issue) #else - #end
+                            </td>
                         #end
 
                         #foreach($cf in $customFieldsInProject)
