@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -108,7 +109,17 @@ public class ProjectApprove extends HttpServlet {
         context = addEforCfs(context);
         Set<Program> BasicPrograms = getPrograms(teams);
         final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
-        context.put("programs", programsWithCapacities);
+        for (Program program:programsWithCapacities){
+            Integer programCapacity;
+            if (program.getCapacity()>0)
+            {programCapacity= program.getCapacity();}
+            else {
+                programCapacity=0;
+            }
+            String ProgramNameEscaped= Normalizer.normalize(program.getName().replaceAll("\\s",""), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "").replaceAll("ı", "i");
+            context.put(ProgramNameEscaped,programCapacity);
+        }
+//        context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
     }

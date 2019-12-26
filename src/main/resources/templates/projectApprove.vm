@@ -61,6 +61,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 var totalize_selected = function (col) {
                     var data = table.cells('.selected', col).data();
+                    console.log("asdasd");
                     if (typeof data != 'undefined') {
                         return data
                                 .reduce(function (a, b) {
@@ -128,7 +129,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
                 updateCustomFieldTableDatas(e.val);
                 displayFooter();
-                hideTableRowsAccordingToOncelikSlider(1);
+                // hideTableRowsAccordingToOncelikSlider(1);
             });
 
             // AJS.$( "#customFieldList-select2 > option").each(function(index) {
@@ -140,7 +141,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
                 AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
                 AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
-                hideTableRowsAccordingToOncelikSlider(1);
+                // hideTableRowsAccordingToOncelikSlider(1);
             });
 
             function onpageSwitch(){
@@ -149,7 +150,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     var cfId=AJS.$(this).attr("data-override");
                     updateCustomFieldTableDatas(cfId);
                 });
-                hideTableRowsAccordingToOncelikSlider(1);
+                // hideTableRowsAccordingToOncelikSlider(1);
             }
 
                 function updateCustomFieldTableDatas(cfId){
@@ -274,7 +275,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             AJS.$( "#slider-range" ).on( "slidechange", function( event, ui ) {
                 var values = AJS.$( "#slider-range" ).slider( "option", "values" );
-                hideTableRowsAccordingToOncelikSlider(1);
+                // hideTableRowsAccordingToOncelikSlider(1);
                 console.log(values);
             } );
 
@@ -386,142 +387,140 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <meta name="decorator" content="atl.general">
 </head>
 
-<body id="jira>
-    <div class=" content-container">
-<div class="content-body">
-    <div class="aui-group">
-        <header class="aui-page-header">
-            <div class="aui-page-header-inner">
-                <div class="aui-page-header-image">
-                    <span class="aui-avatar aui-avatar-large aui-avatar-project">
-                        <span class="aui-avatar-inner">
-                            <img alt="FLO project" src="https://www.flo.com.tr/pub/assets/flo/img/logo.svg">
-                        </span>
-                    </span>
-                </div>
-                <div class="aui-page-header-main">
-                    <div class="aui-help aui-help-empty-state">
-                        <div class="aui-help-content">
-                            <h1>Proje Onaylama</h1>
-                            <p>Projeleri seçiniz ve onayla butonuna basınız. Birden fazla proje seçmek için CTRL tuşuna basılı tutun.</p>
-                            <p>Sonradan eklenen Özel Alanlar tablonun sağ tarafına eklenecektir.</p>
+<body id="jira">
+    <div class="content-container">
+        <div class="content-body">
+            <div class="aui-group">
+                <header class="aui-page-header">
+                    <div class="aui-page-header-inner">
+                        <div class="aui-page-header-image">
+                                <span class="aui-avatar aui-avatar-large aui-avatar-project">
+                                    <span class="aui-avatar-inner">
+                                        <img alt="FLO project" src="https://www.flo.com.tr/pub/assets/flo/img/logo.svg">
+                                    </span>
+                                </span>
+                        </div>
+                        <div class="aui-page-header-main">
+                            <div class="aui-help aui-help-empty-state">
+                                <div class="aui-help-content">
+                                    <h1>Proje Onaylama</h1>
+                                    <p>Projeleri seçiniz ve onayla butonuna basınız. Birden fazla proje seçmek için CTRL tuşuna basılı tutun.</p>
+                                    <p>Sonradan eklenen Özel Alanlar tablonun sağ tarafına eklenecektir.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </header>
+            </div>
+
+        ##    <div class="aui-group">
+        ##        <div class="aui-item" id="jqlFilter">
+        ##            <form class="aui">
+        ##                <select id="select2" data-placeholder="Select a filter" style="width: 60%">
+        ##                    <option></option>
+        ##                    <option value="PLANLAMA">PLANLAMA</option>
+        ##                    <option value="SATISARTTIRAN">SATISARTTIRAN</option>
+        ##                    <option value="WFA">WFA</option>
+        ##                </select>
+        ##            </form>
+        ##        </div>
+        ##    </div>
+
+        ##                <div class="aui-group">
+        ##                    <div class="aui-item" id="customFieldList">
+        ##                        <form class="aui">
+        ##                            <select id="customFieldList-select2" data-placeholder="Select Fields" multiple style="width: 40%">
+        ##                                <option></option>
+        ##                                #foreach($cf in $projectCFs)
+        ##                                    <option value="$cf.getId()">$cf.getFieldName()</option>
+        ##                                #end
+        ##                            </select>
+        ##                        </form>
+        ##                    </div>
+        ##                </div>
+
+            <div class="aui-group">
+                <div class="aui-item" id="#select2-customFields">
+                    <form class="aui">
+                        <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
+                            <option></option>
+                            #foreach($cf in $customFieldsInProject)
+                                <option value="$cf.getId()">$cf.getFieldName()</option>
+                            #end
+                        </select>
+                    </form>
+                </div>
+                <div class="aui-item" id="#oncelikler-aui-item">
+                    <p>
+                        <label for="amount">WIP: Öncelik Aralığı:</label>
+                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    </p>
+                    <div id="slider-range"></div>
                 </div>
             </div>
-        </header>
-    </div>
+            $ProjeYonetimi    $SAPAbap    $YazilimGelistirme    $SAPUygulama    $IsZekasiveRaporlama
 
-##    <div class="aui-group">
-##        <div class="aui-item" id="jqlFilter">
-##            <form class="aui">
-##                <select id="select2" data-placeholder="Select a filter" style="width: 60%">
-##                    <option></option>
-##                    <option value="PLANLAMA">PLANLAMA</option>
-##                    <option value="SATISARTTIRAN">SATISARTTIRAN</option>
-##                    <option value="WFA">WFA</option>
-##                </select>
-##            </form>
-##        </div>
-##    </div>
+            <div class="aui-group">
+                <div class="aui-item" id="issueTableDiv">
+                    <table id="projectsTable" class=" display nowrap" width="100%">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">Key</th>
+                            <th style="text-align: left;">Summary</th>
+                        ##                    #foreach($program in $programs) #end
+                            <th class="program" style="text-align: center;" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
+                            <th class="program" style="text-align: center;" remainingTime="$SAPAbap">SAP Abap</th>
+                            <th class="program" style="text-align: center;" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
+                            <th class="program" style="text-align: center;" remainingTime="$SAPUygulama">SAP Uygulama</th>
+                            <th class="program" style="text-align: center;" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
 
-##                <div class="aui-group">
-##                    <div class="aui-item" id="customFieldList">
-##                        <form class="aui">
-##                            <select id="customFieldList-select2" data-placeholder="Select Fields" multiple style="width: 40%">
-##                                <option></option>
-##                                #foreach($cf in $projectCFs)
-##                                    <option value="$cf.getId()">$cf.getFieldName()</option>
-##                                #end
-##                            </select>
-##                        </form>
-##                    </div>
-##                </div>
+                            #foreach($cf in $customFieldsInProject)
+                                <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+                            #end
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Kalan</th>
+                        ##                    #foreach($program in $programs)
+                        ##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
+                        ##                    #end
+                            <th class="program" style="text-align: center;">$ProjeYonetimi</th>
+                            <th class="program" style="text-align: center;">$SAPAbap</th>
+                            <th class="program" style="text-align: center;">$YazilimGelistirme</th>
+                            <th class="program" style="text-align: center;">$SAPUygulama</th>
+                            <th class="program" style="text-align: center;">$IsZekasiveRaporlama</th>
+                            #foreach($cf in $customFieldsInProject)
+                                <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+                            #end
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                            #foreach( $IssueWithCF in $issuesWithCF )
+                            <tr>
+                                #set ($issue=$IssueWithCF.getIssue())
+                            ##                      Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
+                                <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
+                                <td>$issue.getSummary()</td>
+                                #foreach($eforCf in $eforCfs)
+                                    <td class="eforCf" style="text-align: center;">
+                                        #if($eforCf.getValue($issue)) $eforCf.getValue($issue).intValue() #else 0 #end
+                                    </td>
+                                #end
 
-    <div class="aui-group">
-        <div class="aui-item" id="#select2-customFields">
-            <form class="aui">
-                <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
-                    <option></option>
-                    #foreach($cf in $customFieldsInProject)
-                        <option value="$cf.getId()">$cf.getFieldName()</option>
-                    #end
-                </select>
-            </form>
-        </div>
-        <div class="aui-item" id="#oncelikler-aui-item">
-            <p>
-                <label for="amount">WIP: Öncelik Aralığı:</label>
-                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-            </p>
-            <div id="slider-range"></div>
-        </div>
-    </div>
-
-    <a id="clickable-label" class="aui-label" href="projectapprove">WIP: Satış arttıran</a>
-    <a id="clickable-label" class="aui-label" href="projectapprove">WIP: Maliyet Azaltan</a>
-
-    <div class="aui-group">
-        <div class="aui-item" id="issueTableDiv">
-            <table id="projectsTable" class=" display nowrap" width="100%">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">Key</th>
-                    <th style="text-align: left;">Summary</th>
-##                    #foreach($program in $programs) #end
-                    <th class="program" style="text-align: center;">Proje Yönetimi</th>
-                    <th class="program" style="text-align: center;">SAP Abap</th>
-                    <th class="program" style="text-align: center;">Yazılım Geliştirme</th>
-                    <th class="program" style="text-align: center;">SAP Uygulama</th>
-                    <th class="program" style="text-align: center;">İş Zekası ve Raporlama</th>
-
-                    #foreach($cf in $customFieldsInProject)
-                        <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
-                    #end
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                    <th></th>
-                    <th>Kalan</th>
-##                    #foreach($program in $programs)
-##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
-##                    #end
-                    <th class="program" style="text-align: center;">Proje Yönetimi</th>
-                    <th class="program" style="text-align: center;">SAP Abap</th>
-                    <th class="program" style="text-align: center;">Yazılım Geliştirme</th>
-                    <th class="program" style="text-align: center;">SAP Uygulama</th>
-                    <th class="program" style="text-align: center;">İş Zekası ve Raporlama</th>
-                    #foreach($cf in $customFieldsInProject)
-                        <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
-                    #end
-                </tr>
-                </tfoot>
-                <tbody>
-                    #foreach( $IssueWithCF in $issuesWithCF )
-                    <tr>
-                        #set ($issue=$IssueWithCF.getIssue())
-##                      Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
-                        <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
-                        <td>$issue.getSummary()</td>
-                        #foreach($eforCf in $eforCfs)
-                            <td class="eforCf" style="text-align: center;">
-                                #if($eforCf.getValue($issue)) $eforCf.getValue($issue).intValue() #else 0 #end
-                            </td>
-                        #end
-
-                        #foreach($cf in $customFieldsInProject)
-                            <td style="display:none; text-align: center;" class="$cf.getId()">-</td>
-                        #end
-                    </tr>
-                    #end
-                </tbody>
-            </table>
-            <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
-            <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
+                                #foreach($cf in $customFieldsInProject)
+                                    <td style="display:none; text-align: center;" class="$cf.getId()">-</td>
+                                #end
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                    <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
+                    <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 </body>
 </html>
