@@ -244,6 +244,16 @@ Released under the MIT license: http://jsbin.mit-license.org
     </script>
 </head>
 <body>
+    #if( $issues.isEmpty() )
+    <div class="aui-group">
+        <div class="aui-help aui-help-empty-state">
+            <div class="aui-help-content">
+                <h1>Proje Önceliklendirme</h1>
+                <p>Önceliklendirme yapılacak proje bulunamadı.</p>
+            </div>
+        </div>
+    </div>
+    #else
     <div class="aui-group">
         <div class="aui-help aui-help-empty-state">
             <div class="aui-help-content">
@@ -310,5 +320,7 @@ Released under the MIT license: http://jsbin.mit-license.org
             </tbody>
         </table>
     </div>
+    #end
+
 </body>
 </html>
