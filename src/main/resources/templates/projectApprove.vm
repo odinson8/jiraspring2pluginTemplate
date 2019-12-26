@@ -34,7 +34,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
     <script>
         AJS.$(document).ready(function() {
-
             var table;
             displayFooter = function () {
                 table = AJS.$('#projectsTable').DataTable();
@@ -61,7 +60,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 var totalize_selected = function (col) {
                     var data = table.cells('.selected', col).data();
-                    console.log("asdasd");
                     if (typeof data != 'undefined') {
                         return data
                                 .reduce(function (a, b) {
@@ -442,7 +440,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             <div class="aui-group">
                 <div class="aui-item" id="#select2-customFields">
                     <form class="aui">
-                        <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="width: 40%">
+                        <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="padding-top: 18px; width: 93%">
                             <option></option>
                             #foreach($cf in $customFieldsInProject)
                                 <option value="$cf.getId()">$cf.getFieldName()</option>
@@ -458,7 +456,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <div id="slider-range"></div>
                 </div>
             </div>
-            $ProjeYonetimi    $SAPAbap    $YazilimGelistirme    $SAPUygulama    $IsZekasiveRaporlama
 
             <div class="aui-group">
                 <div class="aui-item" id="issueTableDiv">
@@ -486,11 +483,16 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         ##                    #foreach($program in $programs)
                         ##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
                         ##                    #end
-                            <th class="program" style="text-align: center;">$ProjeYonetimi</th>
-                            <th class="program" style="text-align: center;">$SAPAbap</th>
-                            <th class="program" style="text-align: center;">$YazilimGelistirme</th>
-                            <th class="program" style="text-align: center;">$SAPUygulama</th>
-                            <th class="program" style="text-align: center;">$IsZekasiveRaporlama</th>
+                            <th class="program" style="text-align: center;">#if($ProjeYonetimi) $ProjeYonetimi #else 0 #end
+                            </th>
+                            <th class="program" style="text-align: center;">#if($SAPAbap) $SAPAbap #else 0 #end
+                            </th>
+                            <th class="program" style="text-align: center;">#if($YazilimGelistirme) $YazilimGelistirme #else 0 #end
+                            </th>
+                            <th class="program" style="text-align: center;">#if($SAPUygulama) $SAPUygulama #else 0 #end
+                            </th>
+                            <th class="program" style="text-align: center;">#if($IsZekasiveRaporlama) $IsZekasiveRaporlama #else 0 #end
+                            </th>
                             #foreach($cf in $customFieldsInProject)
                                 <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                             #end

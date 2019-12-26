@@ -297,7 +297,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                 <th data-override="Summary">Özet</th>
                 <th class="aui-table-column-unsortable" data-override="Description">Açıklama</th>
                 <th data-override="GM">Grup/GMY Önceliği</th>
-                <th data-override="DP">Birim Önceliği</th>
+                <th data-override="DP">Departman Önceliği</th>
                 #foreach($cf in $customFieldsInProject)
                     <th style="display:none;" data-override="$cf.getId()">$cf.getName()</th>
                 #end

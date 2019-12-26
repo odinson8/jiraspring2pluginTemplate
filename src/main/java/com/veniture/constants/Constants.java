@@ -11,10 +11,10 @@ public class Constants {
 
     public static final String adminUsername = "venitureAdm";
     public static final String adminPassword = "asd123";
-    public static final String hostname = "dev.veniture.tk";
-   // public static final String hostname = "jira.flo.com.tr";
+//    public static final String hostname = "dev.veniture.tk";
+    public static final String hostname = "jira.flo.com.tr";
 
-    public static final String scheme = "https://";
+    public static final String scheme = "http://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
     public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=2019-01-02&to=2020-01-02&period=P3m";

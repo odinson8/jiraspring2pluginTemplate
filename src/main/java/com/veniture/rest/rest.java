@@ -174,12 +174,12 @@ public class rest {
         }
     }
 
-    @GET
-    @Path("/test")
-    public String test() throws URIException {
-        RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-        return remoteSearcher.getTotalRemainingTimeInYearForTeam(7).toString();
-    }
+//    @GET
+//    @Path("/test")
+//    public String test() throws URIException {
+//        RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
+//        return remoteSearcher.getTotalRemainingTimeInYearForTeam(7).toString();
+//    }
 
     private JSONArray jsonString2JsonArray(String responseString) {
         try {

@@ -25,7 +25,31 @@ public class JiraUtilClasses {
         public List<CustomField> invoke() throws JqlParseException {
             SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
             //            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
-            return cfMgr.getCustomFieldObjects(searchContext);
+
+            ArrayList<CustomField> cfArrayList= new ArrayList();
+            CustomFieldManager customFieldManager=ComponentAccessor.getCustomFieldManager();
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11403l));//departmanOnceligi
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11405l));//departman
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11304l));//sponsor
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11302l));//projeFaz
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11305l));//etkilenecel dep
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11306l));//proje etiket
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11307l));//satışa pztf etkisini nasıl edersiniz
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11308l));//satış barami
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11309l));//maliyet etkisi tarifi
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11310l));//maliyet barami
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11311l));//verimlilik etkisi tarifi
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11312l));//verimlilik barami
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11313l));//süreçler manuel yürütülebilior mu
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
+            cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
+
+
+
+
+
+            return cfArrayList;
+//            return cfMgr.getCustomFieldObjects(searchContext);
 //            ArrayList<CustomField> list = new ArrayList<>();
 //            list.add(cfMgr.getCustomFieldObject(11501L));
 //            return list;
