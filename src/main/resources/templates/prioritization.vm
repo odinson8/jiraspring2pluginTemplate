@@ -165,15 +165,26 @@ Released under the MIT license: http://jsbin.mit-license.org
                     },
                     async: false,
                     beforeSend: function () {
-                        AJS.$("#loading-spinner").show();
+                        Swal.showLoading();
+
                     },
                     error : function (response) {
+                        Swal.hideLoading();
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
+                        });
                         value= "-";
-                        AJS.$("#loading-spinner").hide();
                     },
                     success: function (response, status, jqXHR) {
+                        Swal.hideLoading();
                         console.log("getCfValueFromIssue complete");
-                        AJS.$("#loading-spinner").hide();
+                        window.scrollTo({
+                            left: 20000,top: 300,
+                            behavior: 'smooth',
+                        });
                         value= response;
                     }
                 });

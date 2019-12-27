@@ -1,6 +1,5 @@
 package com.veniture.util;
 
-import com.veniture.RemoteSearcher;
 import com.veniture.servlet.ProjectApprove;
 import model.pojo.TempoTeams.Team;
 

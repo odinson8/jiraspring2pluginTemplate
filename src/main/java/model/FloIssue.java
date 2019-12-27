@@ -10,7 +10,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import java.util.List;
 import java.util.Map;
 
-public class IssueWithCF {
+public class FloIssue {
     @SerializedName("issue")
     @Expose
     private Issue issue;
@@ -31,7 +31,7 @@ public class IssueWithCF {
     @Expose
     private Integer gmyOnceligi;
 
-    public IssueWithCF(Issue issue, List<CfWithValue> customFieldListWithValues) {
+    public FloIssue(Issue issue, List<CfWithValue> customFieldListWithValues) {
         this.issue = issue;
         this.customFieldListWithValues = customFieldListWithValues;
     }

@@ -1,4 +1,4 @@
-package com.veniture;
+package com.veniture.util;
 
 import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.RequestFactory;

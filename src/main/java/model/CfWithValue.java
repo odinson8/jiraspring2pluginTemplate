@@ -29,9 +29,8 @@ public class CfWithValue {
 
     public String getValue() {
 
-        if(value.length()>100){
-            //return value.substring(0,23);
-            return " ";
+        if(value.length()>400){
+            return value.substring(0,396) + "....";
         }
         else {
             return value;
@@ -41,6 +40,4 @@ public class CfWithValue {
     public void setValue(String value) {
         this.value = value;
     }
-
-
 }

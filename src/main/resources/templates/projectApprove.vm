@@ -18,20 +18,44 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link href="https://unpkg.com/@mountable/spinners@0.0.25/dist/mSpinnerSignal.css" rel="stylesheet">
     <style id="css">
-        .th {
-            text-align: left;
+        td {
+            max-width: 444px; word-wrap: break-word;
         }
 
-        .td {
-            max-width: 199px; word-wrap: break-word;
+        .might-overflow {
+            text-overflow: ellipsis !important;
+            overflow : hidden !important;
+            white-space: nowrap !important;
+            max-width: 400px !important;
+            min-width: 100px !important;
+        }
+
+        .might-overflow:hover {
+            text-overflow: clip !important;
+            white-space: normal !important;
+            word-break: break-all !important;
+            max-width: 400px !important;
+            min-width: 100px !important;
         }
 
     </style>
 
     <script>
         AJS.$(document).ready(function() {
+            AJS.$('#loadingDiv').hide();
+            var loading = AJS.$('#loadingDiv');
+            jQuery.ajaxSetup({
+                beforeSend: function() {
+                    loading.show();
+                },
+                complete: function(){
+                    loading.hide();
+                },
+                success: function() {}
+            });
+
             var table;
             displayFooter = function () {
                 table = AJS.$('#projectsTable').DataTable();
@@ -90,6 +114,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             table = AJS.$('#projectsTable').DataTable({
                 "pageLength": 20,
                 "ordering": false,
+                fixedColumns: {
+                    leftColumns: 1
+                },
                 select: true,
                 // "columnDefs": [
                 //     { "orderable": true, "targets": [0, 2, 3,] }
@@ -188,7 +215,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     success: function (response, status, jqXHR) {
                         console.log("getCfValueFromIssue complete");
-                        value= response;
+                        value=response;
+                        var i;
+                        for (i = 0; i < 5; i++) {
+                            window.scrollTo({
+                                left: 9999999,
+                                behavior: 'smooth'
+                            });
+                        }
                     }
                 });
                 return value;
@@ -433,6 +467,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         ##                        </form>
         ##                    </div>
         ##                </div>
+            <i id="loadingDiv" class="m-spinner--signal"></i>
 
             <div class="aui-group">
                 <div class="aui-item" id="#select2-customFields">
@@ -469,7 +504,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <th class="program" style="text-align: center;" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
 
                             #foreach($cf in $customFieldsInProject)
-                                <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                             #end
                         </tr>
                         </thead>
@@ -491,7 +526,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <th class="program" style="text-align: center;">#if($IsZekasiveRaporlama) $IsZekasiveRaporlama #else 0 #end
                             </th>
                             #foreach($cf in $customFieldsInProject)
-                                <th style="display:none;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
                             #end
                         </tr>
                         </tfoot>
@@ -509,7 +544,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 #end
 
                                 #foreach($cf in $customFieldsInProject)
-                                    <td style="display:none; text-align: center;" class="$cf.getId()">-</td>
+                                    <td style="display:none; text-align: left;" class="might-overflow $cf.getId()">-</td>
                                 #end
                             </tr>
                             #end
