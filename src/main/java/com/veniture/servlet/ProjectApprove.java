@@ -4,7 +4,6 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
@@ -20,12 +19,12 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
-import com.veniture.RemoteSearcher;
 import com.veniture.util.AddPrograms;
-import com.veniture.util.JiraUtilClasses;
+import com.veniture.util.GetCustomFieldsInExcel;
+import com.veniture.util.ProgramEforCfs;
+import com.veniture.util.TeamsWithRemainingTimes;
 import model.CfWithValue;
 import model.IssueWithCF;
-import model.pojo.Program;
 import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.Normalizer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.veniture.constants.Constants.*;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
@@ -57,7 +54,7 @@ public class ProjectApprove extends HttpServlet {
     @JiraImport
     private ConstantsManager constantsManager;
     @JiraImport
-    private RequestFactory requestFactory;
+    public RequestFactory requestFactory;
     String action;
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
@@ -101,55 +98,17 @@ public class ProjectApprove extends HttpServlet {
         Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
 
         SearchResults<Issue> IssueResults = searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
-        List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
-        List<Team> teams= getTeamsAndSetRemaining();
+        List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
+        List<Team> teams= new TeamsWithRemainingTimes(this).invoke();
         context.put("issuesWithCF",getIssueWithCFS(IssueResults, customFieldsInProject));
         context.put("customFieldsInProject", customFieldsInProject);
-        context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
+        context.put("baseUrl", JIRA_BASE_URL);
         context.put("teams", teams);
-        context = addEforCfs(context);
-        context = addProgramsToContext(context, teams);
+        context = new ProgramEforCfs(context).invoke();
+        context = new AddPrograms(context, teams).invoke();
         //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
-    }
-
-    private Map<String, Object> addProgramsToContext(Map<String, Object> context, List<Team> teams) {
-        return new AddPrograms(context, teams).invoke();
-    }
-
-    private Map<String, Object> addEforCfs (Map<String, Object> context){
-        CustomFieldManager cfMgr=ComponentAccessor.getCustomFieldManager();
-        CustomField projeYonetimEforCf = cfMgr.getCustomFieldObject(11802l);
-        CustomField sapAbapEforCf = cfMgr.getCustomFieldObject(11803l);
-        CustomField yazılımGeliştirmeEforCf = cfMgr.getCustomFieldObject(11805l);
-        CustomField sapUygulamaEforCf = cfMgr.getCustomFieldObject(11804l);
-        CustomField işZekasıVeRaporlamaEforCf = cfMgr.getCustomFieldObject(11806l);
-
-        ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
-        customFieldArrayList.add(projeYonetimEforCf);
-        customFieldArrayList.add(sapAbapEforCf);
-        customFieldArrayList.add(yazılımGeliştirmeEforCf);
-        customFieldArrayList.add(sapUygulamaEforCf);
-        customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
-
-        context.put("eforCfs",customFieldArrayList);
-
-        return context;
-    }
-
-    private List<Team> getTeamsAndSetRemaining() {
-        List<Team> teams=null;
-        try {
-            RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
-            teams=remoteSearcher.getAllTeams();
-            for (Team team:teams){
-                    team.setRemainingInAYear(remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId()));
-            }
-        } catch (Exception e) {
-            logger.error("Error at getTeamsAndSetRemaining");
-        }
-        return teams;
     }
 
     private List<IssueWithCF> getIssueWithCFS(SearchResults<Issue> results, List<CustomField> customFieldsInProject) {

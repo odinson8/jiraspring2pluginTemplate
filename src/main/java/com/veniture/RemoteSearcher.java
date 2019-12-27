@@ -1,14 +1,11 @@
 package com.veniture;
 
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.veniture.constants.Constants;
 import model.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
 import model.pojo.TempoPlanner.IssueTableData;
 import model.pojo.TempoTeams.Team;
@@ -18,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
+import static com.veniture.constants.Constants.*;
 
 public class RemoteSearcher {
     private final RequestFactory<?> requestFactory;
@@ -31,11 +30,7 @@ public class RemoteSearcher {
 
     public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
         List<FooterTotalAvailabilityInfos> totals = null;
-        try {
-            totals = GSON.fromJson(getResponseString(Constants.QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
-        } catch (URIException e) {
-            logger.error("No Capacity set for team with Id : "+teamId.toString()+" at Tempo Planning Teams");
-        }
+        totals = GSON.fromJson(getResponseString(QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
         Double totalRemaining= null;
         try {
             totalRemaining = totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
@@ -55,30 +50,32 @@ public class RemoteSearcher {
 
     public List<Team> getAllTeams() throws URIException {
         Type tempoTeamDataType = new TypeToken<List<Team>>() {}.getType();
-        List<Team> tempoTeamData = GSON.fromJson(getResponseString(Constants.QUERY_TEAM), tempoTeamDataType);
+        List<Team> tempoTeamData = GSON.fromJson(getResponseString(QUERY_TEAM), tempoTeamDataType);
         // List<String> names = tempoTeamData.stream().map(Team::getName).collect(Collectors.toList());
         return tempoTeamData;
     }
 
-    public String getResponseString(String Query) throws URIException {
+    public String getResponseString(String Query) {
         //final String fullUrl = scheme + hostname + URIUtil.encodeWithinQuery(QUERY);
         String hostname;
         String scheme;
-        if (ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL).contains("veniture")){
-            hostname=Constants.venitureHostname;
-            scheme = Constants.schemeHTTPS;
+        assert JIRA_BASE_URL != null;
+        if (JIRA_BASE_URL.contains("veniture")){
+            hostname= venitureHostname;
+            scheme = schemeHTTPS;
         }else {
-            hostname=Constants.floHostname;
-            scheme = Constants.schemeHTTP;
+            hostname= floHostname;
+            scheme = schemeHTTP;
         }
 
         final String fullUrl = scheme + hostname + Query;
         final Request request = requestFactory.createRequest(Request.MethodType.GET, fullUrl);
-        request.addBasicAuthentication(hostname, Constants.adminUsername, Constants.adminPassword);
+        request.addBasicAuthentication(hostname, adminUsername, adminPassword);
 
         try {
             return request.execute();
         } catch (final ResponseException e) {
+            logger.error(e.getMessage() + e.getLocalizedMessage());
             throw new RuntimeException("Search for " + Query + " on " + fullUrl + " failed.", e);
         }
     }

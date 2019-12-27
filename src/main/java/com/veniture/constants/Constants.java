@@ -1,8 +1,11 @@
 package com.veniture.constants;
 
+import com.atlassian.jira.component.ComponentAccessor;
+
 public class Constants {
 
     public static final String SC_SORGUSU = "project = PF";
+    public static final String JIRA_BASE_URL = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
 
     //Genel
     public enum Environments {

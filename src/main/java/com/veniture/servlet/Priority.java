@@ -14,7 +14,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.constants.Constants;
-import com.veniture.util.JiraUtilClasses;
+import com.veniture.util.GetCustomFieldsInExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +77,7 @@ public class Priority extends HttpServlet {
 
             SearchResults results = searchService.search(authenticationContext.getLoggedInUser(), conditionQuery, PagerFilter.getUnlimitedFilter());
 
-            List<CustomField> customFieldsInProject = new JiraUtilClasses.GetCustomFieldsInSearchContext().invoke();
+            List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
             context.put("issues", results.getResults());
             context.put("restriction", restriction);
             context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
