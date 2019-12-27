@@ -1,5 +1,7 @@
 package com.veniture;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.sal.api.net.ResponseException;
@@ -60,9 +62,19 @@ public class RemoteSearcher {
 
     public String getResponseString(String Query) throws URIException {
         //final String fullUrl = scheme + hostname + URIUtil.encodeWithinQuery(QUERY);
-        final String fullUrl = Constants.scheme + Constants.hostname + Query;
+        String hostname;
+        String scheme;
+        if (ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL).contains("veniture")){
+            hostname=Constants.venitureHostname;
+            scheme = Constants.schemeHTTPS;
+        }else {
+            hostname=Constants.floHostname;
+            scheme = Constants.schemeHTTP;
+        }
+
+        final String fullUrl = scheme + hostname + Query;
         final Request request = requestFactory.createRequest(Request.MethodType.GET, fullUrl);
-        request.addBasicAuthentication(Constants.hostname, Constants.adminUsername, Constants.adminPassword);
+        request.addBasicAuthentication(hostname, Constants.adminUsername, Constants.adminPassword);
 
         try {
             return request.execute();

@@ -1,8 +1,6 @@
 <!-- 
 Written by Veniture
-
-TODO
-İssue Link olsun
+Berk Karabacak
 -->
 
 $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioManagement-resources")
@@ -10,7 +8,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 <html>
 
 <head>
-    <title>Flo Demo</title>
+    <title>Proje Onay</title>
 
     <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
@@ -151,7 +149,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // hideTableRowsAccordingToOncelikSlider(1);
             }
 
-                function updateCustomFieldTableDatas(cfId){
+            function updateCustomFieldTableDatas(cfId){
                 //custom Field td'leri çeker bu
                 var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+cfId+'"]');
                 var issueKeys =[];
@@ -183,7 +181,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     async: false,
                     beforeSend: function () {
                         console.log("getCfValueFromIssue function started!");
-
                     },
                     error : function (response) {
                         value= "-";

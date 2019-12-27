@@ -21,6 +21,7 @@ import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.veniture.RemoteSearcher;
+import com.veniture.util.AddPrograms;
 import com.veniture.util.JiraUtilClasses;
 import model.CfWithValue;
 import model.IssueWithCF;
@@ -60,7 +61,7 @@ public class ProjectApprove extends HttpServlet {
     String action;
 
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
-    private static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
+    public static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
     // The transition ID
 
     public ProjectApprove(IssueManager issueManager, ProjectService projectService,
@@ -107,49 +108,14 @@ public class ProjectApprove extends HttpServlet {
         context.put("baseUrl",ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         context.put("teams", teams);
         context = addEforCfs(context);
-        Set<Program> BasicPrograms = getPrograms(teams);
-        final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
-        for (Program program:programsWithCapacities){
-            Integer programCapacity;
-            if (program.getCapacity()>0)
-            {programCapacity= program.getCapacity();}
-            else {
-                programCapacity=0;
-            }
-            String ProgramNameEscaped= Normalizer.normalize(program.getName().replaceAll("\\s",""), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "").replaceAll("ı", "i");
-            context.put(ProgramNameEscaped,programCapacity);
-        }
-//        context.put("programs", programsWithCapacities);
+        context = addProgramsToContext(context, teams);
+        //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
         return context;
     }
 
-    private Set<Program> getPrograms(List<Team> teams) {
-        HashSet<Program> programs = new HashSet<>();
-        Set<String> programNames = teams.stream().map(Team::getProgram).collect(Collectors.toSet());
-        programNames.remove(null);
-        for (String programName: programNames){
-            programs.add(new Program(programName,0));
-        }
-        return programs;
-    }
-
-    private Set<Program> getProgramsWithCapacities(List<Team> teams,Set<Program> Programs) {
-        for (Team team:teams){
-            for (Program program:Programs){
-                try {
-                    if (team.getProgram().equalsIgnoreCase(program.getName())){
-                        Programs.remove(program);
-                        program.addMoreCapacity(team.getRemainingInAYear());
-                        Programs.add(program);
-                        break;
-                    }
-                } catch (Exception e) {
-                    logger.debug("This team does not have any program related to it");
-                }
-            }
-        }
-        return Programs;
+    private Map<String, Object> addProgramsToContext(Map<String, Object> context, List<Team> teams) {
+        return new AddPrograms(context, teams).invoke();
     }
 
     private Map<String, Object> addEforCfs (Map<String, Object> context){
@@ -223,7 +189,7 @@ public class ProjectApprove extends HttpServlet {
         return issuesWithCF;
     }
 
-//    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
+    //    private Map<String, Object> addIssuesToTheContext(Map<String, Object> context, String JQL, JqlQueryParser jqlQueryParser, CustomField kapasiteAbapCf,CustomField kapasiteSapCf,CustomField gerekliAbapEforCf,CustomField gerekliSapEforCf) throws SearchException, JqlParseException {
 //        try {
 //            Query conditionQuery;
 //                    switch (action) {
