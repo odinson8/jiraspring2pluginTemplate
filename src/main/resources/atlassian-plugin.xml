@@ -23,10 +23,10 @@
     <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>  
     <resource type="download" name="bootstrap.min.css" location="/js/bootstrap.min.css"/>
-     <resource type="download" name="jquery.tabletojson.min.js" location="/js/jquery.tabletojson.min.js"/>
-     <resource type="download" name="sweetalert2.all.js" location="/js/sweetalert2.all.js"/>
-     <resource type="download" name="sweetalert2.css" location="/js/sweetalert2.css"/>
-     <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
+    <resource type="download" name="jquery.tabletojson.min.js" location="/js/jquery.tabletojson.min.js"/>
+    <resource type="download" name="sweetalert2.all.js" location="/js/sweetalert2.all.js"/>
+    <resource type="download" name="sweetalert2.css" location="/js/sweetalert2.css"/>
+    <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>

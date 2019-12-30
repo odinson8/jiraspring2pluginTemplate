@@ -1,12 +1,14 @@
 package com.veniture.servlet;
 
 import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.customfields.option.Option;
+import com.atlassian.jira.issue.customfields.option.Options;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -61,8 +63,8 @@ public class ProjectApprove extends HttpServlet {
                           RequestFactory requestFactory) {
         this.issueManager = issueManager;
         this.searchService = searchService;
-        this.templateRenderer = templateRenderer;
         this.authenticationContext = authenticationContext;
+        this.templateRenderer = templateRenderer;
         this.constantsManager = constantsManager;
         this.requestFactory = requestFactory;
     }
@@ -86,21 +88,47 @@ public class ProjectApprove extends HttpServlet {
 
         Map<String, Object> context = new HashMap<>();
        // Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
-        SearchResults<Issue> IssueResults = getIssueSearchResults();
+        SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
         List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
-        List<Team> teams= new TeamsWithRemainingTimes(this).invoke();
-        context.put("issuesWithCF", new FloIssuesCreator(this, IssueResults, customFieldsInProject).invoke());
+        context.put("issuesWithCF", new tableRowBuilder(issueManager,logger, IssueResults, customFieldsInProject).invoke());
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl", JIRA_BASE_URL);
-        context.put("teams", teams);
+//        context.put("teams", teams);
         context = new ProgramEforCfs(context).invoke();
+        List<Team> teams= new TeamsWithRemainingTimes(logger,requestFactory).invoke();
         context = new AddPrograms(context, teams).invoke();
         //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
+
+        CustomField cf=ComponentAccessor.getCustomFieldManager().getCustomFieldObject(11306L);
+        FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
+        Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
+        context.put("options", options);
+
+        for (Option option:options){
+            option.getValue();
+        }
         return context;
     }
 
-    private SearchResults<Issue> getIssueSearchResults() throws JqlParseException, SearchException {
+//    JSONObject getRow(String firstName, String lastName){
+//        JSONObject person = new JSONObject();
+//        person.put("firstName", firstName);
+//        person.put("lastName", lastName);
+//        return person ;
+//    }
+//
+//    public JSONArray getTable(){
+//
+//        JSONArray employees = new JSONArray();
+//        employees.put(getRow("John","Doe"));
+//        employees.put(getRow("Anna","Smith"));
+//        employees.put(getRow("Peter","Jones"));
+//
+//        return employees;
+//    }
+
+    public static SearchResults<Issue> getIssueSearchResults(JiraAuthenticationContext authenticationContext,SearchService searchService) throws JqlParseException, SearchException {
         Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(ProjectApproveJQL);
         return searchService.search(authenticationContext.getLoggedInUser(),projectApproveQuery , PagerFilter.getUnlimitedFilter());
     }

@@ -32,4 +32,29 @@ public class ProgramEforCfs {
         context.put("eforCfs",customFieldArrayList);
         return context;
     }
+
+
+    public ProgramEforCfs() {
+    }
+
+    public ArrayList<CustomField> berk() {
+        CustomFieldManager cfMgr= ComponentAccessor.getCustomFieldManager();
+        CustomField projeYonetimEforCf = cfMgr.getCustomFieldObject(11802l);
+        CustomField sapAbapEforCf = cfMgr.getCustomFieldObject(11803l);
+        CustomField yazılımGeliştirmeEforCf = cfMgr.getCustomFieldObject(11805l);
+        CustomField sapUygulamaEforCf = cfMgr.getCustomFieldObject(11804l);
+        CustomField işZekasıVeRaporlamaEforCf = cfMgr.getCustomFieldObject(11806l);
+
+        ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
+        customFieldArrayList.add(projeYonetimEforCf);
+        customFieldArrayList.add(sapAbapEforCf);
+        customFieldArrayList.add(yazılımGeliştirmeEforCf);
+        customFieldArrayList.add(sapUygulamaEforCf);
+        customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
+
+
+        return customFieldArrayList;
+        //context.put("eforCfs",customFieldArrayList);
+        //return context;
+    }
 }

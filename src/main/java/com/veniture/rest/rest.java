@@ -2,11 +2,16 @@ package com.veniture.rest;
 
 
 import com.atlassian.jira.bc.issue.IssueService;
+import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.search.SearchException;
+import com.atlassian.jira.issue.search.SearchResults;
+import com.atlassian.jira.jql.parser.JqlParseException;
+import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.json.JSONArray;
 import com.atlassian.jira.util.json.JSONException;
@@ -16,6 +21,10 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veniture.constants.Constants;
+import com.veniture.util.tableRowBuilder;
+import com.veniture.util.GetCustomFieldsInExcel;
+import com.veniture.util.ProgramEforCfs;
+import model.TableRow;
 import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,31 +34,40 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.veniture.util.functions.updateCfValueForSelectList;
-import static com.veniture.util.functions.updateCustomFieldValue;
+import static com.veniture.servlet.ProjectApprove.getIssueSearchResults;
+import static com.veniture.util.functions.*;
 
 
 @Path("/rest")
 public class rest {
     @JiraImport
     private RequestFactory requestFactory;
-    @JiraImport
 //    private ApplicationProperties applicationProperties;
+    @JiraImport
+    private SearchService searchService;
+    @JiraImport
+    private JiraAuthenticationContext authenticationContext;
+    @JiraImport
     private IssueManager issueManager;
     private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
 //    private static final Gson GSON = new Gson();
     private static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
     private static final ApplicationUser CURRENT_USER = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
 
-    public rest(RequestFactory requestFactory){
+    public rest(RequestFactory requestFactory, SearchService searchService, JiraAuthenticationContext authenticationContext){
         this.requestFactory = requestFactory;
         this.issueManager= ComponentAccessor.getIssueManager();
+        this.searchService = searchService;
+        this.authenticationContext = authenticationContext;
     }
 
     @GET
@@ -80,6 +98,40 @@ public class rest {
         CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
         return ISSUE_SERVICE.getIssue(CURRENT_USER,req.getParameterValues("issueKey")[0]).getIssue().getCustomFieldValue(customField).toString();
     }
+
+    @POST
+    @Path("/testJson")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response testJson(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws SearchException, JqlParseException, JSONException {
+        SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
+        List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
+        List<TableRow> tableRows = new tableRowBuilder(ComponentAccessor.getIssueManager(), logger,IssueResults, customFieldsInProject).invoke();
+        JSONArray jsonArray=  new JSONArray();
+        for (TableRow tableRow : tableRows){
+            JSONObject tableRowJson = tableRow.toJSON();
+//            tableRowJson = addEforCfsToJson(tableRow, tableRowJson);
+            jsonArray.put(tableRowJson);
+        }
+
+        String result = jsonArray.toString();
+        return Response.status(201).entity(result).build();
+    }
+
+//    private JSONObject addEforCfsToJson(TableRow tableRow, JSONObject value) throws JSONException {
+//        for (CustomField cf:new ProgramEforCfs().berk()) {
+//            String customFieldValueFromIssue;
+//            try {
+//                customFieldValueFromIssue = getCustomFieldValueFromIssue(tableRow.getIssue(), cf.getIdAsLong());
+//            } catch (Exception e) {
+//                customFieldValueFromIssue="";
+//                e.printStackTrace();
+//            }
+//            value.put(cf.getId(), customFieldValueFromIssue);
+//        }
+//
+//        return value;
+//    }
+
 
     @POST
     @Path("/bulkGetCfValueFromIssue")

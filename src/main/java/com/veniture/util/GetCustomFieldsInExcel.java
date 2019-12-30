@@ -12,6 +12,7 @@ import com.veniture.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetCustomFieldsInExcel {
 
@@ -24,9 +25,9 @@ public class GetCustomFieldsInExcel {
         SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
         //            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
 
-        ArrayList<CustomField> cfArrayList= new ArrayList();
+        ArrayList<CustomField> cfArrayList= new ArrayList<>();
         CustomFieldManager customFieldManager=ComponentAccessor.getCustomFieldManager();
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11403l));//departmanOnceligi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11403L));//departmanOnceligi
         cfArrayList.add(customFieldManager.getCustomFieldObject(11405l));//departman
         cfArrayList.add(customFieldManager.getCustomFieldObject(11304l));//sponsor
         cfArrayList.add(customFieldManager.getCustomFieldObject(11302l));//projeFaz
@@ -42,6 +43,8 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
 
+
+        List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);
 //            ArrayList<CustomField> list = new ArrayList<>();
