@@ -20,8 +20,35 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="https://unpkg.com/@mountable/spinners@0.0.25/dist/mSpinnerSignal.css" rel="stylesheet">
     <style id="css">
-        td {
-            max-width: 444px; word-wrap: break-word;
+        /*td {*/
+        /*}*/
+
+        a { cursor: pointer; }
+
+
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
+            text-overflow: ellipsis !important;
+            overflow : hidden !important;
+            white-space: nowrap !important;
+            max-width: 400px !important;
+            min-width: 100px !important;
+            vertical-align: middle;
+            horizontal-align: left;
+            word-break: break-all !important;
+        }
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td:hover {
+            text-overflow: clip !important;
+            white-space: normal !important;
+            word-break: break-all !important;
+            max-width: 400px !important;
+            min-width: 100px !important;
+        }
+
+        table.dataTable th {
+            white-space: nowrap;
+            max-width: 400px !important;
+            min-width: 100px !important;
+            text-overflow: clip !important;
         }
 
         .might-overflow {
@@ -55,10 +82,20 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             //     },
             //     success: function() {}
             // });
-
             var table;
-            displayFooter = function () {
-                table = AJS.$('#projectsTable').DataTable();
+            table=AJS.$("#example").DataTable( {
+                "scrollX"   : true,
+                "pageLength": 15,
+                "select"    : true,
+                footerCallback: function (row, data, start, end, display) {
+                    displayFooter();
+                }
+            });
+
+
+            function displayFooter() {
+                //table = AJS.$('#projectsTable').DataTable();
+                table = AJS.$('#example').DataTable();
 
                 // Total over all pages
                 var intVal = function (i) {
@@ -84,50 +121,51 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     var data = table.cells('.selected', col).data();
                     if (typeof data != 'undefined') {
                         return data
-                                .reduce(function (a, b) {
-                                            if (b==="-"){
-                                                b="0"
-                                            }
-                                            return intVal(a) + intVal(b);
-                                        },
-                                        0);
+                            .reduce(function (a, b) {
+                                    if (b === "-") {
+                                        b = "0"
+                                    }
+                                    return intVal(a) + intVal(b);
+                                },
+                                0);
                     } else {
                         return 0;
                     }
                 };
                 var apply_footer = function (kapasite, col) {
-                    var remaining=kapasite - totalize_selected(col);
+                    var remaining = kapasite - totalize_selected(col);
                     var innerHtml;
-                    if (remaining<0){
-                        innerHtml= '' +'<aui-badge style="background: #c50409; color: #ffffff;">' +remaining + '</aui-badge>';
+                    if (remaining < 0) {
+                        innerHtml = '' + '<aui-badge style="background: #c50409; color: #ffffff;">' + remaining + '</aui-badge>';
                     } else {
-                        innerHtml= ' ' + (kapasite - totalize_selected(col));
+                        innerHtml = ' ' + (kapasite - totalize_selected(col));
                     }
                     AJS.$(table.column(col).footer()).html(innerHtml);
                 };
 
                 table.columns('th[class*="program"]').indexes().each(function (e) {
                     apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
+                    //apply_footer(888, e);
                 });
             };
 
-            table = AJS.$('#projectsTable').DataTable({
-                "pageLength": 20,
-                "ordering": false,
-                fixedColumns: {
-                    leftColumns: 1
-                },
-                select: true,
-                // "columnDefs": [
-                //     { "orderable": true, "targets": [0, 2, 3,] }
-                // ],
-                footerCallback: function (row, data, start, end, display) {
-                    displayFooter();
-                },
-                "drawCallback": function( settings ) {
-                    onpageSwitch();
-                }
-            });
+            // table = AJS.$('#projectsTable').DataTable({
+            //     "pageLength": 20,
+            //     "ordering": false,
+            //     fixedColumns: {
+            //         leftColumns: 1
+            //     },
+            //     select: true,
+            //     // "columnDefs": [
+            //     //     { "orderable": true, "targets": [0, 2, 3,] }
+            //     // ],
+            //     footerCallback: function (row, data, start, end, display) {
+            //         displayFooter();
+            //     },
+            //     "drawCallback": function( settings ) {
+            //         onpageSwitch();
+            //     }
+            // });
 
             table.on( 'select deselect', function ( e, dt, type, indexes ) {
                 if ( type === 'row' ) {
@@ -142,11 +180,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             // });
 
             AJS.$("#select2").select2();
-
             AJS.$("#customFieldList-select2").auiSelect2();
             AJS.$("#projeEtiketleri-select2").auiSelect2();
             //AJS.$("#customFieldList-select2").find('option').prop('selected', 'selected');
-
 
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
                 //Header'ı göster
@@ -168,66 +204,66 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // hideTableRowsAccordingToOncelikSlider(1);
             });
 
-            function onpageSwitch(){
-                var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
-                dinamikEklenenlerTableHeaderlar.each(function () {
-                    var cfId=AJS.$(this).attr("data-override");
-                    updateCustomFieldTableDatas(cfId);
-                });
-                // hideTableRowsAccordingToOncelikSlider(1);
-            }
+            // function onpageSwitch(){
+            //     var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
+            //     dinamikEklenenlerTableHeaderlar.each(function () {
+            //         var cfId=AJS.$(this).attr("data-override");
+            //         updateCustomFieldTableDatas(cfId);
+            //     });
+            //     // hideTableRowsAccordingToOncelikSlider(1);
+            // }
 
-            function updateCustomFieldTableDatas(cfId){
-                //custom Field td'leri çeker bu
-                var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+cfId+'"]');
-                var issueKeys =[];
-                issueCFsectionInTable.each(function () {
-                    //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
-                    var issueKey=AJS.$(this).parent().children().first().children().first().prop("innerHTML");
-                    issueKeys.push(issueKey);
-                    AJS.$(this).show();
-                });
+            // function updateCustomFieldTableDatas(cfId){
+            //     //custom Field td'leri çeker bu
+            //     var issueCFsectionInTable = AJS.$('#projectsTable > tbody  tr td[class*="'+cfId+'"]');
+            //     var issueKeys =[];
+            //     issueCFsectionInTable.each(function () {
+            //         //td'ın parent'ı tr'a gidio sonra tr'ın ilk sütunu yani issue key sütünunu çekio
+            //         var issueKey=AJS.$(this).parent().children().first().children().first().prop("innerHTML");
+            //         issueKeys.push(issueKey);
+            //         AJS.$(this).show();
+            //     });
+            //
+            //     var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),cfId);
+            //     //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
+            //     var array=cfValues.split(",,,");
+            //     for(var i = 0; i < array.length; i++) {
+            //         issueCFsectionInTable[i].innerHTML=array[i];
+            //         AJS.$(issueCFsectionInTable[i]).show();
+            //     }
+            // }
 
-                var cfValues=bulkGetCfValuesFromIssue(issueKeys.join(","),cfId);
-                //Burada kritik nokta cfValues length ile Table'daki row sayısı mutlaka aynı olmalı !!!
-                var array=cfValues.split(",,,");
-                for(var i = 0; i < array.length; i++) {
-                    issueCFsectionInTable[i].innerHTML=array[i];
-                    AJS.$(issueCFsectionInTable[i]).show();
-                }
-            }
-
-            function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
-                var value="-";
-                jQuery.ajax({
-                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
-                    type: 'POST',
-                    data: {
-                        issueKey: issueKeys,
-                        customFieldId: customfieldId
-                    },
-                    async: false,
-                    beforeSend: function () {
-                        console.log("getCfValueFromIssue function started!");
-                    },
-                    error : function (response) {
-                        value= "-";
-                        console.log("getCfValueFromIssue ERROR!!!");
-                    },
-                    success: function (response, status, jqXHR) {
-                        console.log("getCfValueFromIssue complete");
-                        value=response;
-                        var i;
-                        for (i = 0; i < 5; i++) {
-                            window.scrollTo({
-                                left: 9999999,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-                return value;
-            }
+            // function bulkGetCfValuesFromIssue(issueKeys, customfieldId){
+            //     var value="-";
+            //     jQuery.ajax({
+            //         url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/bulkGetCfValueFromIssue",
+            //         type: 'POST',
+            //         data: {
+            //             issueKey: issueKeys,
+            //             customFieldId: customfieldId
+            //         },
+            //         async: false,
+            //         beforeSend: function () {
+            //             console.log("getCfValueFromIssue function started!");
+            //         },
+            //         error : function (response) {
+            //             value= "-";
+            //             console.log("getCfValueFromIssue ERROR!!!");
+            //         },
+            //         success: function (response, status, jqXHR) {
+            //             console.log("getCfValueFromIssue complete");
+            //             value=response;
+            //             var i;
+            //             for (i = 0; i < 5; i++) {
+            //                 window.scrollTo({
+            //                     left: 9999999,
+            //                     behavior: 'smooth'
+            //                 });
+            //             }
+            //         }
+            //     });
+            //     return value;
+            // }
 
             /*            AJS.$("#customFieldList-select2").select2({
                             maximumSelectionLength: 6
@@ -260,12 +296,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         });
             */
 
-            AJS.$('#select2').live('change', function () {
-                window.location.replace("https://jira.veniture.tk/plugins/servlet/projectapprove?action=" + this.value);
-
-                //  AJS.$('#select2').val(this.value); // Change the value or make some change to the internal state
-                //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
-            });
+            // AJS.$('#select2').live('change', function () {
+            //     window.location.replace("https://jira.veniture.tk/plugins/servlet/projectapprove?action=" + this.value);
+            //
+            //     //  AJS.$('#select2').val(this.value); // Change the value or make some change to the internal state
+            //     //  AJS.$('#select2').trigger('change.select2'); // Notify only Select2 of changes
+            // });
 
             // AJS.$('#oncelik-range').jRange({
             //     from: 1,
@@ -339,7 +375,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             }
 
             AJS.$('#ApproveButton').off().on("click", function () {
-                var berk = table.cells('.selected', 0);
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 var selectedCellsArray = table.cells('.selected', 0).data().toArray();
@@ -380,10 +415,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 
-                var selectedCellsArray = table.cells('.selected', 0).data().innerHTML.toArray();
+                var selectedCellsArray = table.cells('.selected', 0).data().toArray();
 
                 jQuery.ajax({
-                    url: AJS.params.baseURL + "/rest/rest/1.2/florestservice/transitionissues",
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
                     type: 'GET',
                     data: {
                         issues: selectedCellsArray,
@@ -412,9 +447,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 });
             })
-
-
-            AJS.$("#example").DataTable();
 
             // Premade test data, you can also use your own
             var testDataUrl = "https://raw.githubusercontent.com/chennighan/RapidlyPrototypeJavaScript/master/lesson4/data.json"
@@ -474,29 +506,30 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             function populateDataTable(data) {
                 console.log("populating data table...");
 
-
                 // var length = Object.keys(data).length;
 
                 //Object.values(data)[0] {issue: "PF-2971", summary: "Satış Kaybı (Yeni)", customfield_11802: "", customfield_11803: "1234.0", customfield_11805: "2314.0", …}issue: "PF-2971"summary: "Satış Kaybı (Yeni)"customfield_11802: ""customfield_11803: "1234.0"customfield_11805: "2314.0"customfield_11804: "23.0"customfield_11806: "4.0"__proto__: Object
 
                 var keyValue=Object.values(data)[0];
 
-                var tableTest= AJS.$("#example").DataTable({
-                    "columns":Object.keys(keyValue)
-                    }
-                );
+                var table = AJS.$("#example").DataTable(                );
 
                 // clear the table before populating it with more data
-                tableTest.clear();
+                //tableTest.clear();
 
                 // for (var key in asd) {
                 //     console.log(key);
                 // }
 
                 Object.keys(data).forEach(function(key){
-                    // console.log(key, data[key]);
-                        tableTest.row.add(Object.values(data[key])).draw( false );
+
+                    data[key]["issue"]='<a href="$baseUrl/browse/'+Object.values(data[key])[0]+'" target="_blank">'+Object.values(data[key])[0]+'</a>';
+                    //console.log(Object.values(data[key])[0]);
+                    table.row.add(Object.values(data[key])).draw( false );
+
                 });
+
+                //tableTest.find('td').addClass('might-overflow');
 
                 // for(var i = 1; i < length+1; i++) {
                 //     var customer = data.customers['customer'+i];
@@ -568,40 +601,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         ##                </div>
 ##            <i id="loadingDiv" class="m-spinner--signal"></i>
 
-            <div class="container">
-                <div class="panel">
-                    <button id="loadData" class="btn btn-default">Load Data</button>
-
-                    <table id="example" class="display" cellspacing="0" width="100%">
-                        <thead>
-                        <tr>
-                            <th class="might-overflow">Issue</th>
-                            <th class="might-overflow">Summary</th>
-                            <th class="might-overflow">Proje Yönetimi</th>
-                            <th class="might-overflow">SAP Abap</th>
-                            <th class="might-overflow">Yazılım Geliştirme</th>
-                            <th class="might-overflow">SAP Uygulama</th>
-                            <th class="might-overflow">İş Zekası ve Raporlama</th>
-                            <th class="might-overflow">Departman Önceliği</th>
-                            <th class="might-overflow">Departman</th>
-                            <th class="might-overflow">Sponsor</th>
-                            <th class="might-overflow">Bir projenin yeni bir fazı ise belirtiniz</th>
-                            <th class="might-overflow">Etkilenecek Departmanlar</th>
-                            <th class="might-overflow">Proje Etiketleri</th>
-                            <th class="might-overflow">Satışa pozitif etkisini nasıl tarif edersiniz?</th>
-                            <th class="might-overflow">Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
-                            <th class="might-overflow">Maliyeti azaltmasını nasıl tarif edersiniz?</th>
-                            <th class="might-overflow">Maliyet tasarrufu baremleri (Yıllık / TL)</th>
-                            <th class="might-overflow">Verimliliğe etkisini nasıl tarif edersiniz?</th>
-                            <th class="might-overflow">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
-                            <th class="might-overflow">Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
-                            <th class="might-overflow">Manuel Yürütmedeki Zorluklar</th>
-                            <th class="might-overflow">Danışmanlık Gerekli mi?</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
 
             <div class="aui-group">
                 <div class="aui-item" id="#select2-customFields">
@@ -632,71 +631,131 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <div id="slider-range"></div>
                 </div>
             </div>
-
             <div class="aui-group">
-                <div class="aui-item" id="issueTableDiv">
-                    <table id="projectsTable" class="display nowrap" width="100%">
+                <div class="aui-item">
+                    <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th style="text-align: left;">Key</th>
-                            <th style="text-align: left;">Summary</th>
-                        ##                    #foreach($program in $programs) #end
-                            <th class="program" style="text-align: center;" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
-                            <th class="program" style="text-align: center;" remainingTime="$SAPAbap">SAP Abap</th>
-                            <th class="program" style="text-align: center;" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
-                            <th class="program" style="text-align: center;" remainingTime="$SAPUygulama">SAP Uygulama</th>
-                            <th class="program" style="text-align: center;" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
-
-                            #foreach($cf in $customFieldsInProject)
-                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
-                            #end
+                            <th >Issue</th>
+                            <th >Summary</th>
+                            <th class="program" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
+                            <th class="program" remainingTime="$SAPAbap">SAP Abap</th>
+                            <th class="program" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
+                            <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
+                            <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
+                            <th >Departman Önceliği</th>
+                            <th >Departman</th>
+                            <th >Sponsor</th>
+                            <th >Bir projenin yeni bir fazı ise belirtiniz</th>
+                            <th >Etkilenecek Departmanlar</th>
+                            <th >Proje Etiketleri</th>
+                            <th >Satışa pozitif etkisini nasıl tarif edersiniz?</th>
+                            <th >Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
+                            <th >Maliyeti azaltmasını nasıl tarif edersiniz?</th>
+                            <th >Maliyet tasarrufu baremleri (Yıllık / TL)</th>
+                            <th >Verimliliğe etkisini nasıl tarif edersiniz?</th>
+                            <th >Verimlilik etkisi baremleri (Yıllık / Adet)</th>
+                            <th >Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
+                            <th >Manuel Yürütmedeki Zorluklar</th>
+                            <th >Danışmanlık Gerekli mi?</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th></th>
-                            <th>Kalan</th>
-                        ##                    #foreach($program in $programs)
-                        ##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
-                        ##                    #end
-                            <th class="program" style="text-align: center;">#if($ProjeYonetimi) $ProjeYonetimi #else 0 #end
-                            </th>
-                            <th class="program" style="text-align: center;">#if($SAPAbap) $SAPAbap #else 0 #end
-                            </th>
-                            <th class="program" style="text-align: center;">#if($YazilimGelistirme) $YazilimGelistirme #else 0 #end
-                            </th>
-                            <th class="program" style="text-align: center;">#if($SAPUygulama) $SAPUygulama #else 0 #end
-                            </th>
-                            <th class="program" style="text-align: center;">#if($IsZekasiveRaporlama) $IsZekasiveRaporlama #else 0 #end
-                            </th>
-                            #foreach($cf in $customFieldsInProject)
-                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
-                            #end
+                            <th >Issue</th>
+                            <th >Summary</th>
+                            <th class="program">Proje Yönetimi</th>
+                            <th class="program">SAP Abap</th>
+                            <th class="program">Yazılım Geliştirme</th>
+                            <th class="program">SAP Uygulama</th>
+                            <th class="program">İş Zekası ve Raporlama</th>
+                            <th >Departman Önceliği</th>
+                            <th >Departman</th>
+                            <th >Sponsor</th>
+                            <th >Bir projenin yeni bir fazı ise belirtiniz</th>
+                            <th >Etkilenecek Departmanlar</th>
+                            <th >Proje Etiketleri</th>
+                            <th >Satışa pozitif etkisini nasıl tarif edersiniz?</th>
+                            <th >Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
+                            <th >Maliyeti azaltmasını nasıl tarif edersiniz?</th>
+                            <th >Maliyet tasarrufu baremleri (Yıllık / TL)</th>
+                            <th >Verimliliğe etkisini nasıl tarif edersiniz?</th>
+                            <th >Verimlilik etkisi baremleri (Yıllık / Adet)</th>
+                            <th >Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
+                            <th >Manuel Yürütmedeki Zorluklar</th>
+                            <th >Danışmanlık Gerekli mi?</th>
                         </tr>
                         </tfoot>
-                        <tbody>
-                            #foreach( $IssueWithCF in $issuesWithCF )
-                            <tr>
-                                #set ($issue=$IssueWithCF.getIssue())
-                            ##                      Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
-                                <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
-                                <td>$issue.getSummary()</td>
-                                #foreach($eforCf in $eforCfs)
-                                    <td class="eforCf" style="text-align: center;">
-                                        #if($eforCf.getValue($issue)) $eforCf.getValue($issue).intValue() #else 0 #end
-                                    </td>
-                                #end
-                                #foreach($cf in $customFieldsInProject)
-                                    <td style="display:none; text-align: left;" class="might-overflow $cf.getId()">-</td>
-                                #end
-                            </tr>
-                            #end
-                        </tbody>
                     </table>
                     <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
                     <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
                 </div>
+
             </div>
+##            <div class="aui-group">
+##                <div class="aui-item" id="issueTableDiv">
+##                    <table id="projectsTable" class="display nowrap" width="100%">
+##                        <thead>
+##                        <tr>
+##                            <th style="text-align: left;">Key</th>
+##                            <th style="text-align: left;">Summary</th>
+##                        ##                    #foreach($program in $programs) #end
+##                            <th class="program" style="text-align: center;" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
+##                            <th class="program" style="text-align: center;" remainingTime="$SAPAbap">SAP Abap</th>
+##                            <th class="program" style="text-align: center;" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
+##                            <th class="program" style="text-align: center;" remainingTime="$SAPUygulama">SAP Uygulama</th>
+##                            <th class="program" style="text-align: center;" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
+##
+##                            #foreach($cf in $customFieldsInProject)
+##                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+##                            #end
+##                        </tr>
+##                        </thead>
+##                        <tfoot>
+##                        <tr>
+##                            <th></th>
+##                            <th>Kalan</th>
+##                        ##                    #foreach($program in $programs)
+##                        ##                        <th class="program" style="text-align: center;">$program.getCapacity()</th>
+##                        ##                    #end
+##                            <th class="program" style="text-align: center;">#if($ProjeYonetimi) $ProjeYonetimi #else 0 #end
+##                            </th>
+##                            <th class="program" style="text-align: center;">#if($SAPAbap) $SAPAbap #else 0 #end
+##                            </th>
+##                            <th class="program" style="text-align: center;">#if($YazilimGelistirme) $YazilimGelistirme #else 0 #end
+##                            </th>
+##                            <th class="program" style="text-align: center;">#if($SAPUygulama) $SAPUygulama #else 0 #end
+##                            </th>
+##                            <th class="program" style="text-align: center;">#if($IsZekasiveRaporlama) $IsZekasiveRaporlama #else 0 #end
+##                            </th>
+##                            #foreach($cf in $customFieldsInProject)
+##                                <th style="display:none; text-align: left;" class="dinamikEklenenler" data-override="$cf.getId()">$cf.getName()</th>
+##                            #end
+##                        </tr>
+##                        </tfoot>
+##                        <tbody>
+##                            #foreach( $IssueWithCF in $issuesWithCF )
+##                            <tr>
+##                                #set ($issue=$IssueWithCF.getIssue())
+##                            ##                      Burada bişi değiştirirken dikkat et, buralara referans atan updateCF fonksiyonu var
+##                                <td><a href="$baseUrl/browse/$issue.getKey()">$issue.getKey()</a></td>
+##                                <td>$issue.getSummary()</td>
+##                                #foreach($eforCf in $eforCfs)
+##                                    <td class="eforCf" style="text-align: center;">
+##                                        #if($eforCf.getValue($issue)) $eforCf.getValue($issue).intValue() #else 0 #end
+##                                    </td>
+##                                #end
+##                                #foreach($cf in $customFieldsInProject)
+##                                    <td style="display:none; text-align: left;" class="might-overflow $cf.getId()">-</td>
+##                                #end
+##                            </tr>
+##                            #end
+##                        </tbody>
+##                    </table>
+##                    <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
+##                    <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
+##                </div>
+##            </div>
         </div>
     </div>
 </body>
