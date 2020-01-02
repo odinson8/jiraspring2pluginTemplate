@@ -17,8 +17,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+    <link href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="https://unpkg.com/@mountable/spinners@0.0.25/dist/mSpinnerSignal.css" rel="stylesheet">
+
     <style id="css">
         /*td {*/
         /*}*/
@@ -89,6 +93,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 "scrollX"   : true,
                 "pageLength": 15,
                 "select"    : true,
+                fixedColumns: {
+                    leftColumns: 1
+                },
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
