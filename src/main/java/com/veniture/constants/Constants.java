@@ -21,7 +21,7 @@ public class Constants {
     public static final String schemeHTTPS = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
-    public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=2019-01-02&to=2020-01-02&period=P3m";
+    public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=2020-01-02&to=2021-01-02&period=P3m";
 
     //Veniture Jira - Prod Yeni Ortam
     public static final String ProjectId = "PF";

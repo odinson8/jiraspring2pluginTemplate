@@ -100,7 +100,7 @@ public class rest {
     }
 
     @POST
-    @Path("/testJson")
+    @Path("/getProjectIssues")
     @Produces(MediaType.APPLICATION_JSON)
     public Response testJson(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws SearchException, JqlParseException, JSONException {
         SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);

@@ -249,10 +249,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // table.search( '' )
                 //         .columns().search( '' )
                 //         .draw();
-
-
             });
-
 
             //AJS.$("#customFieldList-select2").trigger("select2:select");
 
@@ -382,7 +379,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 min: 1,
                 max: 100,
                 step: 1,
-                values: [ 1, 100 ],
+                values: [ 1, 200 ],
                 slide: function( event, ui ) {
                     AJS.$( "#amount" ).val( ui.values[ 0 ] + "-" +  ui.values[ 1 ] );
                 }
@@ -396,6 +393,27 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // hideTableRowsAccordingToOncelikSlider(1);
                 console.log(values);
             } );
+            window.onbeforeunload = null;
+
+            // AJS.$.fn.dataTable.ext.search.push(
+            //         function( settings, data, dataIndex ) {
+            //             //console.log( AJS.$( "#slider-range" ).slider( "values", 0 ));
+            //             // var min = parseInt( AJS.$( "#slider-range" ).slider( "values", 0 ), 10 );
+            //             var min = 2;
+            //             // var max = parseInt( AJS.$( "#slider-range" ).slider( "values", 1 ), 10 );
+            //             var max = 5;
+            //             var priority = parseFloat( data[8] ) || 0; // use data for the priority column
+            //
+            //             if ( ( isNaN( min ) && isNaN( max ) ) ||
+            //                     ( isNaN( min ) && priority <= max ) ||
+            //                     ( min <= priority   && isNaN( max ) ) ||
+            //                     ( min <= priority   && priority <= max ) )
+            //             {
+            //                 return true;
+            //             }
+            //             return false;
+            //         }
+            // );
 
             function hideTableRowsAccordingToOncelikSlider(cfId){
                 try {
@@ -540,7 +558,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/testJson",
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/getProjectIssues",
                     contentType: "text/plain",
                     dataType: 'json',
                     success: function (data) {
@@ -595,8 +613,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // }
                 Swal.hideLoading();
                 Swal.close();
-
-
             }
         });
 
@@ -622,7 +638,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <div class="aui-help-content">
                                     <h1>Proje Onaylama</h1>
                                     <p>Projeleri seçiniz ve onayla butonuna basınız. Birden fazla proje seçmek için CTRL tuşuna basılı tutun.</p>
-                                    <p>Sonradan eklenen Özel Alanlar tablonun sağ tarafına eklenecektir.</p>
+                                    <p>Kalan takım kapasiteleri tablonun altındadır ve her seçimle kalan kapasite güncellenir.</p>
                                 </div>
                             </div>
                         </div>
