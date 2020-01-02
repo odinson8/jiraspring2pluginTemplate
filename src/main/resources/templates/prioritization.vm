@@ -165,11 +165,11 @@ Released under the MIT license: http://jsbin.mit-license.org
                     },
                     async: false,
                     beforeSend: function () {
-                        Swal.showLoading();
+                        //Swal.showLoading();
 
                     },
                     error : function (response) {
-                        Swal.hideLoading();
+                        //Swal.hideLoading();
                         Swal.fire({
                             type: 'error',
                             title: 'Oops...',
@@ -179,7 +179,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                         value= "-";
                     },
                     success: function (response, status, jqXHR) {
-                        Swal.hideLoading();
+                        //Swal.hideLoading();
                         console.log("getCfValueFromIssue complete");
                         window.scrollTo({
                             left: 20000,top: 300,
@@ -240,9 +240,7 @@ Released under the MIT license: http://jsbin.mit-license.org
                         console.log("setPriorityCfValuesInJira is successful");
                         Swal.fire({
                             position: 'center',
-                            imageUrl: 'https://icon-library.net/images/successful-icon/successful-icon-9.jpg',
-                            imageWidth: 150,
-                            imageHeight: 150,
+                            type: 'success',
                             title: 'Önceliklendirme Tamamlandı!',
                             showConfirmButton: false,
                             timer: 1900

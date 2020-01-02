@@ -82,6 +82,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             //     },
             //     success: function() {}
             // });
+            Swal.showLoading();
+
             var table;
             table=AJS.$("#example").DataTable( {
                 "scrollX"   : true,
@@ -541,6 +543,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 //         customer.email_address
                 //     ] ).draw( false );
                 // }
+                Swal.hideLoading();
+                Swal.close();
+
+
             }
         });
 
@@ -644,6 +650,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
                             <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
                             <th >Departman Önceliği</th>
+                            <th >GMY Önceliği</th>
                             <th >Departman</th>
                             <th >Sponsor</th>
                             <th >Bir projenin yeni bir fazı ise belirtiniz</th>
@@ -669,21 +676,22 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <th class="program">Yazılım Geliştirme</th>
                             <th class="program">SAP Uygulama</th>
                             <th class="program">İş Zekası ve Raporlama</th>
-                            <th >Departman Önceliği</th>
-                            <th >Departman</th>
-                            <th >Sponsor</th>
-                            <th >Bir projenin yeni bir fazı ise belirtiniz</th>
-                            <th >Etkilenecek Departmanlar</th>
-                            <th >Proje Etiketleri</th>
-                            <th >Satışa pozitif etkisini nasıl tarif edersiniz?</th>
-                            <th >Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
-                            <th >Maliyeti azaltmasını nasıl tarif edersiniz?</th>
-                            <th >Maliyet tasarrufu baremleri (Yıllık / TL)</th>
-                            <th >Verimliliğe etkisini nasıl tarif edersiniz?</th>
-                            <th >Verimlilik etkisi baremleri (Yıllık / Adet)</th>
-                            <th >Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
-                            <th >Manuel Yürütmedeki Zorluklar</th>
-                            <th >Danışmanlık Gerekli mi?</th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
                         </tr>
                         </tfoot>
                     </table>

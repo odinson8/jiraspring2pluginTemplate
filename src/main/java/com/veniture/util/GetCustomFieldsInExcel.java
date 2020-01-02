@@ -28,6 +28,7 @@ public class GetCustomFieldsInExcel {
         ArrayList<CustomField> cfArrayList= new ArrayList<>();
         CustomFieldManager customFieldManager=ComponentAccessor.getCustomFieldManager();
         cfArrayList.add(customFieldManager.getCustomFieldObject(11403L));//departmanOnceligi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11501L));//GMY Önceliği
         cfArrayList.add(customFieldManager.getCustomFieldObject(11405l));//departman
         cfArrayList.add(customFieldManager.getCustomFieldObject(11304l));//sponsor
         cfArrayList.add(customFieldManager.getCustomFieldObject(11302l));//projeFaz
