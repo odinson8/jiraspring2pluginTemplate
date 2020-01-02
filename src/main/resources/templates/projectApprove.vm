@@ -28,6 +28,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         /*}*/
 
         a { cursor: pointer; }
+        span { cursor: pointer !important; }
 
 
         .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
@@ -190,28 +191,70 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             AJS.$("#select2").select2();
             AJS.$("#customFieldList-select2").auiSelect2();
-            AJS.$("#projeEtiketleri-select2").auiSelect2();
+            AJS.$("#projeEtiketleri-select2").auiSelect2({
+                placeholder: "Proje Etiketleri"
+            });
             //AJS.$("#customFieldList-select2").find('option').prop('selected', 'selected');
+
+
+
+            AJS.$("#projeEtiketleri-select2").on('select2-selecting', function (e) {
+                console.log(e.val);
+                table.columns('th:contains("Proje Etiketleri")').search( e.val ).draw()
+            });
+
+            AJS.$("#e8_cl").click(function(e) {
+                e.preventDefault();
+                table.search( '' )
+                        .columns().search( '' )
+                        .draw();
+                AJS.$("#projeEtiketleri-select2").select2("val", "").trigger('change');
+            });
 
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
                 //Header'ı göster
-                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
-                updateCustomFieldTableDatas(e.val);
-                displayFooter();
+                //AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
+                //updateCustomFieldTableDatas(e.val);
+                //displayFooter();
                 // hideTableRowsAccordingToOncelikSlider(1);
+                console.log("hiding : "+ e.val);
+                // Get the column API object
+                var column = table.column( 'th[customfieldid="'+e.val+'"]') ;
+                // Toggle the visibility
+                column.visible( false  );
             });
+
+            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
+                // AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
+                // AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
+                // // hideTableRowsAccordingToOncelikSlider(1);
+
+                console.log("hiding : "+ e.val);
+                // Get the column API object
+                var column = table.column( 'th[customfieldid="'+e.val+'"]') ;
+                // Toggle the visibility
+                column.visible( true  );
+            });
+
 
             // AJS.$( "#customFieldList-select2 > option").each(function(index) {
-            //     AJS.$(this).prop("selected" , true);
-            //     AJS.$("#customFieldList-select2").trigger("change");
+            //     // AJS.$(this).prop("selected" , true);
+            //     // AJS.$("#customFieldList-select2").trigger("change");
+            //
             // });
 
-            //AJS.$("#customFieldList-select2").trigger("select2:select");
-            AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
-                AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').hide();
-                AJS.$('#projectsTable > tbody  tr td[class*="'+e.val+'"]').hide();
-                // hideTableRowsAccordingToOncelikSlider(1);
+            AJS.$("#projeEtiketleri-select2").on('select2-removing', function (e) {
+                console.log(e.val+" hided.");
+
+                // table.search( '' )
+                //         .columns().search( '' )
+                //         .draw();
+
+
             });
+
+
+            //AJS.$("#customFieldList-select2").trigger("select2:select");
 
             // function onpageSwitch(){
             //     var dinamikEklenenlerTableHeaderlar = AJS.$('#projectsTable > thead  th[class*="dinamikEklenenler"]:not([style*=none])');
@@ -618,7 +661,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             <div class="aui-group">
                 <div class="aui-item" id="#select2-customFields">
                     <form class="aui">
-                        <select id="customFieldList-select2" data-placeholder="Alan eklemek için tıklayın." multiple style="padding-top: 18px; width: 93%">
+                        <select id="customFieldList-select2" data-placeholder="Alanları saklamak için tıklayın." multiple style="padding-top: 18px; width: 93%">
                             <option></option>
                             #foreach($cf in $customFieldsInProject)
                                 <option value="$cf.getId()">$cf.getFieldName()</option>
@@ -628,13 +671,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 </div>
                 <div class="aui-item" id="#projeEtiketleri">
                     <form class="aui">
-                        <select id="projeEtiketleri-select2" data-placeholder="projeEtiketleri için tıklayın." style="padding-top: 18px; width: 93%">
+                        <select id="projeEtiketleri-select2" style="padding-top: 18px; width: 93%">
                             <option></option>
                             #foreach($option in $options)
                                 <option value="$option.getValue()">$option.getValue()</option>
                             #end
                         </select>
                     </form>
+                    <span id="e8_cl" style="float: right; right: 17%; bottom: 24px;" class="aui-icon aui-icon-small aui-iconfont-cross-circle">Clear</span>
                 </div>
                 <div class="aui-item" id="#oncelikler-aui-item">
                     <p>
@@ -656,22 +700,22 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <th class="program" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
                             <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
                             <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
-                            <th >Departman Önceliği</th>
-                            <th >GMY Önceliği</th>
-                            <th >Departman</th>
-                            <th >Sponsor</th>
-                            <th >Bir projenin yeni bir fazı ise belirtiniz</th>
-                            <th >Etkilenecek Departmanlar</th>
-                            <th >Proje Etiketleri</th>
-                            <th >Satışa pozitif etkisini nasıl tarif edersiniz?</th>
-                            <th >Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
-                            <th >Maliyeti azaltmasını nasıl tarif edersiniz?</th>
-                            <th >Maliyet tasarrufu baremleri (Yıllık / TL)</th>
-                            <th >Verimliliğe etkisini nasıl tarif edersiniz?</th>
-                            <th >Verimlilik etkisi baremleri (Yıllık / Adet)</th>
-                            <th >Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
-                            <th >Manuel Yürütmedeki Zorluklar</th>
-                            <th >Danışmanlık Gerekli mi?</th>
+                            <th customFieldId="customfield_11403">Departman Önceliği</th>
+                            <th customFieldId="customfield_11501">GMY Önceliği</th>
+                            <th customFieldId="customfield_11405">Departman</th>
+                            <th customFieldId="customfield_11304">Sponsor</th>
+                            <th customFieldId="customfield_11302">Bir projenin yeni bir fazı ise belirtiniz</th>
+                            <th customFieldId="customfield_11305">Etkilenecek Departmanlar</th>
+                            <th customFieldId="customfield_11306">Proje Etiketleri</th>
+                            <th customFieldId="customfield_11307">Satışa pozitif etkisini nasıl tarif edersiniz?</th>
+                            <th customFieldId="customfield_11308">Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
+                            <th customFieldId="customfield_11309">Maliyeti azaltmasını nasıl tarif edersiniz?</th>
+                            <th customFieldId="customfield_11310">Maliyet tasarrufu baremleri (Yıllık / TL)</th>
+                            <th customFieldId="customfield_11311">Verimliliğe etkisini nasıl tarif edersiniz?</th>
+                            <th customFieldId="customfield_11312">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
+                            <th customFieldId="customfield_11313">Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
+                            <th customFieldId="customfield_11314">Manuel Yürütmedeki Zorluklar</th>
+                            <th customFieldId="customfield_11315">Danışmanlık Gerekli mi?</th>
                         </tr>
                         </thead>
                         <tfoot>
