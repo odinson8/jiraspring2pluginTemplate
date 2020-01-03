@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.veniture.constants.Constants.*;
@@ -30,7 +31,9 @@ public class RemoteSearcher {
 
     public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
         List<FooterTotalAvailabilityInfos> totals = null;
-        totals = GSON.fromJson(getResponseString(QUERY_AVAILABILITY_YEAR.replace("XXX",teamId.toString())), IssueTableData.class).getFooter().getColumns();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(year)).replace("ZZZ",String.valueOf(year+1));
+        totals = GSON.fromJson(getResponseString(QUERY), IssueTableData.class).getFooter().getColumns();
         Double totalRemaining= null;
         try {
             totalRemaining = totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);

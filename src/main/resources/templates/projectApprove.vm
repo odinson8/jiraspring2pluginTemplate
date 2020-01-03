@@ -196,8 +196,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             });
             //AJS.$("#customFieldList-select2").find('option').prop('selected', 'selected');
 
-
-
             AJS.$("#projeEtiketleri-select2").on('select2-selecting', function (e) {
                 console.log(e.val);
                 table.columns('th:contains("Proje Etiketleri")').search( e.val ).draw()
@@ -394,26 +392,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 console.log(values);
             } );
             window.onbeforeunload = null;
-
-            // AJS.$.fn.dataTable.ext.search.push(
-            //         function( settings, data, dataIndex ) {
-            //             //console.log( AJS.$( "#slider-range" ).slider( "values", 0 ));
-            //             // var min = parseInt( AJS.$( "#slider-range" ).slider( "values", 0 ), 10 );
-            //             var min = 2;
-            //             // var max = parseInt( AJS.$( "#slider-range" ).slider( "values", 1 ), 10 );
-            //             var max = 5;
-            //             var priority = parseFloat( data[8] ) || 0; // use data for the priority column
-            //
-            //             if ( ( isNaN( min ) && isNaN( max ) ) ||
-            //                     ( isNaN( min ) && priority <= max ) ||
-            //                     ( min <= priority   && isNaN( max ) ) ||
-            //                     ( min <= priority   && priority <= max ) )
-            //             {
-            //                 return true;
-            //             }
-            //             return false;
-            //         }
-            // );
 
             function hideTableRowsAccordingToOncelikSlider(cfId){
                 try {
@@ -696,13 +674,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </form>
                     <span id="e8_cl" style="float: right; right: 17%; bottom: 24px;" class="aui-icon aui-icon-small aui-iconfont-cross-circle">Clear</span>
                 </div>
-                <div class="aui-item" id="#oncelikler-aui-item">
-                    <p>
-                        <label for="amount">WIP: Öncelik Aralığı:</label>
-                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                    </p>
-                    <div id="slider-range"></div>
-                </div>
+##                <div class="aui-item" id="#oncelikler-aui-item">
+##                    <p>
+##                        <label for="amount">WIP: Öncelik Aralığı:</label>
+##                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+##                    </p>
+##                    <div id="slider-range"></div>
+##                </div>
             </div>
             <div class="aui-group">
                 <div class="aui-item">
