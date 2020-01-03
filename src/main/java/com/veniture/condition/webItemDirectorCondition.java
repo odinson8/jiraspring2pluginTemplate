@@ -16,12 +16,16 @@ public class webItemDirectorCondition implements Condition {
         Boolean isLoggedin=ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser();
         Boolean isLoggedin2=ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser();
         //Bunuda kullan : isLoggedInUser()
-
     }
 
     @Override
     public boolean shouldDisplay(Map<String, Object> map) {
-        boolean exceptionUsers = loggedInUser.getName().contains("ongul") || loggedInUser.getName().contains("enit") ||loggedInUser.getName().contains("eyhan") ;
-        return ComponentAccessor.getGroupManager().getGroupNamesForUser(loggedInUser).contains("Direktörler") || exceptionUsers ;
+        if (!ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser()){
+            return false;
+        }
+        else {
+            boolean exceptionUsers = loggedInUser.getName().contains("ongul") || loggedInUser.getName().contains("enit") ||loggedInUser.getName().contains("eyhan") ;
+            return ComponentAccessor.getGroupManager().getGroupNamesForUser(loggedInUser).contains("Direktörler") || exceptionUsers ;
+        }
     }
 }

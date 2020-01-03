@@ -44,7 +44,6 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
 
-
         List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);

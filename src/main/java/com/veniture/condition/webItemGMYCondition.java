@@ -20,8 +20,13 @@ public class webItemGMYCondition implements Condition {
 
     @Override
     public boolean shouldDisplay(Map<String, Object> map) {
-        Boolean exceptionss = loggedInUser.getName().contains("ongul") || loggedInUser.getName().contains("enit") ||loggedInUser.getName().contains("eyhan") ;
 
-        return ComponentAccessor.getGroupManager().getGroupNamesForUser(loggedInUser).contains("GMY") || exceptionss;
+        if (!ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser()){
+            return false;
+        }
+        else {
+            Boolean exceptionss = loggedInUser.getName().contains("ongul") || loggedInUser.getName().contains("enit") || loggedInUser.getName().contains("eyhan");
+            return ComponentAccessor.getGroupManager().getGroupNamesForUser(loggedInUser).contains("GMY") || exceptionss;
+        }
     }
 }

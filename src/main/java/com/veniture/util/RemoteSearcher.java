@@ -24,15 +24,14 @@ public class RemoteSearcher {
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
     private static final Logger logger = LoggerFactory.getLogger(RemoteSearcher.class);// The transition ID
 
-
     public RemoteSearcher(final RequestFactory<?> requestFactory) {
         this.requestFactory = requestFactory;
     }
 
     public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
         List<FooterTotalAvailabilityInfos> totals = null;
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(year)).replace("ZZZ",String.valueOf(year+1));
+        int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(CurrentYear)).replace("ZZZ",String.valueOf(CurrentYear+1));
         totals = GSON.fromJson(getResponseString(QUERY), IssueTableData.class).getFooter().getColumns();
         Double totalRemaining= null;
         try {
