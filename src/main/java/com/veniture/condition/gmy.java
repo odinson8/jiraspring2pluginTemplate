@@ -7,14 +7,11 @@ import com.atlassian.plugin.web.Condition;
 
 import java.util.Map;
 
-public class webItemGMYCondition implements Condition {
+public class gmy implements Condition {
     ApplicationUser loggedInUser;
     @Override
     public void init(Map<String, String> map) throws PluginParseException {
-       // ComponentAccessor.getJiraAuthenticationContext().clearLoggedInUser();
         loggedInUser=ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-        Boolean isLoggedin=ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser();
-        Boolean isLoggedin2=ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser();
 
     }
 

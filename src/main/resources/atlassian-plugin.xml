@@ -27,6 +27,9 @@
     <resource type="download" name="sweetalert2.all.js" location="/js/sweetalert2.all.js"/>
     <resource type="download" name="sweetalert2.css" location="/js/sweetalert2.css"/>
     <resource type="download" name="Sortable.js" location="/js/Sortable.js"/>
+<!--    <resource type="download" name="d3.js" location="/js/d3.min.js"/>-->
+    <resource type="download" name="chart.js" location="/js/Chart.min.js"/>
+    <resource type="download" name="chart.css" location="/js/Chart.min.css"/>
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>
@@ -35,9 +38,9 @@
     <description key="projectapprove-item-desc">Proje Onay</description>
     <label key="Proje Onay"/>
     <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link>
-    <condition class="com.veniture.condition.webItemGMYCondition"/>
+    <condition class="com.veniture.condition.projectApprove"/>
 <!--    <conditions type="AND">-->
-<!--      <condition class="com.veniture.condition.webItemGMYCondition"/>-->
+<!--      <condition class="com.veniture.condition.gmy"/>-->
 <!--      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition">-->
 <!--    </condition>-->
 <!--  </conditions> -->
@@ -47,14 +50,14 @@
     <description key="prioritization-gmy-item-desc">Gmy Önceliklendirme</description>
     <label key="Önceliklendirme GMY"/>
     <link linkId="prioritization-item-link">/plugins/servlet/prioritization?restriction=gmy</link>
-    <condition class="com.veniture.condition.webItemGMYCondition" />
+    <condition class="com.veniture.condition.gmy" />
   </web-item>
 
   <web-item key="prioritization-dp-webitem" name="Dp Öncelik" section="system.top.navigation.bar" weight="200">
     <description key="prioritization-dp-item-desc">DP Önceliklendirme</description>
     <label key="Önceliklendirme DP"/>
     <link linkId="prioritization-item-link">/plugins/servlet/prioritization?restriction=dp</link>
-    <condition class="com.veniture.condition.webItemDirectorCondition"/>
+    <condition class="com.veniture.condition.department"/>
   </web-item>
 
   <servlet name="Project Approve Servlet" key="projectapprove" class="com.veniture.servlet.ProjectApprove">
