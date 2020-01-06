@@ -99,13 +99,17 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             var table;
             table=AJS.$("#example").DataTable( {
-                "scrollX"   : true,
-                "pageLength": 15,
+                "scrollX"   : false,
+                // "pageLength": 15,
                 "select"    : true,
                 "paging"    :false,
                 fixedColumns: {
                     leftColumns: 1
                 },
+                columnDefs: [
+                    { targets: [0, 1], visible: true},
+                    { targets: '_all', visible: false }
+                ],
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
@@ -218,17 +222,26 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 AJS.$("#projeEtiketleri-select2").select2("val", "").trigger('change');
             });
 
+            AJS.$("#select-all").click(function(e) {
+                table.rows( {order:'index', search:'applied'} ).select();
+            });
+
+            AJS.$("#deselect-all").click(function(e) {
+                table.rows( {order:'index', search:'applied'} ).deselect();
+            });
+
             AJS.$("#customFieldList-select2").on('select2-selecting', function (e) {
-                //Header'ı göster
-                //AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
-                //updateCustomFieldTableDatas(e.val);
-                //displayFooter();
+                // Header'ı göster
+                // AJS.$('#projectsTable > thead  th[data-override*="'+e.val+'"]').show();
+                // updateCustomFieldTableDatas(e.val);
+                // displayFooter();
                 // hideTableRowsAccordingToOncelikSlider(1);
                 console.log("hiding : "+ e.val);
                 // Get the column API object
                 var column = table.column( 'th[customfieldid="'+e.val+'"]') ;
                 // Toggle the visibility
-                column.visible( false  );
+                //column.visible(false);
+                column.visible( ! column.visible() );
             });
 
             AJS.$("#customFieldList-select2").on("select2-removing", function(e) {
@@ -240,7 +253,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // Get the column API object
                 var column = table.column( 'th[customfieldid="'+e.val+'"]') ;
                 // Toggle the visibility
-                column.visible( true  );
+                //column.visible( true  );
+                column.visible( ! column.visible() );
+
             });
 
 
@@ -570,7 +585,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 var keyValue=Object.values(data)[0];
 
-                var table = AJS.$("#example").DataTable(                );
+                var table = AJS.$("#example").DataTable();
 
                 // clear the table before populating it with more data
                 //tableTest.clear();
@@ -636,7 +651,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var i;
 
             for(i = 0; i < va.length; i++){
-                var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
+                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
+                var count=table.columns('th:contains("Sponsor")').search(va[i]).page.info().recordsDisplay;
+
                 console.log(va[i] + " = " + count);
                 data.addRow([va[i], count]);
                 table.search('')
@@ -645,9 +662,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             }
 
             // Set chart options
-            var options = {'title':'Departman',
+            var options = {
+                'title':'Departman',
                 'width':700,
-                'height':400};
+                'height':400
+            };
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -749,6 +768,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                </div>
             </div>
             <div class="aui-group">
+                <button class="aui-button" id="select-all">Tümünü seç</button>
+                <button class="aui-button aui-button-primary" id="deselect-all">Tümünü kaldır</button>
+            </div>
+
+                <div class="aui-group">
                 <div class="aui-item">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
