@@ -8,7 +8,7 @@ import com.atlassian.plugin.web.Condition;
 import java.util.Map;
 
 public class projectApprove implements Condition {
-    ApplicationUser loggedInUser;
+    private ApplicationUser loggedInUser;
     @Override
     public void init(Map<String, String> map) throws PluginParseException {
         //ComponentAccessor.getJiraAuthenticationContext().clearLoggedInUser();

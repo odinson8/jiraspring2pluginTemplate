@@ -52,7 +52,6 @@ public class ProgramEforCfs {
         customFieldArrayList.add(sapUygulamaEforCf);
         customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
 
-
         return customFieldArrayList;
         //context.put("eforCfs",customFieldArrayList);
         //return context;

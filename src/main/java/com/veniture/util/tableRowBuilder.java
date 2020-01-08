@@ -5,7 +5,6 @@ import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.search.SearchResults;
-import com.google.common.collect.Table;
 import model.CfWithValue;
 import model.TableRow;
 import org.slf4j.Logger;

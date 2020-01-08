@@ -90,7 +90,7 @@ public class ProjectApprove extends HttpServlet {
        // Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
         SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
         List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
-        context.put("issuesWithCF", new tableRowBuilder(issueManager,logger, IssueResults, customFieldsInProject).invoke());
+       //context.put("issuesWithCF", new tableRowBuilder(issueManager,logger, IssueResults, customFieldsInProject).invoke());
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl", JIRA_BASE_URL);
 //        context.put("teams", teams);
@@ -105,9 +105,9 @@ public class ProjectApprove extends HttpServlet {
         Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
         context.put("options", options);
 
-        for (Option option:options){
-            option.getValue();
-        }
+//        for (Option option:options){
+//            option.getValue();
+//        }
         return context;
     }
 

@@ -15,24 +15,36 @@ public class AddPrograms {
     private Map<String, Object> context;
     private List<Team> teams;
 
+    public static Integer getTotalCapacity() {
+        return totalCapacity;
+    }
+
+    public static Integer totalCapacity = 0;
+
     public AddPrograms(Map<String, Object> context, List<Team> teams) {
         this.context = context;
         this.teams = teams;
     }
 
     public Map<String, Object> invoke() {
+        totalCapacity=0;
+
         Set<Program> BasicPrograms = getPrograms(teams);
         final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
         for (Program program:programsWithCapacities){
             Integer programCapacity;
             if (program.getCapacity()>0)
-            {programCapacity= program.getCapacity();}
+            {
+                programCapacity= program.getCapacity();
+                totalCapacity += programCapacity;
+            }
             else {
                 programCapacity=0;
             }
             String ProgramNameEscaped= Normalizer.normalize(program.getName().replaceAll("\\s",""), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "").replaceAll("ı", "i");
             context.put(ProgramNameEscaped,programCapacity);
         }
+        context.put("TotalCapacity",totalCapacity);
         return context;
     }
 

@@ -25,10 +25,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##    <script src="https://d3js.org/d3.v4.js"></script>
 ##    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
 
     <style id="css">
@@ -100,6 +97,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             table=AJS.$("#example").DataTable( {
                 "scrollX"   : false,
+                // dom: 'Bfrtip',
+                // buttons: [
+                //     'copy', 'csv', 'excel', 'pdf', 'print'
+                // ],
                 // "pageLength": 15,
                 "select"    : true,
                 "paging"    :false,
@@ -107,14 +108,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     leftColumns: 1
                 },
                 columnDefs: [
-                    { targets: [0, 1], visible: true},
+                    { targets: [0, 1, 2], visible: true},
                     { targets: '_all', visible: false }
                 ],
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
             });
-
 
             function displayFooter() {
                 //table = AJS.$('#projectsTable').DataTable();
@@ -211,7 +211,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             AJS.$("#projeEtiketleri-select2").on('select2-selecting', function (e) {
                 console.log(e.val);
-                table.columns('th:contains("Proje Etiketleri")').search( e.val ).draw()
+                table.columns('th:contains("Proje Etiketleri")').search( e.val ).draw();
             });
 
             AJS.$("#e8_cl").click(function(e) {
@@ -566,7 +566,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     success: function (data) {
                         myJsonData = data;
                         populateDataTable(myJsonData);
-                        drawChart();
+                        drawChart1();
+                        drawChart2();
+                        drawChart3();
                     },
                     error: function (e) {
                         console.log("There was an error with your request...");
@@ -622,40 +624,32 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
-
+//, callback : drawChart1
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart1);
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
         // draws it.
-        function drawChart() {
+        function drawChart1() {
 
             // Create the data table.
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Sponsor');
             data.addColumn('number', 'Count');
-            // data.addRows([
-            //     ['Mushrooms', 3],
-            //     ['Onions', 1],
-            //     ['Olives', 1],
-            //     ['Zucchini', 1],
-            //     ['Pepperoni', 2]
-            // ]);
-
             var table = AJS.$("#example").DataTable();
-            var va=table.column(10)
+            var valuesSet=table.column(11)
                     .data()
                     .unique();
 
             var i;
 
-            for(i = 0; i < va.length; i++){
+            for(i = 0; i < valuesSet.length; i++){
                 //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                var count=table.columns('th:contains("Sponsor")').search(va[i]).page.info().recordsDisplay;
+                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
 
-                console.log(va[i] + " = " + count);
-                data.addRow([va[i], count]);
+                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
+                data.addRow([valuesSet[i], valueCount]);
                 table.search('')
                         .columns().search( '' )
                         .draw()
@@ -664,20 +658,86 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             // Set chart options
             var options = {
                 'title':'Departman',
-                'width':700,
+                'width':500,
                 'height':400
             };
 
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
+            var departman_chart = new google.visualization.PieChart(document.getElementById('departman_chart'));
+            departman_chart.draw(data, options);
         }
+        function drawChart2() {
 
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Sponsor');
+            data.addColumn('number', 'Count');
+            var table = AJS.$("#example").DataTable();
+            var valuesSet=table.column(11)
+                    .data()
+                    .unique();
 
+            var i;
 
+            for(i = 0; i < valuesSet.length; i++){
+                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
+                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
+
+                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
+                data.addRow([valuesSet[i], valueCount]);
+                table.search('')
+                        .columns().search( '' )
+                        .draw()
+            }
+
+            // Set chart options
+            var options = {
+                'title':'Departman',
+                'width':500,
+                'height':400
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart2 = new google.visualization.PieChart(document.getElementById('chart2'));
+            chart2.draw(data, options);
+        }
+        function drawChart3() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Sponsor');
+            data.addColumn('number', 'Count');
+            var table = AJS.$("#example").DataTable();
+            var valuesSet=table.column(11)
+                    .data()
+                    .unique();
+
+            var i;
+
+            for(i = 0; i < valuesSet.length; i++){
+                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
+                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
+
+                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
+                data.addRow([valuesSet[i], valueCount]);
+                table.search('')
+                        .columns().search( '' )
+                        .draw()
+            }
+
+            // Set chart options
+            var options = {
+                'title':'Departman',
+                'width':500,
+                'height':400
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart3 = new google.visualization.PieChart(document.getElementById('chart3'));
+            chart3.draw(data, options);
+        }
         // table.columns('th:contains("Sponsor")').search( "Volkan Sezgin" ).draw().rows( {order:'index', search:'applied'} ).count()
     </script>
-
 
     <meta name="decorator" content="atl.general">
 </head>
@@ -707,8 +767,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </div>
                 </header>
             </div>
-            <div id="chart_div"></div>
-
         ##    <div class="aui-group">
         ##        <div class="aui-item" id="jqlFilter">
         ##            <form class="aui">
@@ -767,73 +825,87 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##                    <div id="slider-range"></div>
 ##                </div>
             </div>
+
             <div class="aui-group">
                 <button class="aui-button" id="select-all">Tümünü seç</button>
                 <button class="aui-button aui-button-primary" id="deselect-all">Tümünü kaldır</button>
             </div>
 
-                <div class="aui-group">
+            <div class="aui-group">
                 <div class="aui-item">
-                    <table id="example" class="display" cellspacing="0" width="100%">
+                    <table id="example" class="display" cellspacing="0" width="100%" style="width: 100%;border: 2px solid #bfb7b7!important;border-radius: 12px;">
                         <thead>
-                        <tr>
-                            <th >Issue</th>
-                            <th >Summary</th>
-                            <th class="program" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
-                            <th class="program" remainingTime="$SAPAbap">SAP Abap</th>
-                            <th class="program" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
-                            <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
-                            <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
-                            <th customFieldId="customfield_11403">Departman Önceliği</th>
-                            <th customFieldId="customfield_11501">GMY Önceliği</th>
-                            <th customFieldId="customfield_11405">Departman</th>
-                            <th customFieldId="customfield_11304">Sponsor</th>
-                            <th customFieldId="customfield_11302">Bir projenin yeni bir fazı ise belirtiniz</th>
-                            <th customFieldId="customfield_11305">Etkilenecek Departmanlar</th>
-                            <th customFieldId="customfield_11306">Proje Etiketleri</th>
-                            <th customFieldId="customfield_11307">Satışa pozitif etkisini nasıl tarif edersiniz?</th>
-                            <th customFieldId="customfield_11308">Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
-                            <th customFieldId="customfield_11309">Maliyeti azaltmasını nasıl tarif edersiniz?</th>
-                            <th customFieldId="customfield_11310">Maliyet tasarrufu baremleri (Yıllık / TL)</th>
-                            <th customFieldId="customfield_11311">Verimliliğe etkisini nasıl tarif edersiniz?</th>
-                            <th customFieldId="customfield_11312">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
-                            <th customFieldId="customfield_11313">Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
-                            <th customFieldId="customfield_11314">Manuel Yürütmedeki Zorluklar</th>
-                            <th customFieldId="customfield_11315">Danışmanlık Gerekli mi?</th>
-                        </tr>
+                            <tr>
+                                <th >Issue</th>
+                                <th >Summary</th>
+                                <th remainingTime="$TotalCapacity">$TotalCapacity</th>
+                                <th class="program" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
+                                <th class="program" remainingTime="$SAPAbap">SAP Abap</th>
+                                <th class="program" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
+                                <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
+                                <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
+                                <th customFieldId="customfield_11403">Departman Önceliği</th>
+                                <th customFieldId="customfield_11501">GMY Önceliği</th>
+                                <th customFieldId="customfield_11405">Departman</th>
+                                <th customFieldId="customfield_11304">Sponsor</th>
+                                <th customFieldId="customfield_11302">Bir projenin yeni bir fazı ise belirtiniz</th>
+                                <th customFieldId="customfield_11305">Etkilenecek Departmanlar</th>
+                                <th customFieldId="customfield_11306">Proje Etiketleri</th>
+                                <th customFieldId="customfield_11307">Satışa pozitif etkisini nasıl tarif edersiniz?</th>
+                                <th customFieldId="customfield_11308">Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
+                                <th customFieldId="customfield_11309">Maliyeti azaltmasını nasıl tarif edersiniz?</th>
+                                <th customFieldId="customfield_11310">Maliyet tasarrufu baremleri (Yıllık / TL)</th>
+                                <th customFieldId="customfield_11311">Verimliliğe etkisini nasıl tarif edersiniz?</th>
+                                <th customFieldId="customfield_11312">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
+                                <th customFieldId="customfield_11313">Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
+                                <th customFieldId="customfield_11314">Manuel Yürütmedeki Zorluklar</th>
+                                <th customFieldId="customfield_11315">Danışmanlık Gerekli mi?</th>
+                            </tr>
                         </thead>
                         <tfoot>
-                        <tr>
-                            <th >Issue</th>
-                            <th >Summary</th>
-                            <th class="program">Proje Yönetimi</th>
-                            <th class="program">SAP Abap</th>
-                            <th class="program">Yazılım Geliştirme</th>
-                            <th class="program">SAP Uygulama</th>
-                            <th class="program">İş Zekası ve Raporlama</th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                            <th ></th>
-                        </tr>
+                            <tr>
+                                <th >Issue</th>
+                                <th >Summary</th>
+                                <th remainingTime="$TotalCapacity">$TotalCapacity</th>
+                                <th class="program">Proje Yönetimi</th>
+                                <th class="program">SAP Abap</th>
+                                <th class="program">Yazılım Geliştirme</th>
+                                <th class="program">SAP Uygulama</th>
+                                <th class="program">İş Zekası ve Raporlama</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                         </tfoot>
                     </table>
                     <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
                     <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
                 </div>
+            </div>
 
+            <div class="aui-group">
+                <div class="aui-item">
+                    <div id="departman_chart"></div>
+                </div>
+                <div class="aui-item">
+                    <div id="chart2"></div>
+                </div>
+                <div class="aui-item">
+                    <div id="chart3"></div>
+                </div>
             </div>
 ##            <div class="aui-group">
 ##                <div class="aui-item" id="issueTableDiv">

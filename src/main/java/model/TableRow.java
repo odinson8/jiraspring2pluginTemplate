@@ -1,7 +1,6 @@
 
 package model;
 
-import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.util.json.JSONException;
@@ -9,11 +8,10 @@ import com.atlassian.jira.util.json.JSONObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.veniture.util.ProgramEforCfs;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 
 import java.util.List;
-import java.util.Map;
 
+import static com.veniture.util.AddPrograms.getTotalCapacity;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 
 public class TableRow {
@@ -87,6 +85,7 @@ public class TableRow {
         JSONObject jo = new JSONObject();
         jo.put("issue", issue.getKey());
         jo.put("summary", issue.getSummary());
+        jo.put("totalCapacity", getTotalCapacity());
         addEforJson(jo);
         addExcelCfs(jo);
         return jo;
@@ -94,7 +93,13 @@ public class TableRow {
 
     private void addExcelCfs(JSONObject jo) throws JSONException {
         for (CfWithValue cfWV:customFieldListWithValues){
-            jo.put(cfWV.getCustomField().getName(), cfWV.getValue());
+            String cfName = cfWV.getCustomField().getName();
+            String cfValue = cfWV.getValue();
+            if (cfName.equals("Departman")){
+                jo.put(cfName, cfValue.substring(cfValue.indexOf("1=")+2,cfValue.lastIndexOf("}")));
+            }else {
+                jo.put(cfName, cfValue);
+            }
         }
     }
 
