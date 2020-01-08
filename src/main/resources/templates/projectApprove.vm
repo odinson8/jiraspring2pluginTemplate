@@ -622,6 +622,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         });
 
 
+        function getColumnIndex(customfieldIdAsString){
+            //return table.columns('th:contains("'+headerName+ '")').indexes()[0]
+            var table = AJS.$("#example").DataTable();
+            return table.column('th[customFieldId="'+customfieldIdAsString + '"]').index()
+        }
+
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
 //, callback : drawChart1
@@ -632,13 +638,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         // instantiates the pie chart, passes in the data and
         // draws it.
         function drawChart1() {
-
+            var customfieldIdAsString = "customfield_11405"; //Departman
             // Create the data table.
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Sponsor');
             data.addColumn('number', 'Count');
             var table = AJS.$("#example").DataTable();
-            var valuesSet=table.column(11)
+            var columnIndex= getColumnIndex(customfieldIdAsString)
+            var valuesSet=table.column(columnIndex)
                     .data()
                     .unique();
 
@@ -646,13 +653,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             for(i = 0; i < valuesSet.length; i++){
                 //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
+                var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
 
-                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
+                //console.log("Total count = " + valuesSet[i] + " = " + valueCount);
                 data.addRow([valuesSet[i], valueCount]);
-                table.search('')
-                        .columns().search( '' )
-                        .draw()
+                // table.search('')
+                //         .columns().search( '' )
+                //         .draw()
             }
 
             // Set chart options

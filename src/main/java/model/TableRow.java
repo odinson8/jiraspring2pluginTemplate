@@ -96,7 +96,7 @@ public class TableRow {
             String cfName = cfWV.getCustomField().getName();
             String cfValue = cfWV.getValue();
             if (cfName.equals("Departman")){
-                jo.put(cfName, cfValue.substring(cfValue.indexOf("1=")+2,cfValue.lastIndexOf("}")));
+                jo.put(cfName, cfValue.substring(cfValue.indexOf("1=")+2 ,cfValue.lastIndexOf("}")));
             }else {
                 jo.put(cfName, cfValue);
             }

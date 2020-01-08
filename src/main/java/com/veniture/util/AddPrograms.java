@@ -33,14 +33,14 @@ public class AddPrograms {
         final Set<Program> programsWithCapacities = getProgramsWithCapacities(teams, BasicPrograms);
         for (Program program:programsWithCapacities){
             Integer programCapacity;
-            if (program.getCapacity()>0)
-            {
+            if (program.getCapacity() > 0) {
                 programCapacity= program.getCapacity();
                 totalCapacity += programCapacity;
             }
             else {
                 programCapacity=0;
             }
+            //türkçe karakterler sorun çıkarıyordu
             String ProgramNameEscaped= Normalizer.normalize(program.getName().replaceAll("\\s",""), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "").replaceAll("ı", "i");
             context.put(ProgramNameEscaped,programCapacity);
         }
