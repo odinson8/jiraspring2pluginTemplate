@@ -97,6 +97,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             table=AJS.$("#example").DataTable( {
                 "scrollX"   : false,
+                "order": [[ 1, "asc" ]],
                 // dom: 'Bfrtip',
                 // buttons: [
                 //     'copy', 'csv', 'excel', 'pdf', 'print'
@@ -108,7 +109,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     leftColumns: 1
                 },
                 columnDefs: [
-                    { targets: [0, 1, 2], visible: true},
+                    { targets: [1, 2, 3], visible: true},
                     { targets: '_all', visible: false }
                 ],
                 footerCallback: function (row, data, start, end, display) {
@@ -190,11 +191,23 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             //     }
             // });
 
-            table.on( 'select deselect', function ( e, dt, type, indexes ) {
+            table.on( 'select', function ( e, dt, type, indexes ) {
                 if ( type === 'row' ) {
                     //var data = table.rows( indexes ).data().pluck( 'id' );
-                    displayFooter();
+                    var table=AJS.$("#example").DataTable();
+                    console.log("seçtim " + table.row( indexes ).cell(':eq(0)').data());
+                    table.row( indexes ).cell(':eq(0)').data("YYYY").draw();
                 }
+                //displayFooter();
+            } );
+
+            table.on( 'deselect', function ( e, dt, type, indexes ) {
+                if ( type === 'row' ) {
+                    var table=AJS.$("#example").DataTable();
+                    console.log("Sildim" +table.row( indexes ).cell(':eq(0)').data());
+                    table.row( indexes ).cell(':eq(0)').data("--").draw();
+                }
+               // displayFooter();
             } );
 
             // table.on('select.dt deselect.dt', function () {
@@ -566,9 +579,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     success: function (data) {
                         myJsonData = data;
                         populateDataTable(myJsonData);
-                        drawChart1();
-                        drawChart2();
-                        drawChart3();
+                       // drawChart1();
+                      //  drawChart2();
+                       // drawChart3();
                     },
                     error: function (e) {
                         console.log("There was an error with your request...");
@@ -585,7 +598,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 //Object.values(data)[0] {issue: "PF-2971", summary: "Satış Kaybı (Yeni)", customfield_11802: "", customfield_11803: "1234.0", customfield_11805: "2314.0", …}issue: "PF-2971"summary: "Satış Kaybı (Yeni)"customfield_11802: ""customfield_11803: "1234.0"customfield_11805: "2314.0"customfield_11804: "23.0"customfield_11806: "4.0"__proto__: Object
 
-                var keyValue=Object.values(data)[0];
+                //var keyValue=Object.values(data)[0];
 
                 var table = AJS.$("#example").DataTable();
 
@@ -598,7 +611,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 Object.keys(data).forEach(function(key){
 
-                    data[key]["issue"]='<a href="$baseUrl/browse/'+Object.values(data[key])[0]+'" target="_blank">'+Object.values(data[key])[0]+'</a>';
+                    var IssueKeyColumnIndex = 1;
+                    var issueKey = Object.values(data[key])[IssueKeyColumnIndex];
+                    data[key]["issue"]='<a href="$baseUrl/browse/'+ issueKey+'" target="_blank">'+issueKey+'</a>';
                     //console.log(Object.values(data[key])[0]);
                     table.row.add(Object.values(data[key])).draw( false );
 
@@ -619,130 +634,18 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 Swal.hideLoading();
                 Swal.close();
             }
+
+
+            function getColumnIndex(customfieldIdAsString){
+                //return table.columns('th:contains("'+headerName+ '")').indexes()[0]
+                var table = AJS.$("#example").DataTable();
+                return table.column('th[customFieldId="'+customfieldIdAsString + '"]').index()
+            }
         });
 
 
-        function getColumnIndex(customfieldIdAsString){
-            //return table.columns('th:contains("'+headerName+ '")').indexes()[0]
-            var table = AJS.$("#example").DataTable();
-            return table.column('th[customFieldId="'+customfieldIdAsString + '"]').index()
-        }
 
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
-//, callback : drawChart1
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart1);
 
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart1() {
-            var customfieldIdAsString = "customfield_11405"; //Departman
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Sponsor');
-            data.addColumn('number', 'Count');
-            var table = AJS.$("#example").DataTable();
-            var columnIndex= getColumnIndex(customfieldIdAsString)
-            var valuesSet=table.column(columnIndex)
-                    .data()
-                    .unique();
-
-            var i;
-
-            for(i = 0; i < valuesSet.length; i++){
-                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
-
-                //console.log("Total count = " + valuesSet[i] + " = " + valueCount);
-                data.addRow([valuesSet[i], valueCount]);
-                // table.search('')
-                //         .columns().search( '' )
-                //         .draw()
-            }
-
-            // Set chart options
-            var options = {
-                'title':'Departman',
-                'width':500,
-                'height':400
-            };
-
-            // Instantiate and draw our chart, passing in some options.
-            var departman_chart = new google.visualization.PieChart(document.getElementById('departman_chart'));
-            departman_chart.draw(data, options);
-        }
-        function drawChart2() {
-
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Sponsor');
-            data.addColumn('number', 'Count');
-            var table = AJS.$("#example").DataTable();
-            var valuesSet=table.column(11)
-                    .data()
-                    .unique();
-
-            var i;
-
-            for(i = 0; i < valuesSet.length; i++){
-                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
-
-                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
-                data.addRow([valuesSet[i], valueCount]);
-                table.search('')
-                        .columns().search( '' )
-                        .draw()
-            }
-
-            // Set chart options
-            var options = {
-                'title':'Departman',
-                'width':500,
-                'height':400
-            };
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart2 = new google.visualization.PieChart(document.getElementById('chart2'));
-            chart2.draw(data, options);
-        }
-        function drawChart3() {
-
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Sponsor');
-            data.addColumn('number', 'Count');
-            var table = AJS.$("#example").DataTable();
-            var valuesSet=table.column(11)
-                    .data()
-                    .unique();
-
-            var i;
-
-            for(i = 0; i < valuesSet.length; i++){
-                //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                var valueCount=table.columns('th:contains("Sponsor")').search(valuesSet[i]).page.info().recordsDisplay;
-
-                console.log("Total count = " + valuesSet[i] + " = " + valueCount);
-                data.addRow([valuesSet[i], valueCount]);
-                table.search('')
-                        .columns().search( '' )
-                        .draw()
-            }
-
-            // Set chart options
-            var options = {
-                'title':'Departman',
-                'width':500,
-                'height':400
-            };
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart3 = new google.visualization.PieChart(document.getElementById('chart3'));
-            chart3.draw(data, options);
-        }
         // table.columns('th:contains("Sponsor")').search( "Volkan Sezgin" ).draw().rows( {order:'index', search:'applied'} ).count()
     </script>
 
@@ -752,6 +655,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 <body id="jira">
     <div class="content-container">
         <div class="content-body">
+##            <button id="buildChart">create chart</button>
+
             <div class="aui-group">
                 <header class="aui-page-header">
                     <div class="aui-page-header-inner">
@@ -774,6 +679,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </div>
                 </header>
             </div>
+
         ##    <div class="aui-group">
         ##        <div class="aui-item" id="jqlFilter">
         ##            <form class="aui">
@@ -843,6 +749,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <table id="example" class="display" cellspacing="0" width="100%" style="width: 100%;border: 2px solid #bfb7b7!important;border-radius: 12px;">
                         <thead>
                             <tr>
+                                <th >isSelected</th>
                                 <th >Issue</th>
                                 <th >Summary</th>
                                 <th remainingTime="$TotalCapacity">$TotalCapacity</th>
@@ -871,6 +778,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         </thead>
                         <tfoot>
                             <tr>
+                                <th >isSelected</th>
                                 <th >Issue</th>
                                 <th >Summary</th>
                                 <th remainingTime="$TotalCapacity">$TotalCapacity</th>

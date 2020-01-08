@@ -83,6 +83,7 @@ public class TableRow {
     public JSONObject toJSON() throws JSONException {
 
         JSONObject jo = new JSONObject();
+        jo.put("isSelected", "--");
         jo.put("issue", issue.getKey());
         jo.put("summary", issue.getSummary());
         jo.put("totalCapacity", getTotalCapacity());
