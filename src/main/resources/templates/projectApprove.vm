@@ -88,7 +88,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             table=AJS.$("#projectsTable").DataTable( {
                 "scrollX"   : false,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 2, "asc" ]],
                 // dom: 'Bfrtip',
                 // buttons: [
                 //     'copy', 'csv', 'excel', 'pdf', 'print'
@@ -96,7 +96,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // "pageLength": 15,
                 "select"    :  {
                     style:    'select',
-                    
                     // STATIC VARIABLE !!!!
                     selector: 'td:nth-child(1)'
                 },
@@ -177,29 +176,46 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             
 
             table.on( 'select', function ( e, dt, type, indexes ) {
+                var table=AJS.$("#projectsTable").DataTable();
+                table.search( '' );
                 if ( type === 'row' ) {
-                    var table=AJS.$("#projectsTable").DataTable();
                     for (var i = 0; i < indexes.length; i++) {
                         table.cell(indexes[i],0).data("YYYY").draw();
                     }
                 }
                 // displayFooter();
+                // Her select'te çalışıo performans sıkıntısı olabilir.
+                var valuesSet = table
+                        .column(getColumnIndex("customfield_11405")) //Departman
+                        .data()
+                        .unique();
+
+                createTable1(valuesSet,"customfield_11405");
+
             } );
 
             table.on( 'deselect', function ( e, dt, type, indexes ) {
-                if ( type === 'row' ) {
-                    var table=AJS.$("#projectsTable").DataTable();
+                //console.log("denug");
+                var table=AJS.$("#projectsTable").DataTable();
 
+                table.search( '' );
+                if ( type === 'row' ) {
                     for (var i = 0; i < indexes.length; i++) {
                         table.cell(indexes[i],0).data("--").draw();
                     }
-
                     //table.rows( indexes ).cell(':eq(0)').data("--").draw();
                     // console.log("Sildim" +table.rows( indexes ).cell(':eq(0)').data());
                 }
+
+                var valuesSet = table
+                        .column(getColumnIndex("customfield_11405")) //Departman
+                        .data()
+                        .unique();
+
+                createTable1(valuesSet,"customfield_11405");
+
                // displayFooter();
             } );
-            
 
             AJS.$("#select2").select2();
             AJS.$("#customFieldList-select2").auiSelect2();
@@ -542,7 +558,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     success: function (data) {
                         myJsonData = data;
                         populateDataTable(myJsonData);
-                        createTable1();
+                        var valuesSet = table.column(getColumnIndex("customfield_11405")) //Departman
+                                .data()
+                                .unique();
+                        createTable1(valuesSet,"customfield_11405");
                     },
                     error: function (e) {
                         console.log("There was an error with your request...");
@@ -599,8 +618,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
 
 
-            var customfieldIdAsString = "customfield_11405"; //Departman
-
             function getColumnIndex(customfieldIdAsString){
                 //return table.columns('th:contains("'+headerName+ '")').indexes()[0]
                 var table = AJS.$("#projectsTable").DataTable();
@@ -608,31 +625,46 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             }
 
             var table = AJS.$("#projectsTable").DataTable();
-            var columnIndex= getColumnIndex(customfieldIdAsString)
+            //var columnIndex= getColumnIndex(customfieldIdAsString)
 
+            var myPieChart ;
+            function createTable1(valuesSet,customfieldIdAsString) {
 
+                var data = {
+                    labels: [],
+                    datasets: [
+                        {
+                            data: []
+                        }
+                    ]
+                };
 
-            var data = {
-                labels: [],
-                datasets: [
-                    {
-                        data: []
-                    }
-                ]
-            };
-
-            function createTable1() {
-                var valuesSet=table.column(columnIndex)
-                        .data()
-                        .unique();
                 var i;
+                if(myPieChart!=null){
+                    myPieChart.destroy();
+                }
+
                 for(i = 0; i < valuesSet.length; i++){
                     //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
-                    var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
+                    //var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
+                    var values=table.cells('.selected' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
+
+                    if (values.length==0) {
+                        values=table.cells('' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
+                    }
+
+                    var x;
+                    var valueCount=0;
+                    for (x = 0; x < values.length; x++) {
+                        if (values[x]==valuesSet[i]){
+                            valueCount++;
+                        }
+                    }
 
                     //console.log("Total count = " + valuesSet[i] + " = " + valueCount);
                     data.labels.push(valuesSet[i]);
                     data.datasets[0].data.push(valueCount);
+
                     // table.search('')
                     //         .columns().search( '' )
                     //         .draw()
@@ -640,7 +672,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 var ctx = AJS.$("#chart1");
 
-                var myPieChart = new Chart(ctx, {
+                myPieChart = new Chart(ctx, {
                     type: 'pie',
                     plugins: {
                         colorschemes: {
@@ -651,7 +683,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     options: {
                         title: {
                             display: true,
-                            text: 'Predicted world population (millions) in 2050'
+                            text: 'Departman'
                         }
                     }
                 });
@@ -666,6 +698,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 myPieChart.update();
             }
+
+            function updateTable(valuesSet,customfieldIdAsString) {
+
+
+            }
+
         });
 
         // table.columns('th:contains("Sponsor")').search( "Volkan Sezgin" ).draw().rows( {order:'index', search:'applied'} ).count()
@@ -678,17 +716,18 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <div class="content-container">
         <div class="content-body">
 ##            <button id="buildChart">create chart</button>
-    <div class="aui-group">
-        <div class="aui-item">
-            <canvas id="chart1" width="400" height="400"></canvas>
+
+        <div class="aui-group">
+            <div class="aui-item">
+                <canvas id="chart1" width="400" height="400"></canvas>
+            </div>
+            <div class="aui-item">
+                <canvas id="chart2" width="400" height="400"></canvas>
+            </div>
+            <div class="aui-item">
+                <canvas id="chart3" width="400" height="400"></canvas>
+            </div>
         </div>
-        <div class="aui-item">
-            <canvas id="chart2" width="400" height="400"></canvas>
-        </div>
-        <div class="aui-item">
-            <canvas id="chart3" width="400" height="400"></canvas>
-        </div>
-    </div>
 
             <div class="aui-group">
                 <header class="aui-page-header">
