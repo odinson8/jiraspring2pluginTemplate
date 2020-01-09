@@ -84,6 +84,7 @@ public class TableRow {
 
         JSONObject jo = new JSONObject();
         jo.put("isSelected", "--");
+        jo.put("checkbox", "");
         jo.put("issue", issue.getKey());
         jo.put("summary", issue.getSummary());
         jo.put("totalCapacity", getTotalCapacity());
