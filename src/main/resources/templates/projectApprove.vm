@@ -157,15 +157,19 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         return 0;
                     }
                 };
-                var apply_footer = function (kapasite, col) {
-                    var remaining = kapasite - totalize_selected(col);
-                    var innerHtml;
+                var apply_footer = function (capacity, col) {
+                    console.log(col);
+                    const selectedTotal = totalize_selected(col);
+                    let remaining = capacity - selectedTotal;
+                    let innerHtml;
                     if (remaining < 0) {
-                        innerHtml = '' + '<aui-badge style="background: #c50409; color: #ffffff;">' + remaining + '</aui-badge>';
+                        innerHtml = '' + '<aui-badge style="background: #000FC5; color: #ffffff;">' + selectedTotal + '</aui-badge>';
                     } else {
-                        innerHtml = ' ' + (kapasite - totalize_selected(col));
+                        innerHtml = ' ' + (selectedTotal);
                     }
                     AJS.$(table.column(col).footer()).html(innerHtml);
+                    AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-3) +")").text(roundToTwo(selectedTotal));
+                    AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-3) +")").text(roundToTwo(remaining-selectedTotal));
                 };
 
                 table.columns('th[class*="program"]').indexes().each(function (e) {
@@ -173,6 +177,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //apply_footer(888, e);
                 });
             };
+
+            function roundToTwo(num) {
+                return +(Math.round(num + "e+2")  + "e-2");
+            }
             
 
             table.on( 'select', function ( e, dt, type, indexes ) {
@@ -461,13 +469,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         if(integer<= lowerBound|| integer>=upperBound){
                             tableRow.hide();
                         }
-                    });                }
+                    });
+                }
                 catch(error) {
                     console.error(error);
                     // expected output: ReferenceError: nonExistentFunction is not defined
                     // Note - error messages will vary depending on browser
                 }
-
             }
 
             function showHiddenTableRows(){
@@ -546,7 +554,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             text: 'Projeler reddedildi!'})
                     }
                 });
-            })
+            });
 
             loadData();
             function loadData() {
@@ -558,7 +566,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     success: function (data) {
                         myJsonData = data;
                         populateDataTable(myJsonData);
-                        var valuesSet = table.column(getColumnIndex("customfield_11405")) //Departman
+                        let valuesSet = table.column(getColumnIndex("customfield_11405")) //Departman
                                 .data()
                                 .unique();
                         createTable1(valuesSet,"customfield_11405");
@@ -615,8 +623,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 Swal.hideLoading();
                 Swal.close();
             }
-
-
 
             function getColumnIndex(customfieldIdAsString){
                 //return table.columns('th:contains("'+headerName+ '")').indexes()[0]
@@ -698,12 +704,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 myPieChart.update();
             }
-
-            function updateTable(valuesSet,customfieldIdAsString) {
-
-
-            }
-
         });
 
         // table.columns('th:contains("Sponsor")').search( "Volkan Sezgin" ).draw().rows( {order:'index', search:'applied'} ).count()
@@ -716,18 +716,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <div class="content-container">
         <div class="content-body">
 ##            <button id="buildChart">create chart</button>
-
-        <div class="aui-group">
-            <div class="aui-item">
-                <canvas id="chart1" width="400" height="400"></canvas>
-            </div>
-            <div class="aui-item">
-                <canvas id="chart2" width="400" height="400"></canvas>
-            </div>
-            <div class="aui-item">
-                <canvas id="chart3" width="400" height="400"></canvas>
-            </div>
-        </div>
 
             <div class="aui-group">
                 <header class="aui-page-header">
@@ -824,12 +812,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th remainingTime="$TotalCapacity">$TotalCapacity</th>
-                                <th class="program" remainingTime="$ProjeYonetimi">Proje Yönetimi</th>
-                                <th class="program" remainingTime="$SAPAbap">SAP Abap</th>
-                                <th class="program" remainingTime="$YazilimGelistirme">Yazılım Geliştirme</th>
-                                <th class="program" remainingTime="$SAPUygulama">SAP Uygulama</th>
-                                <th class="program" remainingTime="$IsZekasiveRaporlama">İş Zekası ve Raporlama</th>
+                                <th class="program" remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
+                                <th class="program" remainingTime="$SAPAbapRemaining">SAP Abap</th>
+                                <th class="program" remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
+                                <th class="program" remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
+                                <th class="program" remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
+                                <th class="program" remainingTime="$totalCapacityOfAllPrograms">Efor</th>
                                 <th customFieldId="customfield_11403">Departman Önceliği</th>
                                 <th customFieldId="customfield_11501">GMY Önceliği</th>
                                 <th customFieldId="customfield_11405">Departman</th>
@@ -854,12 +842,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th remainingTime="$TotalCapacity">$TotalCapacity</th>
                                 <th class="program">Proje Yönetimi</th>
                                 <th class="program">SAP Abap</th>
                                 <th class="program">Yazılım Geliştirme</th>
                                 <th class="program">SAP Uygulama</th>
                                 <th class="program">İş Zekası ve Raporlama</th>
+                                <th class="program" remainingTime="$TotalRemainingCapacity">$TotalRemainingCapacity</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -894,17 +882,69 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 </div>
             </div>
 
+            <table id="capacityTable" class="aui">
+                <thead>
+                    <tr>
+                        <th id="basic-number"   ></th>
+                        <th id="basic-fname"    >Proje Yönetimi</th>
+                        <th id="basic-lname"    >SAP Abap</th>
+                        <th id="basic-username" >Yazılım Geliştirme</th>
+                        <th id="basic-username" >SAP Uygulama</th>
+                        <th id="basic-username" >İş Zekası ve Raporlama</th>
+                        <th id="basic-username" >Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td headers="basic-number">Toplam çalışan</td>
+                        <td headers="basic-lname">$ProjeYonetimiTotal</td>
+                        <td headers="basic-lname">$SAPAbapTotal</td>
+                        <td headers="basic-lname">$YazilimGelistirmeTotal</td>
+                        <td headers="basic-lname">$SAPUygulamaTotal</td>
+                        <td headers="basic-lname">$IsZekasiveRaporlamaTotal</td>
+                        <td headers="basic-lname">$totalCapacityOfAllPrograms</td>
+                    </tr>
+                    <tr>
+                        <td headers="basic-fname">Müsait çalışan sayısı</td>
+                        <td headers="basic-lname">$ProjeYonetimiRemaining</td>
+                        <td headers="basic-lname">$SAPAbapRemaining</td>
+                        <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
+                        <td headers="basic-lname">$SAPUygulamaRemaining</td>
+                        <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
+                        <td headers="basic-lname">$TotalRemainingCapacity</td>
+                    </tr>
+                    <tr>
+                        <td headers="basic-lname">Seçilenler için gerekli çalışab sayısı</td>
+                        <td headers="basic-lname">$ProjeYonetimiRemaining</td>
+                        <td headers="basic-lname">$SAPAbapRemaining</td>
+                        <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
+                        <td headers="basic-lname">$SAPUygulamaRemaining</td>
+                        <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
+                        <td headers="basic-lname">$TotalRemainingCapacity</td>
+                    </tr>
+                    <tr>
+                        <td headers="basic-fname">Fark</td>
+                        <td headers="basic-lname">0</td>
+                        <td headers="basic-lname">0</td>
+                        <td headers="basic-lname">0</td>
+                        <td headers="basic-lname">0</td>
+                        <td headers="basic-lname">0</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <div class="aui-group">
                 <div class="aui-item">
-                    <div id="departman_chart"></div>
+                    <canvas id="chart1" width="400" height="400"></canvas>
                 </div>
                 <div class="aui-item">
-                    <div id="chart2"></div>
+                    <canvas id="chart2" width="400" height="400"></canvas>
                 </div>
                 <div class="aui-item">
-                    <div id="chart3"></div>
+                    <canvas id="chart3" width="400" height="400"></canvas>
                 </div>
             </div>
+
 ##            <div class="aui-group">
 ##                <div class="aui-item" id="issueTableDiv">
 ##                    <table id="projectsTable" class="display nowrap" width="100%">

@@ -11,6 +11,7 @@ import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.user.ApplicationUser;
 import com.veniture.constants.Constants;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class functions {
@@ -37,5 +38,16 @@ public class functions {
     public static List<CustomField> getCustomFieldsInProject(String projectKey){
         Long projectId = ComponentAccessor.getProjectManager().getProjectByCurrentKey(projectKey).getId();
         return ComponentAccessor.getCustomFieldManager().getCustomFieldObjects(projectId, ConstantsManager.ALL_ISSUE_TYPES);
+    }
+
+
+    public static Double calculateEmployeeCountFromHour(Integer hourTime){
+        Double aDouble = new Double(hourTime) / 252 / 8;
+        return Math.round(aDouble*1e1)/1e1;
+    }
+
+    public static Double calculateEmployeeCountFromManDay(Double hourTime){
+        Double aDouble = (new Double(hourTime) / 252);
+        return Math.round(aDouble*1e1)/1e1;
     }
 }

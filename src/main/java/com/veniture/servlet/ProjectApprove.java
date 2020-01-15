@@ -5,10 +5,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.issue.customfields.option.Option;
-import com.atlassian.jira.issue.customfields.option.Options;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -20,7 +17,10 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
-import com.veniture.util.*;
+import com.veniture.util.team2Program;
+import com.veniture.util.GetCustomFieldsInExcel;
+import com.veniture.util.ProgramEforCfs;
+import com.veniture.util.TeamsWithAvailabilityTimes;
 import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import static com.veniture.constants.Constants.*;
+import static com.veniture.constants.Constants.JIRA_BASE_URL;
+import static com.veniture.constants.Constants.ProjectApproveJQL;
 
 @Scanned
 public class ProjectApprove extends HttpServlet {
@@ -78,32 +79,33 @@ public class ProjectApprove extends HttpServlet {
         }
         catch (Exception e) {
             logger.error(e.getMessage());
-            logger.error(e.getStackTrace().toString());
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
         resp.setContentType("text/html;charset=utf-8");
         templateRenderer.render(LIST_ISSUES_TEMPLATE, context, resp.getWriter());
     }
 
-    private Map<String, Object> createContext() throws JqlParseException, SearchException {
+    private Map<String, Object> createContext() throws Exception {
 
         Map<String, Object> context = new HashMap<>();
        // Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
-        SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
+       // SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
         List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
        //context.put("issuesWithCF", new tableRowBuilder(issueManager,logger, IssueResults, customFieldsInProject).invoke());
         context.put("customFieldsInProject", customFieldsInProject);
         context.put("baseUrl", JIRA_BASE_URL);
 //        context.put("teams", teams);
         context = new ProgramEforCfs(context).invoke();
-        List<Team> teams= new TeamsWithRemainingTimes(logger,requestFactory).invoke();
-        context = new AddPrograms(context, teams).invoke();
+        List<Team> teams= new TeamsWithAvailabilityTimes(logger,requestFactory).invoke();
+        context = new team2Program(context, teams).invoke();
         //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
 
-        CustomField cf=ComponentAccessor.getCustomFieldManager().getCustomFieldObject(11306L);
-        FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
-        Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
-        context.put("options", options);
+//        CustomField cf=ComponentAccessor.getCustomFieldManager().getCustomFieldObject(11306L);
+//        assert cf != null;
+//        FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
+//        Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
+//        context.put("options", options);
 
 //        for (Option option:options){
 //            option.getValue();

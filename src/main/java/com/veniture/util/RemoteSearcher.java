@@ -29,18 +29,37 @@ public class RemoteSearcher {
     }
 
     public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
-        List<FooterTotalAvailabilityInfos> totals = null;
-        int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
-        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(CurrentYear)).replace("ZZZ",String.valueOf(CurrentYear+1));
-        totals = GSON.fromJson(getResponseString(QUERY), IssueTableData.class).getFooter().getColumns();
-        Double totalRemaining= null;
+        String responseString = getResponseForAvailability(teamId);
+        List<FooterTotalAvailabilityInfos> availabilityInfoColumns;
+        availabilityInfoColumns = GSON.fromJson(responseString, IssueTableData.class).getFooter().getColumns();
+        Double totalRemaining;
         try {
-            totalRemaining = totals.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce( (a, b) -> a + b).orElse(0.0);
+            totalRemaining = availabilityInfoColumns.stream().map(FooterTotalAvailabilityInfos::getRemaining).reduce(Double::sum).orElse(0.0);
         } catch (Exception e) {
             //Buraya giriyorsa takımlarin kapasitesi set edilmemiştir demekttir, o halde kapasiteyi sıfır yap.
             totalRemaining=0.0;
         }
         return totalRemaining.intValue();
+    }
+
+    public Integer getTotalAllocatedTimeInYearForTeam(Integer teamId) {
+        String responseString = getResponseForAvailability(teamId);
+        List<FooterTotalAvailabilityInfos> availabilityInfoColumns;
+        availabilityInfoColumns = GSON.fromJson(responseString, IssueTableData.class).getFooter().getColumns();
+        Double totalAllocated;
+        try {
+            totalAllocated = availabilityInfoColumns.stream().map(FooterTotalAvailabilityInfos::getAllocated).reduce(Double::sum).orElse(0.0);
+        } catch (Exception e) {
+            //Buraya giriyorsa takımlarin kapasitesi set edilmemiştir demekttir, o halde kapasiteyi sıfır yap.
+            totalAllocated=0.0;
+        }
+        return totalAllocated.intValue();
+    }
+
+    private String getResponseForAvailability(Integer teamId) {
+        int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(CurrentYear)).replace("ZZZ",String.valueOf(CurrentYear+1));
+        return getResponseString(QUERY);
     }
 
 //    public List<Integer> getAllTeamIds() throws URIException {

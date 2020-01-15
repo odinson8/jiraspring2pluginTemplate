@@ -24,17 +24,19 @@ public class Team {
     @SerializedName("isPublic")
     @Expose
     private Boolean isPublic;
-    @SerializedName("RemaningInAYear")
+    @SerializedName("RemainingInAYear")
     @Expose
     private Integer RemainingInAYear;
+
+    @SerializedName("TotalAvailabilityInAYear")
+    @Expose
+    private Integer TotalAvailabilityInAYear;
 
     public void setRemainingInAYear(Integer RemainingInAYear) {
         this.RemainingInAYear = RemainingInAYear;
     }
 
-    public Integer getRemainingInAYear() {
-        return RemainingInAYear;
-    }
+    public Integer getRemainingInAYear() { return RemainingInAYear; }
 
     public Integer getId() {
         return id;
@@ -78,6 +80,14 @@ public class Team {
 
     public Boolean getIsPublic() {
         return isPublic;
+    }
+
+    public Integer getTotalAvailabilityInAYear() {
+        return TotalAvailabilityInAYear;
+    }
+
+    public void setTotalAvailabilityInAYear(Integer totalAvailabilityInAYear) {
+        TotalAvailabilityInAYear = totalAvailabilityInAYear;
     }
 
     public void setIsPublic(Boolean isPublic) {

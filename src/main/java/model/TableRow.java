@@ -11,7 +11,7 @@ import com.veniture.util.ProgramEforCfs;
 
 import java.util.List;
 
-import static com.veniture.util.AddPrograms.getTotalCapacity;
+import static com.veniture.util.team2Program.getTotalRemainingCapacityOfAllPrograms;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 
 public class TableRow {
@@ -87,7 +87,7 @@ public class TableRow {
         jo.put("checkbox", "");
         jo.put("issue", issue.getKey());
         jo.put("summary", issue.getSummary());
-        jo.put("totalCapacity", getTotalCapacity());
+        jo.put("totalCapacity", getTotalRemainingCapacityOfAllPrograms());
         addEforJson(jo);
         addExcelCfs(jo);
         return jo;
@@ -106,15 +106,20 @@ public class TableRow {
     }
 
     private void addEforJson(JSONObject jo) throws JSONException {
-        for (CustomField cf:new ProgramEforCfs().berk()) {
+        for (CustomField cf:new ProgramEforCfs().eforCFs()) {
+            Double requiredMan;
             String customFieldValueFromIssue;
             try {
                 customFieldValueFromIssue = getCustomFieldValueFromIssue(issue, cf.getIdAsLong());
+                requiredMan = Double.valueOf(customFieldValueFromIssue);
+                requiredMan=com.veniture.util.functions.calculateEmployeeCountFromManDay(requiredMan);
+            
             } catch (Exception e) {
                 customFieldValueFromIssue="";
+                requiredMan=0.0;
                 e.printStackTrace();
             }
-            jo.put(cf.getId(), customFieldValueFromIssue);
+            jo.put(cf.getId(), requiredMan);
         }
     }
 }

@@ -14,6 +14,10 @@ public class ProgramEforCfs {
         this.context = context;
     }
 
+    public ProgramEforCfs() {
+
+    }
+
     public Map<String, Object> invoke() {
         CustomFieldManager cfMgr= ComponentAccessor.getCustomFieldManager();
         CustomField projeYonetimEforCf = cfMgr.getCustomFieldObject(11802l);
@@ -33,11 +37,7 @@ public class ProgramEforCfs {
         return context;
     }
 
-
-    public ProgramEforCfs() {
-    }
-
-    public ArrayList<CustomField> berk() {
+    public ArrayList<CustomField> eforCFs() {
         CustomFieldManager cfMgr= ComponentAccessor.getCustomFieldManager();
         CustomField projeYonetimEforCf = cfMgr.getCustomFieldObject(11802l);
         CustomField sapAbapEforCf = cfMgr.getCustomFieldObject(11803l);
