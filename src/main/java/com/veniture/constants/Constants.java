@@ -59,4 +59,6 @@ public class Constants {
     public static final long gerekliAbapEforCfId = 10814L;
     public static final long gerekliSapEforCfId = 10813L;
     public static final long öncelikBerkCfId = 11105L;
+    public static final long projeEtikleriCfId = 11306L;
+    public static final long departmanCfId = 11405l;
 }

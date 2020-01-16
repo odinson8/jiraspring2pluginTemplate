@@ -40,7 +40,6 @@ public class functions {
         return ComponentAccessor.getCustomFieldManager().getCustomFieldObjects(projectId, ConstantsManager.ALL_ISSUE_TYPES);
     }
 
-
     public static Double calculateEmployeeCountFromHour(Integer hourTime){
         Double aDouble = new Double(hourTime) / 252 / 8;
         return Math.round(aDouble*1e1)/1e1;

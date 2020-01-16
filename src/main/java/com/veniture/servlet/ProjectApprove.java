@@ -5,7 +5,9 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.customfields.option.Options;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.jql.parser.JqlParseException;
@@ -17,10 +19,12 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
+import com.veniture.constants.Constants;
 import com.veniture.util.team2Program;
 import com.veniture.util.GetCustomFieldsInExcel;
 import com.veniture.util.ProgramEforCfs;
 import com.veniture.util.TeamsWithAvailabilityTimes;
+import model.pojo.CfWithOptions;
 import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,15 +105,25 @@ public class ProjectApprove extends HttpServlet {
         //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
 
-//        CustomField cf=ComponentAccessor.getCustomFieldManager().getCustomFieldObject(11306L);
-//        assert cf != null;
-//        FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
-//        Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
-//        context.put("options", options);
+        addCfOptionsToContext(context);//ProjeEtikleri
+        return context;
+    }
 
-//        for (Option option:options){
-//            option.getValue();
-//        }
+    private Map<String, Object> addCfOptionsToContext(Map<String, Object> context) {
+        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(Constants.projeEtikleriCfId, Constants.departmanCfId));
+        ArrayList<CfWithOptions> cfs = new ArrayList<>();
+        for (Long cfId:cfIds){
+            CustomField cf= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
+            assert cf != null;
+//            FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig().getConfigItems().get(1).getFieldConfig();
+            FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
+            Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
+            cfs.add(new CfWithOptions(cf,options));
+        }
+        context.put("CfFilters", cfs);
+      // cfs.get(0).getCustomField().getCustomFieldType()
+//        cfs.get(0).getOptions().getOptionById(0L).getValue()
+
         return context;
     }
 
