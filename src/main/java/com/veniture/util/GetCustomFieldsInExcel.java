@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.veniture.constants.Constants.*;
+
 public class GetCustomFieldsInExcel {
 
     private JqlQueryParser jqlQueryParser= ComponentAccessor.getComponent(JqlQueryParser.class);
@@ -29,17 +31,17 @@ public class GetCustomFieldsInExcel {
         CustomFieldManager customFieldManager=ComponentAccessor.getCustomFieldManager();
         cfArrayList.add(customFieldManager.getCustomFieldObject(11403L));//departmanOnceligi
         cfArrayList.add(customFieldManager.getCustomFieldObject(11501L));//GMY Önceliği
-        cfArrayList.add(customFieldManager.getCustomFieldObject(Constants.departmanCfId));//departman
+        cfArrayList.add(customFieldManager.getCustomFieldObject(departmanCfId));//departman
         cfArrayList.add(customFieldManager.getCustomFieldObject(11304l));//sponsor
         cfArrayList.add(customFieldManager.getCustomFieldObject(11302l));//projeFaz
         cfArrayList.add(customFieldManager.getCustomFieldObject(11305l));//etkilenecel dep
-        cfArrayList.add(customFieldManager.getCustomFieldObject(Constants.projeEtikleriCfId));//proje etiket
+        cfArrayList.add(customFieldManager.getCustomFieldObject(projeEtikleriCfId));//proje etiket
         cfArrayList.add(customFieldManager.getCustomFieldObject(11307l));//satışa pztf etkisini nasıl edersiniz
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11308l));//satış barami
+        cfArrayList.add(customFieldManager.getCustomFieldObject(satisBaremiCfId));//satış barami
         cfArrayList.add(customFieldManager.getCustomFieldObject(11309l));//maliyet etkisi tarifi
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11310l));//maliyet barami
+        cfArrayList.add(customFieldManager.getCustomFieldObject(maliyetBaremiCfId));//maliyet barami
         cfArrayList.add(customFieldManager.getCustomFieldObject(11311l));//verimlilik etkisi tarifi
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11312l));//verimlilik barami
+        cfArrayList.add(customFieldManager.getCustomFieldObject(verimlilikBaremiCfId));//verimlilik barami
         cfArrayList.add(customFieldManager.getCustomFieldObject(11313l));//süreçler manuel yürütülebilior mu
         cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi

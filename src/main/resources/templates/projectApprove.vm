@@ -88,6 +88,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             table=AJS.$("#projectsTable").DataTable( {
                 "scrollX"   : false,
+                "scrollY":        "600px",
+                "scrollCollapse": true,
+                "paging":         false,
                 "order": [[ 2, "asc" ]],
                 // dom: 'Bfrtip',
                 // buttons: [
@@ -99,7 +102,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     // STATIC VARIABLE !!!!
                     selector: 'td:nth-child(1)'
                 },
-                "paging"    :false,
                 fixedColumns: {
                     leftColumns: 1
                 },
@@ -245,10 +247,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 AJS.$("#$customField.getId()-clear").click(function(e) {
                     e.preventDefault();
-                    table.search( '' )
-                            .columns().search( '' )
-                            .draw();
+                    table.search('')
+                            .columns().search('');
+
                     AJS.$("#$customField.getId()-select2").select2("val", "").trigger('change');
+                    #foreach($cfw in $CfFilters)
+                        #set ($customField=$cfw.getCustomField())
+                        table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getId()-select2").val());
+                    #end
+                    table.draw();
                 });
             #end
 
@@ -267,7 +274,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     table.search( '' ).columns().search( '' );
                     #foreach($cfw in $CfFilters)
                         #set ($customField=$cfw.getCustomField())
-                        table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getName()-select2").val());
+                        table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getId()-select2").val());
                     #end
                     table.draw();
                 }
@@ -306,7 +313,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 column.visible( ! column.visible() );
 
             });
-
 
             // AJS.$( "#customFieldList-select2 > option").each(function(index) {
             //     // AJS.$(this).prop("selected" , true);
@@ -807,7 +813,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <select id="$customField.getId()-select2" style="padding-top: 18px; width: 93%">
                                 <option></option>
                                 #foreach($option in $options)
-                                    <option value="$option.getValue()">$option.getValue()</option>
+                                    #if($option.getValue()!="-")
+                                        <option value="$option.getValue()">$option.getValue()</option>
+                                    #end
                                 #end
                             </select>
                         </form>

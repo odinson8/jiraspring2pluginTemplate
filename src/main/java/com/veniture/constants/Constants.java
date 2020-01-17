@@ -61,4 +61,7 @@ public class Constants {
     public static final long öncelikBerkCfId = 11105L;
     public static final long projeEtikleriCfId = 11306L;
     public static final long departmanCfId = 11405l;
+    public static final long verimlilikBaremiCfId = 11312l;
+    public static final long maliyetBaremiCfId = 11310l;
+    public static final long satisBaremiCfId = 11308l;
 }

@@ -35,8 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import static com.veniture.constants.Constants.JIRA_BASE_URL;
-import static com.veniture.constants.Constants.ProjectApproveJQL;
+import static com.veniture.constants.Constants.*;
 
 @Scanned
 public class ProjectApprove extends HttpServlet {
@@ -110,7 +109,7 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> addCfOptionsToContext(Map<String, Object> context) {
-        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(Constants.projeEtikleriCfId, Constants.departmanCfId));
+        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(projeEtikleriCfId, departmanCfId,maliyetBaremiCfId,satisBaremiCfId,verimlilikBaremiCfId));
         ArrayList<CfWithOptions> cfs = new ArrayList<>();
         for (Long cfId:cfIds){
             CustomField cf= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
