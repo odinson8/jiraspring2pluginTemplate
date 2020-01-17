@@ -88,7 +88,7 @@ public class TableRow {
         jo.put("issue", issue.getKey());
         jo.put("summary", issue.getSummary());
         addEforJson(jo);
-        jo.put("totalCapacity",com.veniture.util.functions.calculateEmployeeCountFromHour(getTotalRemainingCapacityOfAllPrograms()));
+        //jo.put("totalCapacity",com.veniture.util.functions.calculateEmployeeCountFromHour(getTotalRemainingCapacityOfAllPrograms()));
         addExcelCfs(jo);
         return jo;
     }

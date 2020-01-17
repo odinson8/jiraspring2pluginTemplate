@@ -87,11 +87,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             var table;
             table=AJS.$("#projectsTable").DataTable( {
-                "scrollX"   : false,
-                "scrollY":        "600px",
+                "scrollX"   : true,
+                "scrollY":        "400px",
                 "scrollCollapse": true,
                 "paging":         false,
-                "order": [[ 2, "asc" ]],
+               // "order": [[ 2, "asc" ]],
                 // dom: 'Bfrtip',
                 // buttons: [
                 //     'copy', 'csv', 'excel', 'pdf', 'print'
@@ -159,12 +159,31 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         return 0;
                     }
                 };
+
+                var totalize_all = function (row) {
+                    console.log("----");
+                    var data = table.cells(row, 'th[class*="program"]').data();
+                    if (typeof data != 'undefined') {
+                        return data
+                            .reduce(function (a, b) {
+                                    if (b === "-") {
+                                        b = "0"
+                                    }
+                                    return intVal(a) + intVal(b);
+                                },
+                                0);
+                    } else {
+                        return 0;
+                    }
+                };
                 var apply_footer = function (capacity, col) {
+                    console.log(col);
                     const selectedTotal = roundToTwo(totalize_selected(col));
                     let difference = capacity - selectedTotal;
                     let innerHtml;
                     if (difference < 0) {
-                        innerHtml = '' + '<aui-badge style="background: #c51100; color: #ffffff;">' + selectedTotal + '</aui-badge>';
+                       // innerHtml = '' + '<aui-badge style="background: #ffffff; color: #ffffff;">' + selectedTotal + '</aui-badge>';
+                        innerHtml = ' ' + (selectedTotal);
                     } else {
                         innerHtml = ' ' + (selectedTotal);
                     }
@@ -178,7 +197,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 };
 
-                table.columns('th[class*="program"]').indexes().each(function (e) {
+                // table.rows().indexes().each(function (e) {
+                //     //console.log(totalize_all(e));
+                //     var x=e+1;
+                //     AJS.$("#projectsTable tbody > tr:nth-child("+x+") > td:nth-child(10)").text(totalize_all(e));
+                //     //SONUNCUDA SORUN VAR
+                // });
+
+                table.columns('th[class*="totalEfor"]').indexes().each(function (e) {
                     apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
                 });
             };
@@ -202,8 +228,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         .data()
                         .unique();
 
-                createTable1(valuesSet,"customfield_11405");
-
+                createOrUpdatePie1(valuesSet,"customfield_11405");
             } );
 
             table.on( 'deselect', function ( e, dt, type, indexes ) {
@@ -224,16 +249,16 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         .data()
                         .unique();
 
-                createTable1(valuesSet,"customfield_11405");
+                createOrUpdatePie1(valuesSet,"customfield_11405");
 
                // displayFooter();
             } );
 
             AJS.$("#select2").select2();
             AJS.$("#customFieldList-select2").auiSelect2();
-            AJS.$("#projeEtiketleri-select2").auiSelect2({
-                placeholder: "Proje Etiketleri"
-            });
+            // AJS.$("#projeEtiketleri-select2").auiSelect2({
+            //     placeholder: "Proje Etiketleri"
+            // });
 
             #foreach($cfw in $CfFilters)
                 #set ($customField=$cfw.getCustomField())
@@ -586,7 +611,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         let valuesSet = table.column(getColumnIndex("customfield_11405")) //Departman
                                 .data()
                                 .unique();
-                        createTable1(valuesSet,"customfield_11405");
+                        createOrUpdatePie1(valuesSet,"customfield_11405");
                     },
                     error: function (e) {
                         console.log("There was an error with your request...");
@@ -650,7 +675,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             //var columnIndex= getColumnIndex(customfieldIdAsString)
 
             var myPieChart ;
-            function createTable1(valuesSet,customfieldIdAsString) {
+            function createOrUpdatePie1(valuesSet,customfieldIdAsString) {
 
                 var data = {
                     labels: [],
@@ -786,7 +811,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             <div class="aui-group">
                 <div class="aui-item" id="#select2-customFields">
                     <form class="aui">
-                        <select id="customFieldList-select2" data-placeholder="Alanları eklemek için tıklayın." multiple style="padding-top: 18px; width: 93%">
+                        <select id="customFieldList-select2" data-placeholder="Alanları eklemek için tıklayın." multiple style="padding-top: 18px; width: 99%">
                             <option></option>
                             #foreach($cf in $customFieldsInProject)
                                 <option value="$cf.getId()">$cf.getFieldName()</option>
@@ -794,23 +819,16 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         </select>
                     </form>
                 </div>
-##                <div class="aui-item" id="#projeEtiketleri">
-##                    <form class="aui">
-##                        <select id="projeEtiketleri-select2" style="padding-top: 18px; width: 93%">
-##                            <option></option>
-##                            #foreach($option in $options)
-##                                <option value="$option.getValue()">$option.getValue()</option>
-##                            #end
-##                        </select>
-##                    </form>
-##                    <span id="cfFilterClear" style="float: right; right: 17%; bottom: 24px;" class="aui-icon aui-icon-small aui-iconfont-cross-circle">Clear</span>
-##                </div>
                 #foreach($cfw in $CfFilters)
                     #set ($customField=$cfw.getCustomField())
                     #set ($options=$cfw.getOptions())
+            #if($customField.getId().contains("11310"))
+            </div>
+            <div class="aui-group">
+            #end
                     <div class="aui-item" id="#$customField.getId()">
                         <form class="aui">
-                            <select id="$customField.getId()-select2" style="padding-top: 18px; width: 93%">
+                            <select id="$customField.getId()-select2" style="padding-top: 18px; width: 99%">
                                 <option></option>
                                 #foreach($option in $options)
                                     #if($option.getValue()!="-")
@@ -819,11 +837,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 #end
                             </select>
                         </form>
-                        <span id="$customField.getId()-clear" style="float: right; right: 17%; bottom: 24px;" class="aui-icon aui-icon-small aui-iconfont-cross-circle">Clear</span>
+                        <span id="$customField.getId()-clear" style="float: right; right: 7%; bottom: 24px;" class="aui-icon aui-icon-small aui-iconfont-cross-circle">Clear</span>
                     </div>
                 #end
-
-##                <div class="aui-item" id="#departmanlar">
+            ##                <div class="aui-item" id="#departmanlar">
 ##                    <form class="aui">
 ##                        <select id="departmanlar-select2" style="padding-top: 18px; width: 93%">
 ##                            <option></option>
@@ -857,12 +874,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th class="program" remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
-                                <th class="program" remainingTime="$SAPAbapRemaining">SAP Abap</th>
-                                <th class="program" remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
-                                <th class="program" remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
-                                <th class="program" remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
-                                <th class="program" remainingTime="$totalCapacityOfAllPrograms">Efor</th>
+                                <th class="inFooter program" remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
+                                <th class="inFooter program" remainingTime="$SAPAbapRemaining">SAP Abap</th>
+                                <th class="inFooter program" remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
+                                <th class="inFooter program" remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
+                                <th class="inFooter program" remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
+                                <th class="inFooter totalEfor" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Gerekli Efor</th>
                                 <th customFieldId="customfield_11403">Departman Önceliği</th>
                                 <th customFieldId="customfield_11501">GMY Önceliği</th>
                                 <th customFieldId="customfield_11405">Departman</th>
@@ -887,12 +904,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th class="program">Proje Yönetimi</th>
-                                <th class="program">SAP Abap</th>
-                                <th class="program">Yazılım Geliştirme</th>
-                                <th class="program">SAP Uygulama</th>
-                                <th class="program">İş Zekası ve Raporlama</th>
-                                <th class="program" remainingTime="$TotalRemainingCapacity">$TotalRemainingCapacity</th>
+                                <th class="inFooter">Proje Yönetimi</th>
+                                <th class="inFooter">SAP Abap</th>
+                                <th class="inFooter">Yazılım Geliştirme</th>
+                                <th class="inFooter">SAP Uygulama</th>
+                                <th class="inFooter">İş Zekası ve Raporlama</th>
+                                <th remainingTime="$totalCapacityOfAllPrograms"></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
