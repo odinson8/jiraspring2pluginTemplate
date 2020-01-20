@@ -91,12 +91,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 "scrollY":        "400px",
                 "scrollCollapse": true,
                 "paging":         false,
-               // "order": [[ 2, "asc" ]],
+                "order": [[ 2, "asc" ]],
                 // dom: 'Bfrtip',
                 // buttons: [
                 //     'copy', 'csv', 'excel', 'pdf', 'print'
                 // ],
-                // "pageLength": 15,
+                "pageLength": 19,
                 "select"    :  {
                     style:    'select',
                     // STATIC VARIABLE !!!!
@@ -177,7 +177,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 };
                 var apply_footer = function (capacity, col) {
-                    console.log(col);
+                    //console.log(col);
+
                     const selectedTotal = roundToTwo(totalize_selected(col));
                     let difference = capacity - selectedTotal;
                     let innerHtml;
@@ -204,45 +205,56 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 //     //SONUNCUDA SORUN VAR
                 // });
 
-                table.columns('th[class*="totalEfor"]').indexes().each(function (e) {
+                table.columns('th[class*="inFooter"]').indexes().each(function (e) {
                     apply_footer(table.column(e).header().getAttribute('remainingTime'), e);
                 });
+
             };
 
             function roundToTwo(num) {
-                return +(Math.round(num + "e+2")  + "e-2");
+                return +(Math.round(num + "e+1")  + "e-1");
             }
 
             table.on( 'select', function ( e, dt, type, indexes ) {
+                let scrollTop = AJS.$(".dataTables_scrollBody").scrollTop();
+
                 var table=AJS.$("#projectsTable").DataTable();
                 table.search('');
                 if ( type === 'row' ) {
                     for (var i = 0; i < indexes.length; i++) {
-                        table.cell(indexes[i],0).data("YYYY").draw();
+                        table.cell(indexes[i],0).data("YYYY");
                     }
                 }
+
+                table.draw();
                 // displayFooter();
                 // Her select'te çalışıo performans sıkıntısı olabilir.
+
                 var valuesSet = table
                         .column(getColumnIndex("customfield_11405")) //Departman
                         .data()
                         .unique();
 
                 createOrUpdatePie1(valuesSet,"customfield_11405");
-            } );
+                AJS.$(".dataTables_scrollBody").scrollTop(scrollTop);
+
+            });
 
             table.on( 'deselect', function ( e, dt, type, indexes ) {
+                let scrollTop = AJS.$(".dataTables_scrollBody").scrollTop();
+
                 //console.log("denug");
                 var table=AJS.$("#projectsTable").DataTable();
 
                 table.search( '' );
                 if ( type === 'row' ) {
                     for (var i = 0; i < indexes.length; i++) {
-                        table.cell(indexes[i],0).data("--").draw();
+                        table.cell(indexes[i],0).data("--");
                     }
                     //table.rows( indexes ).cell(':eq(0)').data("--").draw();
                     // console.log("Sildim" +table.rows( indexes ).cell(':eq(0)').data());
                 }
+                table.draw();
 
                 var valuesSet = table
                         .column(getColumnIndex("customfield_11405")) //Departman
@@ -250,7 +262,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         .unique();
 
                 createOrUpdatePie1(valuesSet,"customfield_11405");
-
+                AJS.$(".dataTables_scrollBody").scrollTop(scrollTop);
                // displayFooter();
             } );
 
@@ -267,18 +279,20 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 });
 
                 AJS.$("#$customField.getId()-select2").on('select2-selecting', function (e) {
-                    table.columns('th:contains("$customField.getName()")').search( e.val ).draw();
+                    console.log("burdaa");
+                    //let regExSearch = '.*' + e.val +'.*';
+                    let search = e.val;
+                    table.columns('th[customFieldId="$customField.getId()"]').search(search, false, true).draw();
                 });
 
                 AJS.$("#$customField.getId()-clear").click(function(e) {
                     e.preventDefault();
-                    table.search('')
-                            .columns().search('');
+                    table.search('').columns().search('');
 
                     AJS.$("#$customField.getId()-select2").select2("val", "").trigger('change');
                     #foreach($cfw in $CfFilters)
                         #set ($customField=$cfw.getCustomField())
-                        table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getId()-select2").val());
+                        table.columns('th[customFieldId="$customField.getId()"]').search( AJS.$("#$customField.getId()-select2").val());
                     #end
                     table.draw();
                 });
@@ -296,7 +310,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             .draw();
                 }else {
                     toggle.checked = false;
-                    table.search( '' ).columns().search( '' );
+                    table.search('').columns().search('');
                     #foreach($cfw in $CfFilters)
                         #set ($customField=$cfw.getCustomField())
                         table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getId()-select2").val());
@@ -874,11 +888,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th class="inFooter program" remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
-                                <th class="inFooter program" remainingTime="$SAPAbapRemaining">SAP Abap</th>
-                                <th class="inFooter program" remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
-                                <th class="inFooter program" remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
-                                <th class="inFooter program" remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
+                                <th class="inFooter program"   remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
+                                <th class="inFooter program"   remainingTime="$SAPAbapRemaining">SAP Abap</th>
+                                <th class="inFooter program"   remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
+                                <th class="inFooter program"   remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
+                                <th class="inFooter program"   remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
                                 <th class="inFooter totalEfor" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Gerekli Efor</th>
                                 <th customFieldId="customfield_11403">Departman Önceliği</th>
                                 <th customFieldId="customfield_11501">GMY Önceliği</th>
@@ -943,8 +957,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </div>
                 </div>
             </div>
-
-            <table id="capacityTable" class="aui">
+            <div class="aui-group">
+                <table id="capacityTable" class="aui-item aui">
                 <thead>
                     <tr>
                         <th id="basic-number"   ></th>
@@ -995,6 +1009,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <div class="aui-group">
                 <div class="aui-item">

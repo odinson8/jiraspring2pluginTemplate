@@ -42,11 +42,11 @@ public class functions {
 
     public static Double calculateEmployeeCountFromHour(Integer hourTime){
         Double aDouble = new Double(hourTime) / 252 / 8;
-        return Math.round(aDouble*1e1)/1e1;
+        return Math.round(aDouble*1e4)/1e4;
     }
 
     public static Double calculateEmployeeCountFromManDay(Double hourTime){
         Double aDouble = (new Double(hourTime) / 252);
-        return Math.round(aDouble*1e1)/1e1;
+        return Math.round(aDouble*1e4)/1e4;
     }
 }
