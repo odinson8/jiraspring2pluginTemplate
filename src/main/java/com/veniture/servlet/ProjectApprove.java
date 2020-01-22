@@ -109,16 +109,18 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> addCfOptionsToContext(Map<String, Object> context) {
-        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(projeEtikleriCfId, departmanCfId,maliyetBaremiCfId,satisBaremiCfId,verimlilikBaremiCfId));
+        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(SureclerManuelYuruyorMuCF, projeEtikleriCfId, departmanCfId,maliyetBaremiCfId,satisBaremiCfId,verimlilikBaremiCfId));
         ArrayList<CfWithOptions> cfs = new ArrayList<>();
+
         for (Long cfId:cfIds){
             CustomField cf= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
             assert cf != null;
-//            FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig().getConfigItems().get(1).getFieldConfig();
+            //FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig().getConfigItems().get(1).getFieldConfig();
             FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
             Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
             cfs.add(new CfWithOptions(cf,options));
         }
+
         context.put("CfFilters", cfs);
       // cfs.get(0).getCustomField().getCustomFieldType()
 //        cfs.get(0).getOptions().getOptionById(0L).getValue()

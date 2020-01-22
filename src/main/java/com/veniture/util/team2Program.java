@@ -55,11 +55,11 @@ public class team2Program {
             //Türkçe karakterler sorun çıkarıyordu.
 
             String ProgramNameEscaped= Normalizer.normalize(program.getName().replaceAll("\\s",""), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "").replaceAll("ı", "i");
-            context.put(ProgramNameEscaped+"Remaining",com.veniture.util.functions.calculateEmployeeCountFromHour(programRemainingCapacity));
-            context.put(ProgramNameEscaped+"Total",com.veniture.util.functions.calculateEmployeeCountFromHour(programTotalCapacity));
+            context.put(ProgramNameEscaped+"Remaining",com.veniture.util.functions.calculateManCountFromHour(programRemainingCapacity));
+            context.put(ProgramNameEscaped+"Total",com.veniture.util.functions.calculateManCountFromHour(programTotalCapacity));
         }
-        context.put("TotalRemainingCapacity", com.veniture.util.functions.calculateEmployeeCountFromHour(totalRemainingCapacityOfAllPrograms));
-        context.put("totalCapacityOfAllPrograms",com.veniture.util.functions.calculateEmployeeCountFromHour( totalCapacityOfAllPrograms));
+        context.put("TotalRemainingCapacity", com.veniture.util.functions.calculateManCountFromHour(totalRemainingCapacityOfAllPrograms));
+        context.put("totalCapacityOfAllPrograms",com.veniture.util.functions.calculateManCountFromHour( totalCapacityOfAllPrograms));
         return context;
     }
 

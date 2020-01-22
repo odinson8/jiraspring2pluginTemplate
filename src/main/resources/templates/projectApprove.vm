@@ -47,6 +47,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             horizontal-align: left;
             word-break: break-all !important;
         }
+
+         .borderli {
+             border-radius: 25px;
+             border: 1px solid #00ad9a;
+             padding: 20px;
+             width: 200px;
+             height: 150px;
+         }
+
          table > tbody > tr > td:hover {
             text-overflow: clip !important;
             white-space: normal !important;
@@ -180,7 +189,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //console.log(col);
 
                     const selectedTotal = roundToTwo(totalize_selected(col));
-                    let difference = capacity - selectedTotal;
+                    let difference = capacity*252 - selectedTotal;
                     let innerHtml;
                     if (difference < 0) {
                        // innerHtml = '' + '<aui-badge style="background: #ffffff; color: #ffffff;">' + selectedTotal + '</aui-badge>';
@@ -189,12 +198,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         innerHtml = ' ' + (selectedTotal);
                     }
                     AJS.$(table.column(col).footer()).html(innerHtml);
-                    AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-2) +")").text(roundToTwo(selectedTotal));
+                    AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-2) +")").text(findManCountFromManDay(selectedTotal));
 
                     if (difference < 0) {
-                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +roundToTwo(difference)+ '</aui-badge>');
+                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +findManCountFromManDay(difference)+ '</aui-badge>');
                     } else {
-                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").text(roundToTwo(difference));
+                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").text(findManCountFromManDay(difference));
                     }
                 };
 
@@ -215,6 +224,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 return +(Math.round(num + "e+1")  + "e-1");
             }
 
+            function findManCountFromManDay(num) {
+                return +(Math.round(num/252 + "e+2")  + "e-2");
+            }
+
             table.on( 'select', function ( e, dt, type, indexes ) {
                 let scrollTop = AJS.$(".dataTables_scrollBody").scrollTop();
 
@@ -230,12 +243,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // displayFooter();
                 // Her select'te çalışıo performans sıkıntısı olabilir.
 
-                var valuesSet = table
-                        .column(getColumnIndex("customfield_11405")) //Departman
-                        .data()
-                        .unique();
 
-                createOrUpdatePie1(valuesSet,"customfield_11405");
+
+                createOrUpdateCharts();
                 AJS.$(".dataTables_scrollBody").scrollTop(scrollTop);
 
             });
@@ -254,14 +264,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //table.rows( indexes ).cell(':eq(0)').data("--").draw();
                     // console.log("Sildim" +table.rows( indexes ).cell(':eq(0)').data());
                 }
+
                 table.draw();
 
-                var valuesSet = table
-                        .column(getColumnIndex("customfield_11405")) //Departman
-                        .data()
-                        .unique();
-
-                createOrUpdatePie1(valuesSet,"customfield_11405");
+                createOrUpdateCharts();
                 AJS.$(".dataTables_scrollBody").scrollTop(scrollTop);
                // displayFooter();
             } );
@@ -279,7 +285,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 });
 
                 AJS.$("#$customField.getId()-select2").on('select2-selecting', function (e) {
-                    console.log("burdaa");
+                    //console.log("burdaa");
                     //let regExSearch = '.*' + e.val +'.*';
                     let search = e.val;
                     table.columns('th[customFieldId="$customField.getId()"]').search(search, false, true).draw();
@@ -625,7 +631,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         let valuesSet = table.column(getColumnIndex("customfield_11405")) //Departman
                                 .data()
                                 .unique();
-                        createOrUpdatePie1(valuesSet,"customfield_11405");
+                        createOrUpdateCharts();
                     },
                     error: function (e) {
                         console.log("There was an error with your request...");
@@ -688,10 +694,47 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table = AJS.$("#projectsTable").DataTable();
             //var columnIndex= getColumnIndex(customfieldIdAsString)
 
-            var myPieChart ;
-            function createOrUpdatePie1(valuesSet,customfieldIdAsString) {
+            var departmanChart ;
+            var departmanEforChart ;
+            var projeEtiketleriChart ;
+            var projeEtiketleriEforChart ;
+            var ToplamEforCfId = "customfield_11905";
+            var DepartmanCfID = "customfield_11405";
+            var projeEtiketleriCfId = "customfield_11306";
 
-                var data = {
+            function createOrUpdateCharts() {
+
+                var departmansUnique = table
+                        .column(getColumnIndex(DepartmanCfID)) //Departman
+                        .data()
+                        .unique();
+
+
+                var departmanChartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            data: []
+                        }
+                    ]
+                };
+                var departmanEforChartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            data: []
+                        }
+                    ]
+                };
+                var projeEtiketChartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            data: []
+                        }
+                    ]
+                };
+                var projeEtiketEforData = {
                     labels: [],
                     datasets: [
                         {
@@ -701,50 +744,156 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 };
 
                 var i;
-                if(myPieChart!=null){
-                    myPieChart.destroy();
+                if(departmanChart!=null){
+                    departmanChart.destroy();
                 }
 
-                for(i = 0; i < valuesSet.length; i++){
+                if(departmanEforChart!=null){
+                    departmanEforChart.destroy();
+                }
+                if(projeEtiketleriChart!=null){
+                    projeEtiketleriChart.destroy();
+                }
+
+                if(projeEtiketleriEforChart!=null){
+                    projeEtiketleriEforChart.destroy();
+                }
+
+                var projeEtiketleriSet = createProjeEtiketleriSet(table.column(getColumnIndex(projeEtiketleriCfId)).data());
+                const projeEtiketleriIterator = projeEtiketleriSet.values();
+                for(i = 0; i < projeEtiketleriSet.size; i++){
+
+                    let selectedProjeEtiketleri = table.cells('.selected', getColumnIndex(projeEtiketleriCfId)).data();
+                    let selectedEfors = table.cells('.selected', getColumnIndex(ToplamEforCfId)).data();
+
+                    if (selectedProjeEtiketleri.length==0) {
+                        selectedProjeEtiketleri = table.cells('', getColumnIndex(projeEtiketleriCfId)).data();
+                        selectedEfors =  table.cells('', getColumnIndex(ToplamEforCfId)).data();
+                    }
+
+                    var count=0;
+                    let eforToplam = 0;
+                    let projeEtiketi=projeEtiketleriIterator.next().value;
+                    for (x = 0; x < selectedProjeEtiketleri.length; x++) {
+                        if (selectedProjeEtiketleri[x].includes(projeEtiketi)){
+                            if (selectedEfors[x]!=" "){
+                                eforToplam+=parseInt(selectedEfors[x],10);
+                            }
+                            count++;
+                        }
+                    }
+
+                    projeEtiketChartData.labels.push(projeEtiketi);
+                    projeEtiketChartData.datasets[0].data.push(count);
+
+                    projeEtiketEforData.labels.push(projeEtiketi);
+                    projeEtiketEforData.datasets[0].data.push(eforToplam);
+                }
+
+                for(i = 0; i < departmansUnique.length; i++){
                     //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
                     //var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
-                    var values=table.cells('.selected' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
+                    let selectedDepartmans     = table.cells('.selected', getColumnIndex(DepartmanCfID)).data();
+                    let selectedEfors = table.cells('.selected', getColumnIndex(ToplamEforCfId)).data();
 
-                    if (values.length==0) {
-                        values=table.cells('' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
+                    if (selectedDepartmans.length==0) {
+                        //values=table.cells('' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
+                        selectedDepartmans = table.cells('' , getColumnIndex(DepartmanCfID)).data();
+                        selectedEfors =      table.cells('' , getColumnIndex(ToplamEforCfId)).data();
                     }
 
                     var x;
                     var valueCount=0;
-                    for (x = 0; x < values.length; x++) {
-                        if (values[x]==valuesSet[i]){
+                    var eforToplam=0;
+                    for (x = 0; x < selectedDepartmans.length; x++) {
+                        if (selectedDepartmans[x]==departmansUnique[i]){
+                            if (selectedEfors[x]!=" "){
+                                eforToplam+=parseInt(selectedEfors[x],10);
+                            }
                             valueCount++;
                         }
                     }
 
                     //console.log("Total count = " + valuesSet[i] + " = " + valueCount);
-                    data.labels.push(valuesSet[i]);
-                    data.datasets[0].data.push(valueCount);
+                    departmanChartData.labels.push(departmansUnique[i]);
+                    departmanChartData.datasets[0].data.push(valueCount);
+
+                    departmanEforChartData.labels.push(departmansUnique[i]);
+                    departmanEforChartData.datasets[0].data.push(eforToplam);
 
                     // table.search('')
                     //         .columns().search( '' )
                     //         .draw()
                 }
 
-                var ctx = AJS.$("#chart1");
+                var departmanChartHtml = AJS.$("#departmanChartCanvas");
 
-                myPieChart = new Chart(ctx, {
+                departmanChart = new Chart(departmanChartHtml, {
                     type: 'pie',
                     plugins: {
                         colorschemes: {
                             scheme: 'brewer.Paired12'
                         }
                     },
-                    data: data,
+                    data: departmanChartData,
                     options: {
                         title: {
                             display: true,
-                            text: 'Departman'
+                            text: 'Departman Bazlı Dağılım'
+                        }
+                    }
+                });
+
+                var departmanEforChartHtml = AJS.$("#departmanEforChartCanvas");
+
+                departmanEforChart = new Chart(departmanEforChartHtml, {
+                    type: 'pie',
+                    plugins: {
+                        colorschemes: {
+                            scheme: 'brewer.Paired12'
+                        }
+                    },
+                    data: departmanEforChartData,
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Efor Bazlı Departman Dağılımı'
+                        }
+                    }
+                });
+
+                var projeEtiketChartCanvas = AJS.$("#projeEtiketChartCanvas");
+
+                projeEtiketleriChart = new Chart(projeEtiketChartCanvas, {
+                    type: 'pie',
+                    plugins: {
+                        colorschemes: {
+                            scheme: 'brewer.Paired12'
+                        }
+                    },
+                    data: projeEtiketChartData,
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Proje Etiket Bazlı Dağılımı'
+                        }
+                    }
+                });
+
+                var projeEtiketChartEforCanvas = AJS.$("#projeEtiketChartEforCanvas");
+
+                projeEtiketleriEforChart = new Chart(projeEtiketChartEforCanvas, {
+                    type: 'pie',
+                    plugins: {
+                        colorschemes: {
+                            scheme: 'brewer.Paired12'
+                        }
+                    },
+                    data: projeEtiketEforData,
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Proje Etiket Bazlı Dağılımı'
                         }
                     }
                 });
@@ -757,7 +906,21 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // Update one of the points in the second dataset
                 //myPieChart.data.datasets[0].data[1] = Math.random() * 100;
 
-                myPieChart.update();
+                departmanChart.update();
+                departmanEforChart.update();
+                projeEtiketleriChart.update();
+                projeEtiketleriEforChart.update();
+            }
+
+            function createProjeEtiketleriSet(projeEtiketleriList) {
+                var projeEtiketset= new Set();
+                for(i = 0; i < projeEtiketleriList.length; i++){
+                    var etiketLineArray = projeEtiketleriList[i].substring(1, projeEtiketleriList[i].length-1).split(", ")
+                    for(x = 0; x < etiketLineArray.length; x++){
+                        projeEtiketset.add(etiketLineArray[x]);
+                    }
+                }
+                return projeEtiketset;
             }
         });
 
@@ -823,16 +986,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 ##            <i id="loadingDiv" class="m-spinner--signal"></i>
 
             <div class="aui-group">
-                <div class="aui-item" id="#select2-customFields">
-                    <form class="aui">
-                        <select id="customFieldList-select2" data-placeholder="Alanları eklemek için tıklayın." multiple style="padding-top: 18px; width: 99%">
-                            <option></option>
-                            #foreach($cf in $customFieldsInProject)
-                                <option value="$cf.getId()">$cf.getFieldName()</option>
-                            #end
-                        </select>
-                    </form>
-                </div>
+
                 #foreach($cfw in $CfFilters)
                     #set ($customField=$cfw.getCustomField())
                     #set ($options=$cfw.getOptions())
@@ -875,8 +1029,22 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             </div>
 
             <div class="aui-group">
-                <button class="aui-button" id="select-all">Tümünü seç</button>
-                <button class="aui-button aui-button-primary" id="deselect-all">Tümünü kaldır</button>
+                <div class="aui-item" id="#select2-customFields">
+                    <form class="aui">
+                        <select id="customFieldList-select2" data-placeholder="Alanları eklemek için tıklayın." multiple style=" width: 65%; padding-top: 16px;">
+                            <option></option>
+                            #foreach($cf in $customFieldsInProject)
+                                #if(!$cf.getId().contains("11905"))
+                                    <option value="$cf.getId()">$cf.getFieldName()</option>
+                                #end
+                            #end
+                        </select>
+                    </form>
+                </div>
+                <div class="aui-item" style="float: right; padding-right: 12px;">
+                    <button class="aui-button" id="deselect-all">Tümünü kaldır</button>
+                    <button class="aui-button  aui-button-primary" id="select-all">Tümünü seç</button>
+                </div>
             </div>
 
             <div class="aui-group">
@@ -893,7 +1061,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th class="inFooter program"   remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
                                 <th class="inFooter program"   remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
                                 <th class="inFooter program"   remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
-                                <th class="inFooter totalEfor" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Gerekli Efor</th>
+                                <th class="inFooter" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Gerekli Efor</th>
                                 <th customFieldId="customfield_11403">Departman Önceliği</th>
                                 <th customFieldId="customfield_11501">GMY Önceliği</th>
                                 <th customFieldId="customfield_11405">Departman</th>
@@ -958,70 +1126,89 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 </div>
             </div>
             <div class="aui-group">
-                <table id="capacityTable" class="aui-item aui">
-                <thead>
-                    <tr>
-                        <th id="basic-number"   ></th>
-                        <th id="basic-fname"    >Proje Yönetimi</th>
-                        <th id="basic-lname"    >SAP Abap</th>
-                        <th id="basic-username" >Yazılım Geliştirme</th>
-                        <th id="basic-username" >SAP Uygulama</th>
-                        <th id="basic-username" >İş Zekası ve Raporlama</th>
-                        <th id="basic-username" >Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td headers="basic-number">Toplam çalışan</td>
-                        <td headers="basic-lname">$ProjeYonetimiTotal</td>
-                        <td headers="basic-lname">$SAPAbapTotal</td>
-                        <td headers="basic-lname">$YazilimGelistirmeTotal</td>
-                        <td headers="basic-lname">$SAPUygulamaTotal</td>
-                        <td headers="basic-lname">$IsZekasiveRaporlamaTotal</td>
-                        <td headers="basic-lname">$totalCapacityOfAllPrograms</td>
-                    </tr>
-                    <tr>
-                        <td headers="basic-fname">Müsait çalışan sayısı</td>
-                        <td headers="basic-lname">$ProjeYonetimiRemaining</td>
-                        <td headers="basic-lname">$SAPAbapRemaining</td>
-                        <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
-                        <td headers="basic-lname">$SAPUygulamaRemaining</td>
-                        <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
-                        <td headers="basic-lname">$TotalRemainingCapacity</td>
-                    </tr>
-                    <tr>
-                        <td headers="basic-lname">Seçilenler için gerekli çalışab sayısı</td>
-                        <td headers="basic-lname">$ProjeYonetimiRemaining</td>
-                        <td headers="basic-lname">$SAPAbapRemaining</td>
-                        <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
-                        <td headers="basic-lname">$SAPUygulamaRemaining</td>
-                        <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
-                        <td headers="basic-lname">$TotalRemainingCapacity</td>
-                    </tr>
-                    <tr>
-                        <td headers="basic-fname">Fark</td>
-                        <td headers="basic-lname">0</td>
-                        <td headers="basic-lname">0</td>
-                        <td headers="basic-lname">0</td>
-                        <td headers="basic-lname">0</td>
-                        <td headers="basic-lname">0</td>
-                        <td headers="basic-lname">0</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="borderli aui-item">
+                    <table id="capacityTable" class="aui">
+                        <thead>
+                        <tr>
+                            <th id="basic-number"   ></th>
+                            <th id="basic-fname"    >Proje Yönetimi</th>
+                            <th id="basic-lname"    >SAP Abap</th>
+                            <th id="basic-username" >Yazılım Geliştirme</th>
+                            <th id="basic-username" >SAP Uygulama</th>
+                            <th id="basic-username" >İş Zekası ve Raporlama</th>
+                            <th id="basic-username" >Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td headers="basic-number">Toplam çalışan</td>
+                            <td headers="basic-lname">$ProjeYonetimiTotal</td>
+                            <td headers="basic-lname">$SAPAbapTotal</td>
+                            <td headers="basic-lname">$YazilimGelistirmeTotal</td>
+                            <td headers="basic-lname">$SAPUygulamaTotal</td>
+                            <td headers="basic-lname">$IsZekasiveRaporlamaTotal</td>
+                            <td headers="basic-lname">$totalCapacityOfAllPrograms</td>
+                        </tr>
+                        <tr>
+                            <td headers="basic-fname">Müsait çalışan</td>
+                            <td headers="basic-lname">$ProjeYonetimiRemaining</td>
+                            <td headers="basic-lname">$SAPAbapRemaining</td>
+                            <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
+                            <td headers="basic-lname">$SAPUygulamaRemaining</td>
+                            <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
+                            <td headers="basic-lname">$TotalRemainingCapacity</td>
+                        </tr>
+                        <tr>
+                            <td headers="basic-lname">Seçilenler için gerekli çalışan</td>
+                            <td headers="basic-lname"></td>
+                            <td headers="basic-lname"></td>
+                            <td headers="basic-lname"></td>
+                            <td headers="basic-lname"></td>
+                            <td headers="basic-lname"></td>
+                            <td headers="basic-lname"></td>
+                        </tr>
+                        <tr>
+                            <td headers="basic-fname">Fark</td>
+                            <td headers="basic-lname">0</td>
+                            <td headers="basic-lname">0</td>
+                            <td headers="basic-lname">0</td>
+                            <td headers="basic-lname">0</td>
+                            <td headers="basic-lname">0</td>
+                            <td headers="basic-lname">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="aui-group">
-                <div class="aui-item">
-                    <canvas id="chart1" width="400" height="400"></canvas>
+           <div class="aui-group">
+                <div class="aui-item" style="width: 300px">
+                    <canvas class="borderli" id="departmanChartCanvas" width="300" height="300"></canvas>
                 </div>
-                <div class="aui-item">
-                    <canvas id="chart2" width="400" height="400"></canvas>
-                </div>
-                <div class="aui-item">
-                    <canvas id="chart3" width="400" height="400"></canvas>
-                </div>
-            </div>
+               <div class="aui-item" style="width: 300px">
+                   <canvas class="borderli" id="departmanEforChartCanvas" width="300" height="300"></canvas>
+               </div>
+               <div class="aui-item" style="width: 300px">
+                   <canvas class="borderli" id="projeEtiketChartCanvas" width="300" height="300"></canvas>
+               </div>
+
+               <div class="aui-item" style="width: 300px">
+                   <canvas class="borderli" id="projeEtiketChartEforCanvas" width="300" height="300"></canvas>
+               </div>
+           </div>
+
+
+##            <div class="aui-group">
+##                <div class="aui-item">
+##                    <canvas id="departmanChartCanvas" width="400" height="400"></canvas>
+##                </div>
+##                <div class="aui-item">
+##                    <canvas id="departmanEforChartCanvas" width="400" height="400"></canvas>
+##                </div>
+##                <div class="aui-item">
+##                    <canvas id="chart3" width="400" height="400"></canvas>
+##                </div>
+##            </div>
 
 ##            <div class="aui-group">
 ##                <div class="aui-item" id="issueTableDiv">

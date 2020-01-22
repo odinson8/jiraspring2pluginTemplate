@@ -40,13 +40,13 @@ public class functions {
         return ComponentAccessor.getCustomFieldManager().getCustomFieldObjects(projectId, ConstantsManager.ALL_ISSUE_TYPES);
     }
 
-    public static Double calculateEmployeeCountFromHour(Integer hourTime){
-        Double aDouble = new Double(hourTime) / 252 / 8;
+    public static Double calculateDayCountFromHour(Integer hourTime){
+        Double aDouble = new Double(hourTime) / 8;
         return Math.round(aDouble*1e4)/1e4;
     }
 
-    public static Double calculateEmployeeCountFromManDay(Double hourTime){
-        Double aDouble = (new Double(hourTime) / 252);
+    public static Double calculateManCountFromHour(Integer hourTime){
+        Double aDouble = new Double(hourTime) / 8 /252;
         return Math.round(aDouble*1e4)/1e4;
     }
 }

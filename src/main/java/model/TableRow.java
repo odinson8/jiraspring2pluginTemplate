@@ -98,7 +98,11 @@ public class TableRow {
             String cfName = cfWV.getCustomField().getName();
             String cfValue = cfWV.getValue();
             if (cfName.equals("Departman")){
-                jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf("}")).replace(", 1="," - "));
+                try {
+                    jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf("}")).replace(", 1="," - "));
+                } catch (Exception e) {
+                    jo.put(cfName, "-");
+                }
             }else {
                 jo.put(cfName, cfValue);
             }
@@ -111,15 +115,15 @@ public class TableRow {
             String customFieldValueFromIssue;
             try {
                 customFieldValueFromIssue = getCustomFieldValueFromIssue(issue, cf.getIdAsLong());
-                requiredMan = Double.valueOf(customFieldValueFromIssue);
-                requiredMan=com.veniture.util.functions.calculateEmployeeCountFromManDay(requiredMan);
+                //requiredMan = Double.valueOf(customFieldValueFromIssue);
+                //requiredMan=com.veniture.util.functions.calculateEmployeeCountFromManDay(requiredMan);
             
             } catch (Exception e) {
-                customFieldValueFromIssue="";
+                customFieldValueFromIssue="0";
                 requiredMan=0.0;
                 e.printStackTrace();
             }
-            jo.put(cf.getId(), requiredMan);
+            jo.put(cf.getId(), customFieldValueFromIssue);
         }
     }
 }
