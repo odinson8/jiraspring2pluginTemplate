@@ -105,6 +105,7 @@ public class ProjectApprove extends HttpServlet {
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
 
         addCfOptionsToContext(context);//ProjeEtikleri
+        addDepartmanOptionsToContext(context);//ProjeEtikleri
         return context;
     }
 
@@ -122,6 +123,21 @@ public class ProjectApprove extends HttpServlet {
         }
 
         context.put("CfFilters", cfs);
+      // cfs.get(0).getCustomField().getCustomFieldType()
+//        cfs.get(0).getOptions().getOptionById(0L).getValue()
+
+        return context;
+    }
+
+    private Map<String, Object> addDepartmanOptionsToContext(Map<String, Object> context) {
+
+        CustomField cf= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(departmanCfId);
+        assert cf != null;
+        //FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig().getConfigItems().get(1).getFieldConfig();
+        FieldConfig oneAndOnlyConfig = cf.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig();
+        Options options = ComponentAccessor.getOptionsManager().getOptions(oneAndOnlyConfig);
+        //options.get(0).getValue()
+        context.put("departmanOptions", options);
       // cfs.get(0).getCustomField().getCustomFieldType()
 //        cfs.get(0).getOptions().getOptionById(0L).getValue()
 

@@ -52,8 +52,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
              border-radius: 25px;
              border: 1px solid #00ad9a;
              padding: 20px;
-             width: 200px;
-             height: 150px;
+             /*width: 200px;*/
+             /*height: 150px;*/
          }
 
          table > tbody > tr > td:hover {
@@ -793,13 +793,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 for(i = 0; i < departmansUnique.length; i++){
                     //var count=table.columns('th:contains("Sponsor")').search( va[i] ).draw().rows( {order:'index', search:'applied'} ).count();
                     //var valueCount=table.columns('th[customFieldId="'+customfieldIdAsString + '"]').search(valuesSet[i]).page.info().recordsDisplay;
-                    let selectedDepartmans     = table.cells('.selected', getColumnIndex(DepartmanCfID)).data();
-                    let selectedEfors = table.cells('.selected', getColumnIndex(ToplamEforCfId)).data();
+                    let selectedDepartmans  = table.cells('.selected', getColumnIndex(DepartmanCfID)).data();
+                    let selectedEfors       = table.cells('.selected', getColumnIndex(ToplamEforCfId)).data();
 
                     if (selectedDepartmans.length==0) {
                         //values=table.cells('' , 'th[customFieldId="'+ customfieldIdAsString + '"]').data();
                         selectedDepartmans = table.cells('' , getColumnIndex(DepartmanCfID)).data();
-                        selectedEfors =      table.cells('' , getColumnIndex(ToplamEforCfId)).data();
+                        selectedEfors      = table.cells('' , getColumnIndex(ToplamEforCfId)).data();
                     }
 
                     var x;
@@ -814,17 +814,24 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         }
                     }
 
-                    //console.log("Total count = " + valuesSet[i] + " = " + valueCount);
                     departmanChartData.labels.push(departmansUnique[i]);
                     departmanChartData.datasets[0].data.push(valueCount);
 
                     departmanEforChartData.labels.push(departmansUnique[i]);
                     departmanEforChartData.datasets[0].data.push(eforToplam);
-
-                    // table.search('')
-                    //         .columns().search( '' )
-                    //         .draw()
                 }
+
+                let selectedDepartmans2 = table.cells('.selected' , getColumnIndex(DepartmanCfID)).data();
+
+                #foreach($option in $departmanOptions)
+                    var valueCount=0;
+                    for (x = 0; x < selectedDepartmans2.length; x++) {
+                        if (selectedDepartmans2[x].includes("$option.getValue()")){
+                            valueCount++;
+                        }
+                    }
+                    AJS.$("#departmanSelectedTable tbody > tr:contains('$option.getValue()') > td:nth-child(2)").text(valueCount);
+                #end
 
                 var departmanChartHtml = AJS.$("#departmanChartCanvas");
 
@@ -1125,7 +1132,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     </div>
                 </div>
             </div>
-            <div class="aui-group">
+            <div class="aui-group" style="margin-top: 10px !important; margin-bottom: 10px !important;">
                 <div class="borderli aui-item">
                     <table id="capacityTable" class="aui">
                         <thead>
@@ -1191,11 +1198,32 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                <div class="aui-item" style="width: 300px">
                    <canvas class="borderli" id="projeEtiketChartCanvas" width="300" height="300"></canvas>
                </div>
-
                <div class="aui-item" style="width: 300px">
                    <canvas class="borderli" id="projeEtiketChartEforCanvas" width="300" height="300"></canvas>
                </div>
            </div>
+            <div class="aui-group" style="margin-top: 10px !important; margin-bottom: 10px !important;">
+                <div class="aui-item borderli" >
+                    <table id="departmanSelectedTable" class="aui">
+                        <thead>
+                        <tr>
+                            <th>Departman</th>
+                            <th>Seçilen Proje Sayısı</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #foreach($option in $departmanOptions)
+                                ##set ($customField=$cfw.getCustomField())
+                            <tr>
+                                <td>$option.getValue()</td>
+                                <td>0</td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </div>
+                <div class="aui-item"></div>
+            </div>
 
 
 ##            <div class="aui-group">
