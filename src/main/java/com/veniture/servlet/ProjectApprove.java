@@ -93,9 +93,9 @@ public class ProjectApprove extends HttpServlet {
         Map<String, Object> context = new HashMap<>();
        // Query projectApproveQuery = ComponentAccessor.getComponent(JqlQueryParser.class).parseQuery(DEVORTAMI_TEST_SORGUSU);
        // SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
-        List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
+        List<CustomField> customFieldsInProjectApproveCfPicker = new GetCustomFieldsInExcel().getCfsForProjectApproveCfPicker();
        //context.put("issuesWithCF", new tableRowBuilder(issueManager,logger, IssueResults, customFieldsInProject).invoke());
-        context.put("customFieldsInProject", customFieldsInProject);
+        context.put("customFieldsInProject", customFieldsInProjectApproveCfPicker);
         context.put("baseUrl", JIRA_BASE_URL);
 //        context.put("teams", teams);
         context = new ProgramEforCfs(context).invoke();

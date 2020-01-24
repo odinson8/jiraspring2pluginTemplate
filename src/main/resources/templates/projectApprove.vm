@@ -121,7 +121,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     targets:   1
                 },
                     {"width": "6px", 'targets': 1},
-                    { targets: [1, 2, 3, 9], visible: true},
+                    { targets: [1, 2, 3, 9,10,11,12,13], visible: true},
                     { targets: '_all', visible: false }
                 ],
                 footerCallback: function (row, data, start, end, display) {
@@ -1040,11 +1040,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     <form class="aui">
                         <select id="customFieldList-select2" data-placeholder="Alanları eklemek için tıklayın." multiple style=" width: 65%; padding-top: 16px;">
                             <option></option>
-                            #foreach($cf in $customFieldsInProject)
-                                #if(!$cf.getId().contains("11905"))
-                                    <option value="$cf.getId()">$cf.getFieldName()</option>
+                                #foreach($cf in $customFieldsInProject)
+                                        <option value="$cf.getId()">$cf.getFieldName()</option>
                                 #end
-                            #end
                         </select>
                     </form>
                 </div>
@@ -1069,10 +1067,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th class="inFooter program"   remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
                                 <th class="inFooter program"   remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
                                 <th class="inFooter" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Gerekli Efor</th>
+                                <th customFieldId="customfield_11304">Sponsor</th>
+                                <th customFieldId="customfield_11405">Departman</th>
                                 <th customFieldId="customfield_11403">Departman Önceliği</th>
                                 <th customFieldId="customfield_11501">GMY Önceliği</th>
-                                <th customFieldId="customfield_11405">Departman</th>
-                                <th customFieldId="customfield_11304">Sponsor</th>
                                 <th customFieldId="customfield_11302">Bir projenin yeni bir fazı ise belirtiniz</th>
                                 <th customFieldId="customfield_11305">Etkilenecek Departmanlar</th>
                                 <th customFieldId="customfield_11306">Proje Etiketleri</th>
