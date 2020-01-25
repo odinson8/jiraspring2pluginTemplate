@@ -23,6 +23,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 
     <style id="css">
@@ -844,14 +845,49 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     data: departmanChartData,
                     options: {
+                        barShowStroke : false,
+                        legend: false,
+                        tooltip: false,
                         title: {
                             display: true,
-                            text: 'Departman Bazlı Dağılım'
+                            text: 'Departman Dağılımı'
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    display: false
+                                }
+                            }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                color: '#040203',
+                                anchor: 'end',
+                                align: 'start',
+                                offset: 4,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                borderRadius: 25,
+                                backgroundColor: (context) => {
+                                    return '#fff';
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: '10'
+                                },
+                                formatter: function(value) {
+                                    return value
+                                }
+                            }
                         }
                     }
                 });
 
                 var departmanEforChartHtml = AJS.$("#departmanEforChartCanvas");
+
+                Chart.defaults.global.plugins.datalabels.display = function(ctx) {
+                    return ctx.dataset.data[ctx.dataIndex] !== 0;
+                }
 
                 departmanEforChart = new Chart(departmanEforChartHtml, {
                     type: 'pie',
@@ -862,11 +898,43 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     data: departmanEforChartData,
                     options: {
+                        legend: false,
+                        barShowStroke : false,
+                        tooltip: false,
                         title: {
                             display: true,
                             text: 'Efor Bazlı Departman Dağılımı'
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    display: false
+                                }
+                            }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                color: '#040203',
+                                anchor: 'end',
+                                align: 'start',
+                                offset: 4,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                borderRadius: 25,
+                                backgroundColor: (context) => {
+                                    return '#fff';
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: '10'
+                                },
+                                formatter: function(value) {
+                                    return value
+                                }
+                            }
                         }
                     }
+
                 });
 
                 var projeEtiketChartCanvas = AJS.$("#projeEtiketChartCanvas");
@@ -880,11 +948,42 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     data: projeEtiketChartData,
                     options: {
+                        legend: false,
+                        tooltip: false,
                         title: {
                             display: true,
                             text: 'Proje Etiket Bazlı Dağılımı'
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    display: false
+                                }
+                            }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                color: '#040203',
+                                anchor: 'end',
+                                align: 'start',
+                                offset: 4,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                borderRadius: 25,
+                                backgroundColor: (context) => {
+                                    return '#fff';
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: '10'
+                                },
+                                formatter: function(value) {
+                                    return value
+                                }
+                            }
                         }
                     }
+
                 });
 
                 var projeEtiketChartEforCanvas = AJS.$("#projeEtiketChartEforCanvas");
@@ -898,9 +997,39 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     data: projeEtiketEforData,
                     options: {
+                        legend: false,
+                        tooltip: false,
                         title: {
                             display: true,
-                            text: 'Proje Etiket Bazlı Dağılımı'
+                            text: 'Efor Bazlı Proje Etiket Dağılımı'
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    display: false
+                                }
+                            }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                color: '#040203',
+                                anchor: 'end',
+                                align: 'start',
+                                offset: 4,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                borderRadius: 25,
+                                backgroundColor: (context) => {
+                                    return '#fff';
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: '10'
+                                },
+                                formatter: function(value) {
+                                    return value
+                                }
+                            }
                         }
                     }
                 });
@@ -1187,17 +1316,19 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             </div>
 
            <div class="aui-group">
-                <div class="aui-item" style="width: 300px">
-                    <canvas class="borderli" id="departmanChartCanvas" width="300" height="300"></canvas>
+                <div class="aui-item" >
+                    <canvas class="borderli" id="departmanChartCanvas"></canvas>
                 </div>
-               <div class="aui-item" style="width: 300px">
-                   <canvas class="borderli" id="departmanEforChartCanvas" width="300" height="300"></canvas>
+               <div class="aui-item" >
+                   <canvas class="borderli" id="departmanEforChartCanvas"></canvas>
                </div>
-               <div class="aui-item" style="width: 300px">
-                   <canvas class="borderli" id="projeEtiketChartCanvas" width="300" height="300"></canvas>
+           </div>
+           <div class="aui-group" style="margin-top: 10px !important; margin-bottom: 10px !important;">
+               <div class="aui-item" >
+                   <canvas class="borderli" id="projeEtiketChartCanvas"></canvas>
                </div>
-               <div class="aui-item" style="width: 300px">
-                   <canvas class="borderli" id="projeEtiketChartEforCanvas" width="300" height="300"></canvas>
+               <div class="aui-item" >
+                   <canvas class="borderli" id="projeEtiketChartEforCanvas"></canvas>
                </div>
            </div>
             <div class="aui-group" style="margin-top: 10px !important; margin-bottom: 10px !important;">

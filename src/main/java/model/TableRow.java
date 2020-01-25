@@ -99,7 +99,8 @@ public class TableRow {
             String cfValue = cfWV.getValue();
             if (cfName.equals("Departman")){
                 try {
-                    jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf("}")).replace(", 1="," - "));
+//                    jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf("}")).replace(", 1="," - "));
+                    jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf(", 1")));
                 } catch (Exception e) {
                     jo.put(cfName, "-");
                 }
