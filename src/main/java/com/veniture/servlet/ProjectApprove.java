@@ -103,7 +103,6 @@ public class ProjectApprove extends HttpServlet {
         context = new team2Program(context, teams).invoke();
         //context.put("programs", programsWithCapacities);
         //context.put("projectCFs",getCustomFieldsInProject(Constants.ProjectId));
-
         addCfOptionsToContext(context);//ProjeEtikleri
         addDepartmanOptionsToContext(context);//ProjeEtikleri
         return context;

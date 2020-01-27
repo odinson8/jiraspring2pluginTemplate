@@ -41,12 +41,12 @@ public class functions {
     }
 
     public static Double calculateDayCountFromHour(Integer hourTime){
-        Double aDouble = new Double(hourTime) / 8;
+        Double aDouble = new Double(hourTime) / 9;
         return Math.round(aDouble*1e4)/1e4;
     }
 
     public static Double calculateManCountFromHour(Integer hourTime){
-        Double aDouble = new Double(hourTime) / 8 /252;
-        return Math.round(aDouble*1e4)/1e4;
+        Double aDouble = new Double(hourTime) / 9 ;
+        return Math.round(aDouble*1e1)/1e1;
     }
 }

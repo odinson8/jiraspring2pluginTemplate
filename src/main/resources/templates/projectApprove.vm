@@ -91,6 +91,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     </style>
 
     <script>
+
+
         AJS.$(document).ready(function() {
             
             Swal.showLoading();
@@ -190,7 +192,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //console.log(col);
 
                     const selectedTotal = roundToTwo(totalize_selected(col));
-                    let difference = capacity*252 - selectedTotal;
+                    let difference = capacity - selectedTotal;
                     let innerHtml;
                     if (difference < 0) {
                        // innerHtml = '' + '<aui-badge style="background: #ffffff; color: #ffffff;">' + selectedTotal + '</aui-badge>';
@@ -199,12 +201,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         innerHtml = ' ' + (selectedTotal);
                     }
                     AJS.$(table.column(col).footer()).html(innerHtml);
-                    AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-2) +")").text(findManCountFromManDay(selectedTotal));
+                    AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-2) +")").text(roundToTwo(selectedTotal));
 
                     if (difference < 0) {
-                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +findManCountFromManDay(difference)+ '</aui-badge>');
+                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +roundToTwo(difference)+ '</aui-badge>');
                     } else {
-                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").text(findManCountFromManDay(difference));
+                        AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").text(roundToTwo(difference/252));
                     }
                 };
 
@@ -223,10 +225,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
             function roundToTwo(num) {
                 return +(Math.round(num + "e+1")  + "e-1");
-            }
-
-            function findManCountFromManDay(num) {
-                return +(Math.round(num/252 + "e+2")  + "e-2");
             }
 
             table.on( 'select', function ( e, dt, type, indexes ) {
@@ -308,23 +306,29 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             //AJS.$("#customFieldList-select2").find('option').prop('selected', 'selected');
             var toggle = AJS.$("#onlyShowSelectedOnes");
             toggle.checked = false;
-            toggle.click(function(e) {
+            AJS.$("#onlyShowSelectedOnes").click(function(e) {
+                onlyShowSelectedOnesFilter();
+            });
+
+            function onlyShowSelectedOnesFilter() {
                 var isChecked = toggle.checked;
                 if (isChecked === false) {
+                    console.log("False 2 True");
                     toggle.checked = true;
-                    table.search( '' )
-                            .columns('th:contains("isSelected")').search( 'YYYY' )
+                    table.search('')
+                            .columns('th:contains("isSelected")').search('YYYY')
                             .draw();
-                }else {
+                } else {
+                    console.log("True 2 False");
                     toggle.checked = false;
                     table.search('').columns().search('');
                     #foreach($cfw in $CfFilters)
                         #set ($customField=$cfw.getCustomField())
-                        table.columns('th:contains("$customField.getName()")').search( AJS.$("#$customField.getId()-select2").val());
+                        table.columns('th[customFieldId="$customField.getId()"]').search(AJS.$("#$customField.getId()-select2").val());
                     #end
                     table.draw();
                 }
-            });
+            }
 
             AJS.$("#select-all").click(function(e) {
                 table.rows( {order:'index', search:'applied'} ).select();
@@ -852,13 +856,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             display: true,
                             text: 'Departman Dağılımı'
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    display: false
-                                }
-                            }]
-                        },
+
                         plugins: {
                             datalabels: {
                                 color: '#040203',
@@ -905,13 +903,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             display: true,
                             text: 'Efor Bazlı Departman Dağılımı'
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    display: false
-                                }
-                            }]
-                        },
+
                         plugins: {
                             datalabels: {
                                 color: '#040203',
@@ -954,13 +946,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             display: true,
                             text: 'Proje Etiket Bazlı Dağılımı'
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    display: false
-                                }
-                            }]
-                        },
+
                         plugins: {
                             datalabels: {
                                 color: '#040203',
@@ -1003,13 +989,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             display: true,
                             text: 'Efor Bazlı Proje Etiket Dağılımı'
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    display: false
-                                }
-                            }]
-                        },
+
                         plugins: {
                             datalabels: {
                                 color: '#040203',
@@ -1275,7 +1255,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         </thead>
                         <tbody>
                         <tr>
-                            <td headers="basic-number">Toplam çalışan</td>
+                            <td headers="basic-number">Toplam  Adam Gün</td>
                             <td headers="basic-lname">$ProjeYonetimiTotal</td>
                             <td headers="basic-lname">$SAPAbapTotal</td>
                             <td headers="basic-lname">$YazilimGelistirmeTotal</td>
@@ -1284,7 +1264,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <td headers="basic-lname">$totalCapacityOfAllPrograms</td>
                         </tr>
                         <tr>
-                            <td headers="basic-fname">Müsait çalışan</td>
+                            <td headers="basic-fname">Müsait Adam Gün</td>
                             <td headers="basic-lname">$ProjeYonetimiRemaining</td>
                             <td headers="basic-lname">$SAPAbapRemaining</td>
                             <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
@@ -1293,7 +1273,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <td headers="basic-lname">$TotalRemainingCapacity</td>
                         </tr>
                         <tr>
-                            <td headers="basic-lname">Seçilenler için gerekli çalışan</td>
+                            <td headers="basic-lname">Seçilenler için gerekli Adam Gün</td>
                             <td headers="basic-lname"></td>
                             <td headers="basic-lname"></td>
                             <td headers="basic-lname"></td>

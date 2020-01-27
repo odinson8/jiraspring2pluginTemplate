@@ -21,6 +21,7 @@ public class TeamsWithAvailabilityTimes {
         try {
             RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
             teams=remoteSearcher.getAllTeams();
+            remoteSearcher.test();
             for (Team team:teams){
                 Integer totalRemainingTimeInYearForTeam = remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId());
                 Integer totalAvailabilityTimeInYearForTeam = remoteSearcher.getTotalAllocatedTimeInYearForTeam(team.getId())+totalRemainingTimeInYearForTeam;

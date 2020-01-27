@@ -15,6 +15,7 @@ public class Constants {
     public static final String schemeHTTP = "http://";
     public static final String schemeHTTPS = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
+    public static final String QUERY_WORKLOAD = "/rest/tempo-core/1/workloadscheme/1";
     public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
     public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=YYY-01-02&to=ZZZ-01-02&period=P3m";
 

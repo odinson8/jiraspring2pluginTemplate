@@ -6,9 +6,11 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import model.pojo.Day;
 import model.pojo.TempoPlanner.FooterTotalAvailabilityInfos;
 import model.pojo.TempoPlanner.IssueTableData;
 import model.pojo.TempoTeams.Team;
+import model.pojo.Workload;
 import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +76,13 @@ public class RemoteSearcher {
         List<Team> tempoTeamData = GSON.fromJson(getResponseString(QUERY_TEAM), tempoTeamDataType);
         // List<String> names = tempoTeamData.stream().map(Team::getName).collect(Collectors.toList());
         return tempoTeamData;
+    }
+
+    public Workload test() throws URIException {
+        Type workload = new TypeToken<Workload>() {}.getType();
+        Workload workloadData = GSON.fromJson(getResponseString(QUERY_WORKLOAD), workload);
+        Integer hourly=workloadData.getDays().stream().filter(o -> o.getSeconds() > - 10).mapToInt(Day::getSeconds).sum()/3600/5;
+        return workloadData;
     }
 
     public String getResponseString(String Query) {
