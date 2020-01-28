@@ -112,7 +112,6 @@ public class TableRow {
 
     private void addEforJson(JSONObject jo) throws JSONException {
         for (CustomField cf:new ProgramEforCfs().eforCFs()) {
-            Double requiredMan;
             String customFieldValueFromIssue;
             try {
                 customFieldValueFromIssue = getCustomFieldValueFromIssue(issue, cf.getIdAsLong());
@@ -121,7 +120,6 @@ public class TableRow {
             
             } catch (Exception e) {
                 customFieldValueFromIssue="0";
-                requiredMan=0.0;
                 e.printStackTrace();
             }
             jo.put(cf.getId(), customFieldValueFromIssue);

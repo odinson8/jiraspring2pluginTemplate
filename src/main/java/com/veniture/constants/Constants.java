@@ -66,5 +66,7 @@ public class Constants {
     public static final long maliyetBaremiCfId = 11310l;
     public static final long satisBaremiCfId = 11308l;
     public static final long SureclerManuelYuruyorMuCF = 11313l;
+    public static final long gmyOnceligiCF = 11501l;
+    public static final long projeKategoriCF = 11903l;
 
 }

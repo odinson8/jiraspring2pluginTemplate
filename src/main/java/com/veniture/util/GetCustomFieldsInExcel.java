@@ -46,8 +46,9 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(SureclerManuelYuruyorMuCF));//süreçler manuel yürütülebilior mu
         cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));//proje kategori
 
-        List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
+        //List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);
 //            ArrayList<CustomField> list = new ArrayList<>();
@@ -68,13 +69,13 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(satisBaremiCfId));//satış barami
         cfArrayList.add(customFieldManager.getCustomFieldObject(11309l));//maliyet etkisi tarifi
         cfArrayList.add(customFieldManager.getCustomFieldObject(maliyetBaremiCfId));//maliyet barami
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11311l));//verimlilik etkisi tarifi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11311l));       //verimlilik etkisi tarifi
         cfArrayList.add(customFieldManager.getCustomFieldObject(verimlilikBaremiCfId));//verimlilik barami
         cfArrayList.add(customFieldManager.getCustomFieldObject(SureclerManuelYuruyorMuCF));//süreçler manuel yürütülebilior mu
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));//manuel yürütmedki zorluklar
-        cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11314l));       //manuel yürütmedki zorluklar
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));       //danışmanlık gereklimi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));       //projectCategory
 
-        List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);
 //            ArrayList<CustomField> list = new ArrayList<>();

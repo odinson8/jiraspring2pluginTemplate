@@ -6,12 +6,8 @@ import com.atlassian.jira.event.type.EventDispatchOption;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.fields.Field;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.user.ApplicationUser;
-import com.veniture.constants.Constants;
-
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class functions {
@@ -47,6 +43,6 @@ public class functions {
 
     public static Double calculateManCountFromHour(Integer hourTime){
         Double aDouble = new Double(hourTime) / 9 ;
-        return Math.round(aDouble*1e1)/1e1;
+        return Math.round(aDouble*1e0)/1e0;
     }
 }

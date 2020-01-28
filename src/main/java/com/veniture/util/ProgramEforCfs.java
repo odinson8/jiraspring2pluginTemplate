@@ -25,6 +25,7 @@ public class ProgramEforCfs {
         CustomField yazılımGeliştirmeEforCf = cfMgr.getCustomFieldObject(11805l);
         CustomField sapUygulamaEforCf = cfMgr.getCustomFieldObject(11804l);
         CustomField işZekasıVeRaporlamaEforCf = cfMgr.getCustomFieldObject(11806l);
+        CustomField AnalizEforCf = cfMgr.getCustomFieldObject(12000l);
 
         ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
         customFieldArrayList.add(projeYonetimEforCf);
@@ -32,6 +33,7 @@ public class ProgramEforCfs {
         customFieldArrayList.add(yazılımGeliştirmeEforCf);
         customFieldArrayList.add(sapUygulamaEforCf);
         customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
+        customFieldArrayList.add(AnalizEforCf);
 
         context.put("eforCfs",customFieldArrayList);
         return context;
@@ -44,6 +46,7 @@ public class ProgramEforCfs {
         CustomField yazılımGeliştirmeEforCf = cfMgr.getCustomFieldObject(11805l);
         CustomField sapUygulamaEforCf = cfMgr.getCustomFieldObject(11804l);
         CustomField işZekasıVeRaporlamaEforCf = cfMgr.getCustomFieldObject(11806l);
+        CustomField AnalizEforCf = cfMgr.getCustomFieldObject(12000l);
 
         ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
         customFieldArrayList.add(projeYonetimEforCf);
@@ -51,6 +54,7 @@ public class ProgramEforCfs {
         customFieldArrayList.add(yazılımGeliştirmeEforCf);
         customFieldArrayList.add(sapUygulamaEforCf);
         customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
+        customFieldArrayList.add(AnalizEforCf);
 
         return customFieldArrayList;
         //context.put("eforCfs",customFieldArrayList);

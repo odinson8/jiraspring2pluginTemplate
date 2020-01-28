@@ -19,7 +19,6 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.query.Query;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
-import com.veniture.constants.Constants;
 import com.veniture.util.team2Program;
 import com.veniture.util.GetCustomFieldsInExcel;
 import com.veniture.util.ProgramEforCfs;
@@ -109,7 +108,7 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> addCfOptionsToContext(Map<String, Object> context) {
-        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(SureclerManuelYuruyorMuCF, projeEtikleriCfId, departmanCfId,maliyetBaremiCfId,satisBaremiCfId,verimlilikBaremiCfId));
+        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(SureclerManuelYuruyorMuCF, projeEtikleriCfId, departmanCfId,gmyOnceligiCF,maliyetBaremiCfId,satisBaremiCfId,verimlilikBaremiCfId, projeKategoriCF));
         ArrayList<CfWithOptions> cfs = new ArrayList<>();
 
         for (Long cfId:cfIds){

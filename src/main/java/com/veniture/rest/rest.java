@@ -75,26 +75,28 @@ public class rest {
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
         String[] issueHtml = req.getParameterValues("issues");
-        logger.error(issueHtml.toString());
-        ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
-                .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
-                .collect(Collectors.toList());
-        String[] action = req.getParameterValues("action");
-        ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-        if (action[0].equals("approve")){
-            issues.stream()
-                    .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
-        }
-        else if (action[0].equals("decline")){
-            issues.stream()
-                    .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+
+        if (issueHtml.length>5){
+            ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
+                    .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
+                    .collect(Collectors.toList());
+            String[] action = req.getParameterValues("action");
+            ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+            if (action[0].equals("approve")){
+                issues.stream()
+                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
+            }
+            else if (action[0].equals("decline")){
+                issues.stream()
+                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+            }
         }
         return "true";
     }
 
     @POST
     @Path("/getCfValueFromIssue")
-    public String getCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
+    public String getCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
         return ISSUE_SERVICE.getIssue(CURRENT_USER,req.getParameterValues("issueKey")[0]).getIssue().getCustomFieldValue(customField).toString();
     }
@@ -102,7 +104,7 @@ public class rest {
     @POST
     @Path("/getProjectIssues")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response testJson(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws SearchException, JqlParseException, JSONException {
+    public Response getProjectIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws SearchException, JqlParseException, JSONException {
         SearchResults<Issue> IssueResults = getIssueSearchResults(authenticationContext,searchService);
         List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
         List<TableRow> tableRows = new tableRowBuilder(ComponentAccessor.getIssueManager(), logger,IssueResults, customFieldsInProject).invoke();
@@ -135,7 +137,7 @@ public class rest {
 
     @POST
     @Path("/bulkGetCfValueFromIssue")
-    public String bulkGetCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws URIException {
+    public String bulkGetCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         CustomField customField= ComponentAccessor.getCustomFieldManager().getCustomFieldObject(req.getParameterValues("customFieldId")[0]);
         String issueKeysJoined = req.getParameterValues("issueKey")[0];
         String[] issueKeys = issueKeysJoined.split(",");
