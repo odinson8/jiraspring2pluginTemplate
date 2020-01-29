@@ -282,7 +282,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 let search = e.val ;
 
                 #if($customField.getId().contains("11501") || $customField.getId().contains("11903"))
-                    table.columns('th[customFieldId="$customField.getId()"]').search('^' +search+ '$', true, false).draw();
+                    table.columns('th[customFieldId="$customField.getId()"]').search('^' +search+ '$' +
+                            '', true, false).draw();
                 #else
                     table.columns('th[customFieldId="$customField.getId()"]').search(search, false, true).draw();
                 #end

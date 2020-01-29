@@ -76,7 +76,7 @@ public class rest {
         IssueService issueService = ComponentAccessor.getIssueService();
         String[] issueHtml = req.getParameterValues("issues");
 
-        if (issueHtml.length>5){
+        if (issueHtml.length>0){
             ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
                     .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
                     .collect(Collectors.toList());
@@ -91,6 +91,7 @@ public class rest {
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
             }
         }
+
         return "true";
     }
 
