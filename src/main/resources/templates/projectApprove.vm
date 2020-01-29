@@ -50,7 +50,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         }
 
          .borderli {
-             border-radius: 25px;
+             border-radius: 12px;
              border: 1px solid #00ad9a;
              padding: 20px;
              /*width: 200px;*/
@@ -1131,13 +1131,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <select id="$customField.getId()-select2" style="padding-top: 18px; width: 99%">
                                 <option></option>
                                 #if($customField.getId().contains("11501"))
-                                    <option>1.0</option>
-                                    <option>2.0</option>
-                                    <option>3.0</option>
-                                    <option>4.0</option>
-                                    <option>5.0</option>
-                                    <option>6.0</option>
-                                    <option>7.0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
                                 #else
                                     #foreach($option in $options)
                                         #if($option.getValue()!="-")

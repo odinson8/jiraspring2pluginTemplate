@@ -31,7 +31,13 @@ public class functions {
 
     public static String getCustomFieldValueFromIssue(MutableIssue issue,Long cfId){
         CustomField cf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
-        return cf.getValue(issue).toString();
+        Object value = cf.getValue(issue);
+        if (value instanceof Double) {
+            return  String.valueOf(((Double) value).intValue());
+        }
+        else {
+            return value.toString();
+        }
     }
 
     public static List<CustomField> getCustomFieldsInProject(String projectKey){
