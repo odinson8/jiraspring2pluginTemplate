@@ -96,6 +96,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             Swal.showLoading();
 
             var table;
+            var departmanSelectedTable;
             table=AJS.$("#projectsTable").DataTable( {
                 "scrollX"   : true,
                 "scrollY":        "400px",
@@ -128,6 +129,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
+            });
+            departmanSelectedTable=AJS.$("#departmanSelectedTable").DataTable( {
+                "paging":         false,
+                "order": [[ 1, "desc" ]],
+                "searching": false
             });
 
             function displayFooter() {
@@ -235,6 +241,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 }
 
+                var departmanSelectedTable=AJS.$("#departmanSelectedTable").DataTable();
+
+                departmanSelectedTable
+                        .order( [ 1, 'desc' ] )
+                        .draw();
+
                 table.draw();
                 // displayFooter();
                 // Her select'te çalışıo performans sıkıntısı olabilir.
@@ -258,6 +270,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //table.rows( indexes ).cell(':eq(0)').data("--").draw();
                     // console.log("Sildim" +table.rows( indexes ).cell(':eq(0)').data());
                 }
+
+
+                var departmanSelectedTable=AJS.$("#departmanSelectedTable").DataTable();
+
+                departmanSelectedTable
+                        .order( [ 1, 'desc' ] )
+                        .draw();
 
                 table.draw();
 
@@ -548,12 +567,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             }
 
             AJS.$('#ApproveButton').off().on("click", function () {
-                console.log("burdaa1");
-
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 //Constant
                 var selectedCellsArray = table.cells('.selected', 2).data().toArray();
+                table.rows( '.selected' )
+                        .remove()
+                        .draw();
 
+                createOrUpdateCharts();
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
                     type: 'GET',
@@ -590,8 +611,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 //Constant
-                console.log("burdaa");
                 var selectedCellsArray = table.cells('.selected', 2).data().toArray();
+                table.rows( '.selected' )
+                        .remove()
+                        .draw();
+                createOrUpdateCharts();
 
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
@@ -821,7 +845,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             valueCount++;
                         }
                     }
-                    AJS.$("#departmanSelectedTable tbody > tr:contains('$option.getValue()') > td:nth-child(2)").text(valueCount);
+                    ## AJS.$("#departmanSelectedTable tbody > tr:contains('$option.getValue()') > td:nth-child(2)").text(valueCount);
+                    AJS.$("#departmanSelectedTable").DataTable().cell('tr:contains("$option.getValue()")', 1).data(valueCount);
                 #end
 
                 var departmanChartHtml = AJS.$("#departmanChartCanvas");
@@ -1324,7 +1349,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
            </div>
             <div class="aui-group" style="margin-top: 10px !important; margin-bottom: 10px !important;">
                 <div class="aui-item borderli" >
-                    <table id="departmanSelectedTable" class="aui aui-table-sortable">
+                    <table id="departmanSelectedTable">
                         <thead>
                         <tr>
                             <th>Departman</th>
