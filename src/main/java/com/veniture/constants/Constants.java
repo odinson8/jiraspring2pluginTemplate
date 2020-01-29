@@ -21,8 +21,12 @@ public class Constants {
 
     //Veniture Jira - Prod Yeni Ortam
     public static final String ProjectId = "PF";
+    //public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser() and status=\"Departman Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
+    //public static final String gmyJQL ="project ="+ProjectId+" and cf[11406]=currentUser() and status = \"Grup/GMY Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
+
     public static final String departmanJQL ="project ="+ProjectId+" and cf[11507] =currentUser() and status=\"Departman Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
     public static final String gmyJQL ="project ="+ProjectId+" and cf[11406]=currentUser() and status = \"Grup/GMY Önceliklendirmesi\" ORDER BY \"Departman Önceliği\"";
+
     public static final String ProjectApproveJQL = "project = "+ProjectId+" AND status=\"CEO Onayı Bekleniyor\" ORDER BY \"Grup / GMY Önceliği\"";
     public static final String DEMO_JQL ="project ="+ProjectId +" AND key = \"PF-1165\"";
     public static final String DEVORTAMI_TEST_SORGUSU = "project = "+ProjectId;

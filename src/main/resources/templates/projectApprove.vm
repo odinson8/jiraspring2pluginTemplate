@@ -95,6 +95,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         AJS.$(document).ready(function() {
             Swal.showLoading();
 
+
             var table;
             var departmanSelectedTable;
             table=AJS.$("#projectsTable").DataTable( {
@@ -177,7 +178,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 };
 
                 var totalize_all = function (row) {
-                    console.log("----");
                     var data = table.cells(row, 'th[class*="program"]').data();
                     if (typeof data != 'undefined') {
                         return data
@@ -209,10 +209,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                     if (difference < 0) {
                         AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +roundToTwo(difference) + '</aui-badge>');
+                        AJS.$("#capacityTable tbody > tr:nth-child(5) > td:nth-child("+ (col-2) +")").html('<aui-badge style="background: #c51000; color: #ffffff;">' +roundToTwo(difference/252) + '</aui-badge>');
                     } else {
                         AJS.$("#capacityTable tbody > tr:nth-child(4) > td:nth-child("+ (col-2) +")").text(roundToTwo(difference));
+                        AJS.$("#capacityTable tbody > tr:nth-child(5) > td:nth-child("+ (col-2) +")").text(roundToTwo(difference/252));
                     }
                 };
+
 
                 // table.rows().indexes().each(function (e) {
                 //     //console.log(totalize_all(e));
@@ -849,6 +852,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     AJS.$("#departmanSelectedTable").DataTable().cell('tr:contains("$option.getValue()")', 1).data(valueCount);
                 #end
 
+                Chart.defaults.global.plugins.datalabels.display = function(ctx) {
+                    return ctx.dataset.data[ctx.dataIndex] !== 0;
+                }
+
                 var departmanChartHtml = AJS.$("#departmanChartCanvas");
 
                 departmanChart = new Chart(departmanChartHtml, {
@@ -891,6 +898,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         }
                     }
                 });
+
+
 
                 var departmanEforChartHtml = AJS.$("#departmanEforChartCanvas");
 

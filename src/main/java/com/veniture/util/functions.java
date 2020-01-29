@@ -8,6 +8,9 @@ import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.user.ApplicationUser;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class functions {
@@ -45,4 +48,34 @@ public class functions {
         Double aDouble = new Double(hourTime) / 9 ;
         return Math.round(aDouble*1e0)/1e0;
     }
+
+//    public static int getWorkingDaysBetweenTwoDates(Date startDate, Date endDate) {
+//        Calendar startCal = Calendar.getInstance();
+//        startCal.setTime(startDate);
+//
+//        Calendar endCal = Calendar.getInstance();
+//        endCal.setTime(endDate);
+//
+//        int workDays = 0;
+//
+//        //Return 0 if start and end are the same
+//        if (startCal.getTimeInMillis() == endCal.getTimeInMillis()) {
+//            return 0;
+//        }
+//
+//        if (startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
+//            startCal.setTime(endDate);
+//            endCal.setTime(startDate);
+//        }
+//
+//        do {
+//            //excluding start date
+//            startCal.add(Calendar.DAY_OF_MONTH, 1);
+//            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//                ++workDays;
+//            }
+//        } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+//
+//        return workDays;
+//    }
 }
