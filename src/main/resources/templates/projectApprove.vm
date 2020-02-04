@@ -306,6 +306,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #else
                         table.columns('th[customFieldId="$customField.getId()"]').search(search, false, true).draw();
                     #end
+
                 });
 
                 AJS.$("#$customField.getId()-clear").click(function(e) {
@@ -317,30 +318,26 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         #set ($customField=$cfw.getCustomField())
                         table.columns('th[customFieldId="$customField.getId()"]').search( AJS.$("#$customField.getId()-select2").val());
                     #end
+                    onlyShowSelectedOnesToFalse();
                     table.draw();
                 });
             #end
 
             var toggle = AJS.$("#onlyShowSelectedOnes");
-            toggle.checked = false;
-            AJS.$("#onlyShowSelectedOnes").click(function(e) {
-                onlyShowSelectedOnesFilter(true);
+            toggle.bootstrapToggle();
+
+            toggle.bootstrapToggle('off');
+            AJS.$(".toggle-group").click(function(e) {
+                onlyShowSelectedOnesToggle();
             });
 
-            function onlyShowSelectedOnesFilter(shouldToggle) {
-                var isChecked = toggle.checked;
+            function onlyShowSelectedOnesToggle() {
+                var isChecked = toggle.prop('checked');
                 if (isChecked === false) {
-                    if (shouldToggle === true) {
-                        toggle.checked = true;
-                    }
                     table.search('')
                             .columns('th:contains("isSelected")').search('YYYY')
                             .draw();
                 } else {
-                    if (shouldToggle === true) {
-                        toggle.checked = false;
-                    }
-
                     table.search('').columns().search('');
                     #foreach($cfw in $CfFilters)
                         #set ($customField=$cfw.getCustomField())
@@ -348,6 +345,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     #end
                     table.draw();
                 }
+            }
+            function onlyShowSelectedOnesToFalse() {
+                toggle.bootstrapToggle('off');
+                table.search('').columns().search('');
+                #foreach($cfw in $CfFilters)
+                    #set ($customField=$cfw.getCustomField())
+                    table.columns('th[customFieldId="$customField.getId()"]').search(AJS.$("#$customField.getId()-select2").val());
+                #end
+                table.draw();
             }
 
             AJS.$("#select-all").click(function(e) {
@@ -556,8 +562,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         }
                     ]
                 };
-
-
 
                 var projeEtiketEforData = {
                     labels: [],
@@ -1035,7 +1039,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             <aui-label for="onlyShowSelectedOnes" resolved="">
                                 <label for="onlyShowSelectedOnes">Seçilenleri Göster</label>
                             </aui-label>
-                            <aui-toggle id="onlyShowSelectedOnes" label="Sepeti Göster"></aui-toggle>
+##                            <aui-toggle id="onlyShowSelectedOnes" label="Sepeti Göster"></aui-toggle>
+                            <input id="onlyShowSelectedOnes" type="checkbox" data-toggle="toggle">
                         </div>
                     </div>
                 </div>
