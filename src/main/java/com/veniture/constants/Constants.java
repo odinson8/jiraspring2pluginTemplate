@@ -4,6 +4,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 
 public class Constants {
 
+    public static final Boolean isTest = false;
     public static final String SC_SORGUSU = "project = PF";
     public static final String JIRA_BASE_URL = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
 
@@ -16,8 +17,8 @@ public class Constants {
     public static final String schemeHTTPS = "https://";
     public static final String QUERY_TEAM = "/rest/tempo-teams/2/team";
     public static final String QUERY_WORKLOAD = "/rest/tempo-core/1/workloadscheme/1";
-    public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
-    public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=YYY-01-02&to=ZZZ-01-02&period=P3m";
+    //public static final String QUERY_AVAILABILITY = "/rest/tempo-planning/1/capacity/report/8?from=2019-11-19&to=2019-12-04&period=P1w";
+    public static final String QUERY_AVAILABILITY_YEAR = "/rest/tempo-planning/1/capacity/report/XXX?from=YYY&to=ZZZ&period=P1w";
 
     //Veniture Jira - Prod Yeni Ortam
     public static final String ProjectId = "PF";

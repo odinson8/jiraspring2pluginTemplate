@@ -60,7 +60,11 @@ public class RemoteSearcher {
 
     private String getResponseForAvailability(Integer teamId) {
         int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
-        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY",String.valueOf(CurrentYear)).replace("ZZZ",String.valueOf(CurrentYear+1));
+        int CurrentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int CurrentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        String StartDate = CurrentYear+"-"+(CurrentMonth+1)+"-"+CurrentDay;
+        String EndDate = (CurrentYear) +"-12-30";
+        String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY", StartDate).replace("ZZZ",EndDate);
         return getResponseString(QUERY);
     }
 

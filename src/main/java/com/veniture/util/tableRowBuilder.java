@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.veniture.constants.Constants.isTest;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 
 public class tableRowBuilder {
@@ -29,7 +30,14 @@ public class tableRowBuilder {
 
     public List<TableRow> invoke() {
         List<TableRow> tableRows = new ArrayList<>();
-        for (Issue issue : results.getResults()) {
+//        for (Issue issue : results.getResults()) {
+        List<Issue> issues;
+        if (isTest) {
+            issues = results.getResults().subList(1, 10);
+        } else {
+            issues = results.getResults();
+        }
+        for (Issue issue : issues) {
             MutableIssue issueFull = issueManager.getIssueByKeyIgnoreCase(issue.getKey());
             ArrayList<CfWithValue> customFieldsWithValues= new ArrayList<>();
             for (CustomField customField:customFieldsInProject){
