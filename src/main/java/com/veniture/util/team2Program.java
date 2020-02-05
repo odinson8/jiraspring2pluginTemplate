@@ -65,11 +65,25 @@ public class team2Program {
 
     private Set<Program> getPrograms(List<Team> teams) {
         HashSet<Program> programs = new HashSet<>();
-        Set<String> programNames = teams.stream().map(Team::getProgram).collect(Collectors.toSet());
-        programNames.remove(null);
-        for (String programName: programNames){
-            programs.add(new Program(programName,0));
-        }
+
+        programs.add(new Program("Analiz",0));
+        programs.add(new Program("Yazılım Geliştirme",0));
+        programs.add(new Program("SAP Uygulama",0));
+        programs.add(new Program("SAP Abap",0));
+        programs.add(new Program("İş Zekası ve Raporlama",0));
+        programs.add(new Program("Proje Yönetimi",0));
+
+//        programs.add(new Program("Analiz",0));
+//        programs.add(new Program("YazilimGelistirme",0));
+//        programs.add(new Program("SAPUygulama",0));
+//        programs.add(new Program("SAPAbap",0));
+//        programs.add(new Program("IsZekasiveRaporlama",0));
+//        programs.add(new Program("ProjeYonetimi",0));
+//        Set<String> programNames = teams.stream().map(Team::getProgram).collect(Collectors.toSet());
+//        programNames.remove(null);
+//        for (String programName: programNames){
+//            programs.add(new Program(programName,0));
+//        }
         return programs;
     }
 

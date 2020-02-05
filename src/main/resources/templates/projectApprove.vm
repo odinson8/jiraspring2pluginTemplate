@@ -971,12 +971,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th class="inFooter program"   remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
-                                <th class="inFooter program"   remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
-                                <th class="inFooter program"   remainingTime="$SAPAbapRemaining">SAP Abap</th>
-                                <th class="inFooter program"   remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
-                                <th class="inFooter program"   remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
                                 <th class="inFooter program"   remainingTime="$AnalizRemaining">Analiz</th>
+                                <th class="inFooter program"   remainingTime="$YazilimGelistirmeRemaining">Yazılım Geliştirme</th>
+                                <th class="inFooter program"   remainingTime="$SAPUygulamaRemaining">SAP Uygulama</th>
+                                <th class="inFooter program"   remainingTime="$SAPAbapRemaining">SAP Abap</th>
+                                <th class="inFooter program"   remainingTime="$IsZekasiveRaporlamaRemaining">İş Zekası ve Raporlama</th>
+                                <th class="inFooter program"   remainingTime="$ProjeYonetimiRemaining">Proje Yönetimi</th>
                                 <th class="inFooter" remainingTime="$totalCapacityOfAllPrograms" customFieldId="customfield_11905">Toplam Efor</th>
                                 <th customFieldId="customfield_11304">Sponsor</th>
                                 <th customFieldId="customfield_11405">Departman</th>
@@ -995,6 +995,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th customFieldId="customfield_11314">Manuel Yürütmedeki Zorluklar</th>
                                 <th customFieldId="customfield_11315">Danışmanlık Gerekli mi?</th>
                                 <th customFieldId="customfield_11903">Proje Kategori</th>
+                                <th customFieldId="customfield_11800">Proje Yılı</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -1003,16 +1004,17 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th>Issue</th>
                                 <th>Summary</th>
-                                <th class="inFooter">Proje Yönetimi</th>
-                                <th class="inFooter">SAP Abap</th>
+                                <th class="inFooter">Analiz</th>
                                 <th class="inFooter">Yazılım Geliştirme</th>
                                 <th class="inFooter">SAP Uygulama</th>
+                                <th class="inFooter">SAP Abap</th>
                                 <th class="inFooter">İş Zekası ve Raporlama</th>
-                                <th class="inFooter">Analiz</th>
+                                <th class="inFooter">Proje Yönetimi</th>
                                 <th remainingTime="$totalCapacityOfAllPrograms"></th>
                                 <th></th>
 ##                                <th></th>
 ##                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -1051,34 +1053,34 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         <thead>
                         <tr>
                             <th id="basic-number"   ></th>
-                            <th id="basic-fname"    >Proje Yönetimi</th>
-                            <th id="basic-lname"    >SAP Abap</th>
+                            <th id="basic-username" >Analiz</th>
                             <th id="basic-username" >Yazılım Geliştirme</th>
                             <th id="basic-username" >SAP Uygulama</th>
+                            <th id="basic-lname"    >SAP Abap</th>
                             <th id="basic-username" >İş Zekası ve Raporlama</th>
-                            <th id="basic-username" >Analiz</th>
+                            <th id="basic-fname"    >Proje Yönetimi</th>
                             <th id="basic-username" >Total</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td headers="basic-number">Toplam adam-gün</td>
-                            <td headers="basic-lname">$ProjeYonetimiTotal</td>
-                            <td headers="basic-lname">$SAPAbapTotal</td>
+                            <td headers="basic-lname">$AnalizTotal</td>
                             <td headers="basic-lname">$YazilimGelistirmeTotal</td>
                             <td headers="basic-lname">$SAPUygulamaTotal</td>
+                            <td headers="basic-lname">$SAPAbapTotal</td>
                             <td headers="basic-lname">$IsZekasiveRaporlamaTotal</td>
-                            <td headers="basic-lname">$AnalizTotal</td>
+                            <td headers="basic-lname">$ProjeYonetimiTotal</td>
                             <td headers="basic-lname">$totalCapacityOfAllPrograms</td>
                         </tr>
                         <tr>
                             <td headers="basic-fname">Müsait adam-gün</td>
-                            <td headers="basic-lname">$ProjeYonetimiRemaining</td>
-                            <td headers="basic-lname">$SAPAbapRemaining</td>
+                            <td headers="basic-lname">$AnalizRemaining</td>
                             <td headers="basic-lname">$YazilimGelistirmeRemaining</td>
                             <td headers="basic-lname">$SAPUygulamaRemaining</td>
+                            <td headers="basic-lname">$SAPAbapRemaining</td>
                             <td headers="basic-lname">$IsZekasiveRaporlamaRemaining</td>
-                            <td headers="basic-lname">$AnalizRemaining</td>
+                            <td headers="basic-lname">$ProjeYonetimiRemaining</td>
                             <td headers="basic-lname">$TotalRemainingCapacity</td>
                         </tr>
                         <tr>

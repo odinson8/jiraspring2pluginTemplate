@@ -49,12 +49,12 @@ public class ProgramEforCfs {
         CustomField AnalizEforCf = cfMgr.getCustomFieldObject(12000l);
 
         ArrayList<CustomField> customFieldArrayList= new ArrayList<>();
-        customFieldArrayList.add(projeYonetimEforCf);
-        customFieldArrayList.add(sapAbapEforCf);
+        customFieldArrayList.add(AnalizEforCf);
         customFieldArrayList.add(yazılımGeliştirmeEforCf);
         customFieldArrayList.add(sapUygulamaEforCf);
+        customFieldArrayList.add(sapAbapEforCf);
         customFieldArrayList.add(işZekasıVeRaporlamaEforCf);
-        customFieldArrayList.add(AnalizEforCf);
+        customFieldArrayList.add(projeYonetimEforCf);
 
         return customFieldArrayList;
         //context.put("eforCfs",customFieldArrayList);
