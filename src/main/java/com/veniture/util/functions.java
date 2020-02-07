@@ -3,6 +3,7 @@ package com.veniture.util;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.event.type.EventDispatchOption;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.fields.CustomField;
@@ -29,9 +30,10 @@ public class functions {
         ComponentAccessor.getIssueManager().updateIssue(user, issue, EventDispatchOption.ISSUE_UPDATED, false);
     }
 
-    public static String getCustomFieldValueFromIssue(MutableIssue issue,Long cfId){
-        CustomField cf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(cfId);
+    public static String getCustomFieldValueFromIssue(MutableIssue issue, Long cfId, CustomFieldManager cfm){
+        CustomField cf = cfm.getCustomFieldObject(cfId);
         Object value = cf.getValue(issue);
+       // Object value = issue.getCustomFieldValue(c);
         if (value instanceof Double) {
             return  String.valueOf(((Double) value).intValue());
         }

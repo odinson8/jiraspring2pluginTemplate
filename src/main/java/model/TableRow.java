@@ -1,6 +1,8 @@
 
 package model;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.util.json.JSONException;
@@ -111,10 +113,11 @@ public class TableRow {
     }
 
     private void addEforJson(JSONObject jo) throws JSONException {
+        CustomFieldManager customFieldManager= ComponentAccessor.getCustomFieldManager();
         for (CustomField cf:new ProgramEforCfs().eforCFs()) {
             String customFieldValueFromIssue;
             try {
-                customFieldValueFromIssue = getCustomFieldValueFromIssue(issue, cf.getIdAsLong());
+                customFieldValueFromIssue = getCustomFieldValueFromIssue(issue, cf.getIdAsLong(),customFieldManager);
                 //requiredMan = Double.valueOf(customFieldValueFromIssue);
                 //requiredMan=com.veniture.util.functions.calculateEmployeeCountFromManDay(requiredMan);
             

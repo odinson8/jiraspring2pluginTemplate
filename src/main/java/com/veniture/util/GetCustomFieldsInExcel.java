@@ -48,6 +48,7 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));//danışmanlık gereklimi
         cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));//proje kategori
         cfArrayList.add(customFieldManager.getCustomFieldObject(projeYiliCf));//proje yili
+        cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
 
         //List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
@@ -77,6 +78,7 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));       //danışmanlık gereklimi
         cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));       //projectCategory
         cfArrayList.add(customFieldManager.getCustomFieldObject(projeYiliCf));//proje yili
+        cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
 
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);

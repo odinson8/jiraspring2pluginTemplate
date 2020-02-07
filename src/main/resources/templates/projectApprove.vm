@@ -131,9 +131,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     </style>
     <script>
 
+        //Constants
+        var ProjeYiliCfId = "customfield_11800";
+        var showOnlyTheseColumns = [1, 2, 3, 10, 11, 12, 13, 14];
+        var selectBoxColumnIndex = 1;
+        var issueKeyColumnIndex = 2;
+
         AJS.$(document).ready(function() {
             Swal.showLoading();
-
 
             var table;
             var departmanSelectedTable;
@@ -150,23 +155,23 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     selector: 'td:nth-child(1)'
                 },
                 fixedColumns: {
-                    leftColumns: 1
+                    leftColumns: selectBoxColumnIndex
                 },
                 columnDefs: [{
                     orderable: false,
                     className: 'select-checkbox',
                     // STATIC VARIABLE !!!!
-                    targets:   1
+                    targets:   selectBoxColumnIndex
                 },
-                    {"width": "6px", 'targets': 1},
-                    { targets: [1, 2, 3, 10, 11, 12, 13, 14], visible: true},
+                    {"width": "6px", 'targets': selectBoxColumnIndex},
+                    { targets: showOnlyTheseColumns, visible: true},
                     { targets: '_all', visible: false }
                 ],
                 footerCallback: function (row, data, start, end, display) {
                     displayFooter();
                 }
             });
-            departmanSelectedTable=AJS.$("#departmanSelectedTable").DataTable( {
+            AJS.$("#departmanSelectedTable").DataTable( {
                 "paging":         false,
                 "order": [[ 1, "desc" ]],
                 "searching": false
@@ -212,17 +217,11 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 };
                 var apply_footer = function (capacity, col) {
-                    //console.log(col);
 
-                    const selectedTotal = roundToTwo(totalize_selected(col));
+                    let selectedTotal = roundToTwo(totalize_selected(col));
                     let difference = capacity - selectedTotal;
-                    let innerHtml;
-                    if (difference < 0) {
-                       // innerHtml = '' + '<aui-badge style="background: #ffffff; color: #ffffff;">' + selectedTotal + '</aui-badge>';
-                        innerHtml = ' ' + (selectedTotal);
-                    } else {
-                        innerHtml = ' ' + (selectedTotal);
-                    }
+                    let innerHtml=' ' + (selectedTotal)
+
                     AJS.$(table.column(col).footer()).html(innerHtml);
                     AJS.$("#capacityTable tbody > tr:nth-child(3) > td:nth-child("+ (col-2) +")").text(roundToTwo(selectedTotal));
 
@@ -322,9 +321,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     table.draw();
                 });
             #end
+
             //Set Current Year In Year Cf
-            console.log(new Date().getFullYear());
-            AJS.$("#customfield_11800-select2").select2("val", new Date().getFullYear());
+            AJS.$("#" + ProjeYiliCfId + "-select2").select2("val", new Date().getFullYear());
 
             var toggle = AJS.$("#onlyShowSelectedOnes");
             toggle.bootstrapToggle();
@@ -385,7 +384,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$('#ApproveButton').off().on("click", function () {
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 //Constant
-                var selectedCellsArray = table.cells('.selected', 2).data().toArray();
+                var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
                 table.rows( '.selected' )
                         .remove()
                         .draw();
@@ -421,13 +420,12 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         )
                     }
                 });
-            })
+            });
 
             AJS.$('#DeclineButton').off().on("click", function () {
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-                //Constant
-                var selectedCellsArray = table.cells('.selected', 2).data().toArray();
+                var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
                 table.rows( '.selected' )
                         .remove()
                         .draw();
@@ -492,9 +490,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 var table = AJS.$("#projectsTable").DataTable();
                 Object.keys(data).forEach(function(key){
 
-                    // STATIC VARIABLE
-                    var IssueKeyColumnIndex = 2;
-                    var issueKey = Object.values(data[key])[IssueKeyColumnIndex];
+                    var issueKey = Object.values(data[key])[issueKeyColumnIndex];
                     data[key]["issue"]='<a href="$baseUrl/browse/'+ issueKey+'" target="_blank">'+issueKey+'</a>';
                     //console.log(Object.values(data[key])[0]);
                     table.row.add(Object.values(data[key])).draw( false );
@@ -668,7 +664,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 Chart.defaults.global.plugins.datalabels.display = function(ctx) {
                     return ctx.dataset.data[ctx.dataIndex] !== 0;
-                }
+                };
 
                 var departmanChartHtml = AJS.$("#departmanChartCanvas");
 
@@ -716,8 +712,6 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         }
                     }
                 });
-
-
 
                 var departmanEforChartHtml = AJS.$("#departmanEforChartCanvas");
 
@@ -918,7 +912,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             #foreach($cfw in $CfFilters)
                 #set ($customField=$cfw.getCustomField())
                 #set ($options=$cfw.getOptions())
-            #if($customField.getId().contains("11310"))
+            #if($customField.getId().contains("501")|| $customField.getId().contains("11903"))
             </div>
             <div class="aui-group">
             #end
@@ -992,13 +986,14 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th customFieldId="customfield_11308">Satışa pozitif etkisi baremleri (Yıllık / TL)</th>
                                 <th customFieldId="customfield_11309">Maliyeti azaltmasını nasıl tarif edersiniz?</th>
                                 <th customFieldId="customfield_11310">Maliyet tasarrufu baremleri (Yıllık / TL)</th>
-##                                <th customFieldId="customfield_11311">Verimliliğe etkisini nasıl tarif edersiniz?</th>
-##                                <th customFieldId="customfield_11312">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
+##                              <th customFieldId="customfield_11311">Verimliliğe etkisini nasıl tarif edersiniz?</th>
+##                              <th customFieldId="customfield_11312">Verimlilik etkisi baremleri (Yıllık / Adet)</th>
                                 <th customFieldId="customfield_11313">Şu anda bu süreçler manuel yürütülebiliyor mu?</th>
                                 <th customFieldId="customfield_11314">Manuel Yürütmedeki Zorluklar</th>
                                 <th customFieldId="customfield_11315">Danışmanlık Gerekli mi?</th>
                                 <th customFieldId="customfield_11903">Proje Kategori</th>
                                 <th customFieldId="customfield_11800">Proje Yılı</th>
+                                <th customFieldId="customfield_11801">Ara Proje mi?</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -1017,6 +1012,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
 ##                                <th></th>
 ##                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

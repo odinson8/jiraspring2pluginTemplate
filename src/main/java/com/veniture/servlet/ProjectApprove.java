@@ -108,7 +108,7 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> addCfOptionsToContext(Map<String, Object> context) {
-        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(SureclerManuelYuruyorMuCF, projeEtikleriCfId, departmanCfId,gmyOnceligiCF,maliyetBaremiCfId,satisBaremiCfId, projeKategoriCF,projeYiliCf));
+        ArrayList<Long> cfIds = new ArrayList<>(Arrays.asList(SureclerManuelYuruyorMuCF, projeEtikleriCfId, departmanCfId,gmyOnceligiCF,maliyetBaremiCfId,satisBaremiCfId, projeKategoriCF,projeYiliCf,araProjemiCf));
         ArrayList<CfWithOptions> cfs = new ArrayList<>();
 
         for (Long cfId:cfIds){
