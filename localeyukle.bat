@@ -13,5 +13,3 @@ CALL "C:\Applications\Atlassian\atlassian-plugin-sdk-8.0.16\apache-maven-3.5.4\b
 
 :endofscript
 echo "Script complete"
-
-
