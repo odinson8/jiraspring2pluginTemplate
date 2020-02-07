@@ -322,6 +322,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     table.draw();
                 });
             #end
+            //Set Current Year In Year Cf
+            console.log(new Date().getFullYear());
+            AJS.$("#customfield_11800-select2").select2("val", new Date().getFullYear());
 
             var toggle = AJS.$("#onlyShowSelectedOnes");
             toggle.bootstrapToggle();

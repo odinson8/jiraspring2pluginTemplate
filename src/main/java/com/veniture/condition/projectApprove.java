@@ -18,10 +18,19 @@ public class projectApprove implements Condition {
 
     @Override
     public boolean shouldDisplay(Map<String, Object> map) {
-        return checkIfLoggedIn(loggedInUser);
+        return checkIfLoggedInForProjectApprove(loggedInUser);
     }
 
-    static boolean checkIfLoggedIn(ApplicationUser loggedInUser) {
+    static boolean checkIfLoggedInForProjectApprove(ApplicationUser loggedInUser) {
+        if (!ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser()){
+            return false;
+        }
+        else {
+            boolean exceptionUsers = loggedInUser.getName().contains("ongul") || loggedInUser.getName().contains("enit") || loggedInUser.getName().contains("eyhan") ;
+            return exceptionUsers ;
+        }
+    }
+    static boolean checkIfLoggedInForDepartmanOncelik(ApplicationUser loggedInUser) {
         if (!ComponentAccessor.getJiraAuthenticationContext().isLoggedInUser()){
             return false;
         }

@@ -222,7 +222,7 @@ public class rest {
             updateCfValueForSelectList(issue,Constants.onceliklendirildiMiId, Constants.TRUE_OPTION_ID_CanliVeniture,CURRENT_USER);
         }
         else {
-            logger.error("Neither gmy nor dp restriction set");
+            logger.error("Neither gmy nor dp restriction has been set");
         }
     }
 

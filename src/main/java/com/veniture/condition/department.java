@@ -7,7 +7,7 @@ import com.atlassian.plugin.web.Condition;
 
 import java.util.Map;
 
-import static com.veniture.condition.projectApprove.checkIfLoggedIn;
+import static com.veniture.condition.projectApprove.checkIfLoggedInForDepartmanOncelik;
 
 public class department implements Condition {
     ApplicationUser loggedInUser;
@@ -18,6 +18,6 @@ public class department implements Condition {
 
     @Override
     public boolean shouldDisplay(Map<String, Object> map) {
-        return checkIfLoggedIn(loggedInUser);
+        return checkIfLoggedInForDepartmanOncelik(loggedInUser);
     }
 }
