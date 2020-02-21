@@ -42,6 +42,8 @@ public class RemoteSearcher {
             totalRemaining=0.0;
         }
         return totalRemaining.intValue();
+
+//        return 123;
     }
 
     public Integer getTotalAllocatedTimeInYearForTeam(Integer teamId) {
@@ -56,14 +58,16 @@ public class RemoteSearcher {
             totalAllocated=0.0;
         }
         return totalAllocated.intValue();
+     //   return 2222;
     }
 
     private String getResponseForAvailability(Integer teamId) {
         int CurrentYear = Calendar.getInstance().get(Calendar.YEAR);
         int CurrentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int CurrentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        String StartDate = CurrentYear+"-"+(CurrentMonth+1)+"-"+CurrentDay;
+        String StartDate = CurrentYear+"-"+(CurrentMonth+1)+"-01";
         String EndDate = (CurrentYear) +"-12-30";
+        //String EndDate = (CurrentYear) +"-"+(CurrentMonth+2)+"-30";
         String QUERY = QUERY_AVAILABILITY_YEAR.replace("XXX", teamId.toString()).replace("YYY", StartDate).replace("ZZZ",EndDate);
         return getResponseString(QUERY);
     }
@@ -109,7 +113,7 @@ public class RemoteSearcher {
         try {
             return request.execute();
         } catch (final ResponseException e) {
-            logger.error(e.getMessage() + e.getLocalizedMessage());
+            logger.error("Error at request" + e.getMessage() + e.getLocalizedMessage());
             throw new RuntimeException("Search for " + Query + " on " + fullUrl + " failed.", e);
         }
     }

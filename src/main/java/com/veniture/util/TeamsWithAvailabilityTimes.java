@@ -1,10 +1,10 @@
 package com.veniture.util;
 
 import com.atlassian.sal.api.net.RequestFactory;
-import com.veniture.servlet.ProjectApprove;
 import model.pojo.TempoTeams.Team;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TeamsWithAvailabilityTimes {
@@ -21,15 +21,27 @@ public class TeamsWithAvailabilityTimes {
         try {
             RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
             teams=remoteSearcher.getAllTeams();
-            remoteSearcher.test();
             for (Team team:teams){
-                Integer totalRemainingTimeInYearForTeam = remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId());
-                Integer totalAvailabilityTimeInYearForTeam = remoteSearcher.getTotalAllocatedTimeInYearForTeam(team.getId())+totalRemainingTimeInYearForTeam;
-                team.setRemainingInAYear(totalRemainingTimeInYearForTeam);
+                Integer totalRemainingTimeInYearForTeam=0;
+                try {
+                    totalRemainingTimeInYearForTeam = remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId());
+                    team.setRemainingInAYear(totalRemainingTimeInYearForTeam);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Integer totalAvailabilityTimeInYearForTeam = 0;
+                try {
+                    totalAvailabilityTimeInYearForTeam = remoteSearcher.getTotalAllocatedTimeInYearForTeam(team.getId())+totalRemainingTimeInYearForTeam;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 team.setTotalAvailabilityInAYear(totalAvailabilityTimeInYearForTeam);
             }
         } catch (Exception e) {
             logger.error("Error at getTeamsAndSetRemaining");
+            logger.error(e.getMessage());
+            logger.error(e.getLocalizedMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
             throw new Exception();
         }
         return teams;

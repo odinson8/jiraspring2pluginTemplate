@@ -75,5 +75,4 @@ public class Constants {
     public static final long projeKategoriCF = 11903l;
     public static final long projeYiliCf = 11800l;
     public static final long araProjemiCf = 11801l;
-
 }

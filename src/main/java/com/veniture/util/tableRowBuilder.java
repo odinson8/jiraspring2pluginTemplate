@@ -36,6 +36,7 @@ public class tableRowBuilder {
 //        for (Issue issue : results.getResults()) {
         List<Issue> issues;
         if (isTest) {
+            //issues = results.getResults().subList(1, 10);
             issues = results.getResults().subList(1, 10);
         } else {
             issues = results.getResults();

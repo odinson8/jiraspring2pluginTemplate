@@ -392,7 +392,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 createOrUpdateCharts();
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
-                    type: 'GET',
+                    type: 'POST',
+                    timeout:300000,
                     data: {
                         issues: selectedCellsArray,
                         action: "approve"
@@ -433,7 +434,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
-                    type: 'GET',
+                    type: 'POST',
+                    timeout:300000,
                     data: {
                         issues: selectedCellsArray,
                         action: "decline"
@@ -468,6 +470,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     type: 'POST',
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/getProjectIssues",
                     contentType: "text/plain",
+                    timeout:500000,
                     dataType: 'json',
                     success: function (data) {
                         myJsonData = data;

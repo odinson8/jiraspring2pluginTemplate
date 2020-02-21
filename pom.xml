@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.veniture</groupId>
     <artifactId>PortfolioManagement</artifactId>
-    <version>1.4.0</version>
+    <version>2.4.0</version>
     <organization>
         <name>venITure</name>
         <url>http://www.venITure.net/</url>
@@ -35,7 +35,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.10.1</version>
         </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>

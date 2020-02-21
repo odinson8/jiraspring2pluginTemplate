@@ -23,9 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veniture.constants.Constants;
 import com.veniture.util.tableRowBuilder;
 import com.veniture.util.GetCustomFieldsInExcel;
-import com.veniture.util.ProgramEforCfs;
 import model.TableRow;
-import org.apache.commons.httpclient.URIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +43,6 @@ import java.util.stream.Collectors;
 
 import static com.veniture.servlet.ProjectApprove.getIssueSearchResults;
 import static com.veniture.util.functions.*;
-
 
 @Path("/rest")
 public class rest {
@@ -70,7 +67,7 @@ public class rest {
         this.authenticationContext = authenticationContext;
     }
 
-    @GET
+    @POST
     @Path("/transitionissues")
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
@@ -91,7 +88,6 @@ public class rest {
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
             }
         }
-
         return "true";
     }
 
@@ -110,9 +106,10 @@ public class rest {
         List<CustomField> customFieldsInProject = new GetCustomFieldsInExcel().invoke();
         List<TableRow> tableRows = new tableRowBuilder(ComponentAccessor.getIssueManager(), logger,IssueResults, customFieldsInProject).invoke();
         JSONArray jsonArray=  new JSONArray();
+
         for (TableRow tableRow : tableRows){
             JSONObject tableRowJson = tableRow.toJSON();
-//            tableRowJson = addEforCfsToJson(tableRow, tableRowJson);
+//          tableRowJson = addEforCfsToJson(tableRow, tableRowJson);
             jsonArray.put(tableRowJson);
         }
 
@@ -134,7 +131,6 @@ public class rest {
 //
 //        return value;
 //    }
-
 
     @POST
     @Path("/bulkGetCfValueFromIssue")
@@ -196,7 +192,6 @@ public class rest {
     private void parseJsonAndSetPriorityCFs(String gmyOrBirim, JSONArray tableAsJSONarray, ObjectMapper mapper, int i) throws Exception {
         JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
         //ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);
-
         //MutableIssue issue = ISSUE_SERVICE.getIssue(CURRENT_USER, jsonObj.getString("key")).getIssue();
         MutableIssue issue = issueManager.getIssueByKeyIgnoreCase(jsonObj.getString("key"));
 
@@ -247,18 +242,15 @@ public class rest {
     }
 
     private void transitionIssue(IssueService issueService, ApplicationUser currentUser, Issue issue, Integer workflowTransitionId) {
-
         final TransitionOptions transitionOptions = new TransitionOptions.Builder().skipPermissions().skipValidators().setAutomaticTransition().skipConditions().build();
-
         IssueService.TransitionValidationResult result = issueService.validateTransition(currentUser,
                 issue.getId(),
                 workflowTransitionId,
                 issueService.newIssueInputParameters(),
                 transitionOptions);
-
         if (result.isValid()) {
             issueService.transition(currentUser, result);
-            logger.error("Issue transition is successful");
+            logger.warn("Issue transition is successful");
 
         } else {
             logger.error(result.getErrorCollection().toString());
