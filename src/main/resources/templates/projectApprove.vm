@@ -385,7 +385,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$('#ApproveButton').off().on("click", function () {
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 //Constant
-                var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
+                var selectedCellsArray = table.cells('.selected:not(.onayli)', issueKeyColumnIndex).data().toArray();
                 // table.rows( '.selected' )
                 //         .addClass('approved')
                 //         .draw();
@@ -427,7 +427,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             AJS.$('#DeclineButton').off().on("click", function () {
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-                var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
+                var selectedCellsArray = table.cells('.selected:not(.onayli)', issueKeyColumnIndex).data().toArray();
                 table.rows( '.selected' )
                         .remove()
                         .draw();
@@ -537,6 +537,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     // !!! HARD CODED
                     if(Object.values(data[key])[28]=="true"){
                         AJS.$(rowNode).addClass("selected");
+                    }
+                    if(Object.values(data[key])[29]=="Onaylı"){
+                        AJS.$(rowNode).addClass("selected");
+                        AJS.$(rowNode).addClass("onayli");
                     }
                 });
 
@@ -1039,6 +1043,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th customFieldId="customfield_11800">Proje Yılı</th>
                                 <th customFieldId="customfield_11801">Ara Proje mi?</th>
                                 <th customFieldId="customfield_12300">is Saved?</th>
+                                <th customFieldId="status">Onaylimi?</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -1057,6 +1062,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
 ##                                <th></th>
 ##                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

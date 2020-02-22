@@ -37,7 +37,7 @@ public class tableRowBuilder {
         List<Issue> issues;
         if (isTest) {
             //issues = results.getResults().subList(1, 10);
-            issues = results.getResults().subList(1, 10);
+            issues = results.getResults();
         } else {
             issues = results.getResults();
         }
@@ -56,6 +56,7 @@ public class tableRowBuilder {
                     // Her boş cf için log atiyor sanırım.... logger.error("Error at getIssueWithCFS= " +e.getMessage());
                 }
             }
+
             TableRow tableRow =new TableRow(issueFull,customFieldsWithValues);
             tableRows.add(tableRow);
         }
