@@ -143,6 +143,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             var departmanSelectedTable;
             table=AJS.$("#projectsTable").DataTable( {
+                //"stateSave": true,
                 "scrollX"   : true,
                 "scrollY":        "400px",
                 "scrollCollapse": true,
@@ -385,9 +386,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 //Constant
                 var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
-                table.rows( '.selected' )
-                        .remove()
-                        .draw();
+                // table.rows( '.selected' )
+                //         .addClass('approved')
+                //         .draw();
 
                 createOrUpdateCharts();
                 jQuery.ajax({
@@ -463,6 +464,42 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     }
                 });
             });
+            AJS.$('#SepetiKaydet').off().on("click", function () {
+
+                // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+                var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
+
+                jQuery.ajax({
+                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/sepetikaydet",
+                    type: 'POST',
+                    timeout:300000,
+                    data: {
+                        issues: selectedCellsArray
+                    },
+                    async: true,
+                    beforeSend: function () {
+                        Swal.showLoading()
+                    },
+                    complete: function (response) {
+                        Swal.hideLoading()
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
+                        })
+                    },
+                    success: function (response, status, jqXHR) {
+                        Swal.fire(
+                                'Başarılı!',
+                                'Sepet Kaydedildi!',
+                                'success'
+                        )
+                    }
+                });
+            });
 
             loadData();
             function loadData() {
@@ -492,11 +529,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 console.log("populating data table...");
                 var table = AJS.$("#projectsTable").DataTable();
                 Object.keys(data).forEach(function(key){
-
                     var issueKey = Object.values(data[key])[issueKeyColumnIndex];
                     data[key]["issue"]='<a href="$baseUrl/browse/'+ issueKey+'" target="_blank">'+issueKey+'</a>';
                     //console.log(Object.values(data[key])[0]);
-                    table.row.add(Object.values(data[key])).draw( false );
+                    var rowNode = table.row.add(Object.values(data[key])).draw( false ).node();
+
+                    // !!! HARD CODED
+                    if(Object.values(data[key])[28]=="true"){
+                        AJS.$(rowNode).addClass("selected");
+                    }
                 });
 
                 //tableTest.find('td').addClass('might-overflow');
@@ -997,6 +1038,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th customFieldId="customfield_11903">Proje Kategori</th>
                                 <th customFieldId="customfield_11800">Proje Yılı</th>
                                 <th customFieldId="customfield_11801">Ara Proje mi?</th>
+                                <th customFieldId="customfield_12300">is Saved?</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -1031,11 +1073,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </tfoot>
                     </table>
                     <div id="bottom-button-div">
                         <div style="float: left">
+                            <button class="aui-button aui-button-primary" id="SepetiKaydet">Sepeti Kaydet</button>
                             <button class="aui-button aui-button-primary" id="ApproveButton">Projeleri Onayla</button>
                             <button class="aui-button" id="DeclineButton">Projeleri Reddet</button>
                         </div>

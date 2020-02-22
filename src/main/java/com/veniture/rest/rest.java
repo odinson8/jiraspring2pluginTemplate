@@ -189,6 +189,26 @@ public class rest {
         return null;
     }
 
+
+    @POST
+    @Path("/sepetikaydet")
+    public String sepetikaydet(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws Exception {
+        String[] issueHtml = req.getParameterValues("issues");
+        IssueService issueService = ComponentAccessor.getIssueService();
+        if (issueHtml.length>0){
+            ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
+                    .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
+                    .collect(Collectors.toList());
+            String[] action = req.getParameterValues("action");
+            ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+            issues.stream()
+                    .forEach(issue->setCustomFieldValue(issueService.getIssue(currentUser, issue).getIssue().getKey(),"customfield_12300","true"));
+        }
+        return null;
+    }
+
+
+
     private void parseJsonAndSetPriorityCFs(String gmyOrBirim, JSONArray tableAsJSONarray, ObjectMapper mapper, int i) throws Exception {
         JSONObject jsonObj = tableAsJSONarray.getJSONObject(i);
         //ProjectsDetails projectsDetails = mapper.readValue(jsonObj.toString(),ProjectsDetails.class);

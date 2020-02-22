@@ -49,6 +49,7 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));//proje kategori
         cfArrayList.add(customFieldManager.getCustomFieldObject(projeYiliCf));//proje yili
         cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
+        cfArrayList.add(customFieldManager.getCustomFieldObject(isSelectedCf));// isSelected
 
         //List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;

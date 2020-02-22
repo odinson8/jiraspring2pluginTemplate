@@ -3,13 +3,13 @@ package com.veniture.servlet;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.*;
 import com.atlassian.jira.issue.customfields.option.Options;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
+import com.atlassian.jira.issue.util.DefaultIssueChangeHolder;
 import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.security.JiraAuthenticationContext;
@@ -76,6 +76,7 @@ public class ProjectApprove extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         action = Optional.ofNullable(req.getParameter("action")).orElse("");
         Map<String, Object> context = null;
+
         try {
             context = createContext();
         }

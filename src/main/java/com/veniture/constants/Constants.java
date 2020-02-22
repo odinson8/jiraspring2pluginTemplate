@@ -4,7 +4,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 
 public class Constants {
 
-    public static final Boolean isTest = false;
+    public static final Boolean isTest = true;
     public static final String SC_SORGUSU = "project = PF";
     public static final String JIRA_BASE_URL = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
 
@@ -75,4 +75,5 @@ public class Constants {
     public static final long projeKategoriCF = 11903l;
     public static final long projeYiliCf = 11800l;
     public static final long araProjemiCf = 11801l;
+    public static final long isSelectedCf = 12300l;
 }

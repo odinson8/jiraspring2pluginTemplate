@@ -4,10 +4,12 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
 import com.atlassian.jira.event.type.EventDispatchOption;
 import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.ModifiedValue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
+import com.atlassian.jira.issue.util.DefaultIssueChangeHolder;
 import com.atlassian.jira.user.ApplicationUser;
 
 import java.util.Calendar;
@@ -45,6 +47,14 @@ public class functions {
     public static List<CustomField> getCustomFieldsInProject(String projectKey){
         Long projectId = ComponentAccessor.getProjectManager().getProjectByCurrentKey(projectKey).getId();
         return ComponentAccessor.getCustomFieldManager().getCustomFieldObjects(projectId, ConstantsManager.ALL_ISSUE_TYPES);
+    }
+
+    public static void setCustomFieldValue(String issueKey, String customFieldId,String newvalue){
+        CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+        MutableIssue issue=ComponentAccessor.getIssueManager().getIssueByKeyIgnoreCase(issueKey);
+        CustomField cf = customFieldManager.getCustomFieldObject(customFieldId);
+        DefaultIssueChangeHolder changeHolder = new DefaultIssueChangeHolder();
+        cf.updateValue(null, issue, new ModifiedValue(issue.getCustomFieldValue(cf), newvalue),changeHolder);
     }
 
     public static Double calculateDayCountFromHour(Integer hourTime){
