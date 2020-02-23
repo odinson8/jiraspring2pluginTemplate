@@ -77,15 +77,21 @@ public class rest {
             ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
                     .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
                     .collect(Collectors.toList());
+
             String[] action = req.getParameterValues("action");
             ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-            if (action[0].equals("approve")){
+            if (action[0].equals("ceoOnay2Approved")){
                 issues.stream()
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
             }
-            else if (action[0].equals("decline")){
+            else if (action[0].equals("ceoOnay2decline")){
                 issues.stream()
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+            }
+            else if (action[0].equals("approved2ceoOnay")){
+                issues.stream()
+                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.OnayaGeriGöderTransitionId));
+
             }
         }
         return "true";
@@ -262,18 +268,23 @@ public class rest {
     }
 
     private void transitionIssue(IssueService issueService, ApplicationUser currentUser, Issue issue, Integer workflowTransitionId) {
-        final TransitionOptions transitionOptions = new TransitionOptions.Builder().skipPermissions().skipValidators().setAutomaticTransition().skipConditions().build();
-        IssueService.TransitionValidationResult result = issueService.validateTransition(currentUser,
-                issue.getId(),
-                workflowTransitionId,
-                issueService.newIssueInputParameters(),
-                transitionOptions);
-        if (result.isValid()) {
-            issueService.transition(currentUser, result);
-            logger.warn("Issue transition is successful");
+        try {
+            final TransitionOptions transitionOptions = new TransitionOptions.Builder().skipPermissions().skipValidators().setAutomaticTransition().skipConditions().build();
+            IssueService.TransitionValidationResult result = issueService.validateTransition(currentUser,
+                    issue.getId(),
+                    workflowTransitionId,
+                    issueService.newIssueInputParameters(),
+                    transitionOptions);
+            if (result.isValid()) {
+                issueService.transition(currentUser, result);
+                logger.warn("Issue transition is successful");
 
-        } else {
-            logger.error(result.getErrorCollection().toString());
+            } else {
+                logger.error(result.getErrorCollection().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("CANNOT TRANSITION ISSUE " + issue.getKey() + issue.getId() + "with workflow transiiton id = " + workflowTransitionId);
         }
     }
 }

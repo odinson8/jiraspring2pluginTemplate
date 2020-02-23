@@ -48,6 +48,7 @@ public class Constants {
     public static final String PROJECTCARDS ="project = FP AND issuetype = \"Project Card\"";
     public static final Integer ApproveWorkflowTransitionId = 121;
     public static final Integer DeclineWorkflowTransitionId = 151;
+    public static final Integer OnayaGeriGöderTransitionId = 271;
 
     public static final long ABAPeforCfId       = 11605L;
     public static final long ANeforCfId         = 11606L;
