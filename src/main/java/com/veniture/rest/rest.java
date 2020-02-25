@@ -71,28 +71,53 @@ public class rest {
     @Path("/transitionissues")
     public String transitionIssues(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         IssueService issueService = ComponentAccessor.getIssueService();
-        String[] issueHtml = req.getParameterValues("issues");
+        String[] SelectedIssueHtml = req.getParameterValues("selected");
+        String[] NotSelectedIssueHtml = req.getParameterValues("notSelected");
 
-        if (issueHtml.length>0){
-            ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
+        if (SelectedIssueHtml!=null){
+            ArrayList<String> issues = (ArrayList<String>) Arrays.stream(SelectedIssueHtml)
                     .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
                     .collect(Collectors.toList());
 
             String[] action = req.getParameterValues("action");
             ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-            if (action[0].equals("ceoOnay2Approved")){
+            if (action[0].equals("approve")){
                 issues.stream()
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.ApproveWorkflowTransitionId));
             }
-            else if (action[0].equals("ceoOnay2decline")){
+            else if (action[0].equals("decline")){
+
                 issues.stream()
                         .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
-            }
-            else if (action[0].equals("approved2ceoOnay")){
-                issues.stream()
-                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.OnayaGeriGöderTransitionId));
 
+                issues.stream()
+                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.Onayli2CanceledTransitionId));
             }
+//            else if (action[0].equals("approved2ceoOnay")){
+//                issues.stream()
+//                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.OnayaGeriGöderTransitionId));
+//            }
+        }
+
+        if (NotSelectedIssueHtml!=null){
+            ArrayList<String> notselectedissues = (ArrayList<String>) Arrays.stream(NotSelectedIssueHtml)
+                    .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
+                    .collect(Collectors.toList());
+
+            String[] action = req.getParameterValues("action");
+            ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+            if (action[0].equals("approve")){
+                notselectedissues.stream()
+                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.OnayaGeriGöderTransitionId));
+            }
+//            else if (action[0].equals("ceoOnay2decline")){
+//                issues.stream()
+//                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.DeclineWorkflowTransitionId));
+//            }
+//            else if (action[0].equals("approved2ceoOnay")){
+//                issues.stream()
+//                        .forEach(issue->transitionIssue(issueService, currentUser, issueService.getIssue(currentUser, issue).getIssue(), Constants.OnayaGeriGöderTransitionId));
+//            }
         }
         return "true";
     }
@@ -201,14 +226,23 @@ public class rest {
     public String sepetikaydet(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws Exception {
         String[] issueHtml = req.getParameterValues("issues");
         IssueService issueService = ComponentAccessor.getIssueService();
-        if (issueHtml.length>0){
+        if (issueHtml!=null){
             ArrayList<String> issues = (ArrayList<String>) Arrays.stream(issueHtml)
                     .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
                     .collect(Collectors.toList());
-            String[] action = req.getParameterValues("action");
             ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
             issues.stream()
-                    .forEach(issue->setCustomFieldValue(issueService.getIssue(currentUser, issue).getIssue().getKey(),"customfield_12300","true"));
+                    .forEach(issue->setCustomFieldValue(issueService.getIssue(currentUser, issue).getIssue().getKey(), Constants.isSelectedCfId,"true"));
+        }
+
+        String[] NotSelectedissueHtml = req.getParameterValues("issuesNotSelected");
+        if (NotSelectedissueHtml!=null){
+            ArrayList<String> NotSelectedissues = (ArrayList<String>) Arrays.stream(NotSelectedissueHtml)
+                    .map(element -> element.substring(element.indexOf(">")+1,element.indexOf("<",7)))
+                    .collect(Collectors.toList());
+            ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+            NotSelectedissues.stream()
+                    .forEach(issue->setCustomFieldValue(issueService.getIssue(currentUser, issue).getIssue().getKey(), Constants.isSelectedCfId,"false"));
         }
         return null;
     }

@@ -57,14 +57,11 @@ public class functions {
         cf.updateValue(null, issue, new ModifiedValue(issue.getCustomFieldValue(cf), newvalue),changeHolder);
     }
 
-    public static Double calculateDayCountFromHour(Integer hourTime){
-        Double aDouble = new Double(hourTime) / 9;
-        return Math.round(aDouble*1e4)/1e4;
-    }
 
-    public static Double calculateManCountFromHour(Integer hourTime){
+
+    public static Double calculateDayCountFromHour(Double hourTime){
         Double aDouble = new Double(hourTime) / 9 ;
-        return Math.round(aDouble*1e0)/1e0;
+        return Math.round(aDouble*1e1)/1e1;
     }
 
 //    public static int getWorkingDaysBetweenTwoDates(Date startDate, Date endDate) {

@@ -2,8 +2,8 @@ package model.pojo;
 
 public class Program {
     String name;
-    Integer remainingCapacity = 0;
-    Integer totalCapacity = 0;
+    Double remainingCapacity = 0.0;
+    Double totalCapacity = 0.0;
 
     public String getName() {
         return name;
@@ -11,14 +11,14 @@ public class Program {
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getRemainingCapacity() { return remainingCapacity;}
-    public Integer getTotalCapacity() { return totalCapacity; }
+    public Double getRemainingCapacity() { return remainingCapacity;}
+    public Double getTotalCapacity() { return totalCapacity; }
 
-    public void addRemainingCapacity(Integer capacity) { this.remainingCapacity = this.remainingCapacity + capacity; }
+    public void addRemainingCapacity(Double capacity) { this.remainingCapacity = this.remainingCapacity + capacity; }
 
-    public void addTotalCapacity(Integer capacity) { this.totalCapacity = this.totalCapacity + capacity; }
+    public void addTotalCapacity(Double capacity) { this.totalCapacity = this.totalCapacity + capacity; }
 
-    public Program(String name, Integer remaining) {
+    public Program(String name, Double remaining) {
         this.name = name;
         this.remainingCapacity = remaining;
     }

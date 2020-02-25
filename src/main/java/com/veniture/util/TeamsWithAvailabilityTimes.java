@@ -22,14 +22,16 @@ public class TeamsWithAvailabilityTimes {
             RemoteSearcher remoteSearcher =  new RemoteSearcher(requestFactory);
             teams=remoteSearcher.getAllTeams();
             for (Team team:teams){
-                Integer totalRemainingTimeInYearForTeam=0;
+                Double totalRemainingTimeInYearForTeam=0.0;
                 try {
                     totalRemainingTimeInYearForTeam = remoteSearcher.getTotalRemainingTimeInYearForTeam(team.getId());
                     team.setRemainingInAYear(totalRemainingTimeInYearForTeam);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Integer totalAvailabilityTimeInYearForTeam = 0;
+
+
+                Double totalAvailabilityTimeInYearForTeam = 0.0;
                 try {
                     totalAvailabilityTimeInYearForTeam = remoteSearcher.getTotalAllocatedTimeInYearForTeam(team.getId())+totalRemainingTimeInYearForTeam;
                 } catch (Exception e) {

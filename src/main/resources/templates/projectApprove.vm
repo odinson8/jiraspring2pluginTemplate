@@ -139,9 +139,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
         var isSavedOrder = 28;
         var statusOrder = 29;
         var workdayInaYear = 252;
-        var showOnlyTheseColumns = [selectBoxColumnIndex, issueKeyColumnIndex, 3, 10, 11, 12, 13, 14, statusOrder];
-
-
+        var showOnlyTheseColumns = [selectBoxColumnIndex, issueKeyColumnIndex, 3, 10, 11, 12, 13, 14,statusOrder];
 
         AJS.$(document).ready(function() {
             Swal.showLoading();
@@ -394,19 +392,19 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 // Constant
-                var selectedButNotOnayli = table.cells('.selected:not(.onayli)', issueKeyColumnIndex).data().toArray();
-                var OnayliButNotSelected = table.cells('.onayli:not(.selected)', issueKeyColumnIndex).data().toArray();
+                var selected = table.cells('.selected', issueKeyColumnIndex).data().toArray();
+                var notSelected = table.cells(':not(.selected)', issueKeyColumnIndex).data().toArray();
 
                 createOrUpdateCharts();
 
-                if (OnayliButNotSelected.length >0 ){
                     jQuery.ajax({
                         url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
                         type: 'POST',
                         timeout:300000,
                         data: {
-                            issues: OnayliButNotSelected,
-                            action: "approved2ceoOnay"
+                            selected: selected,
+                            notSelected: notSelected,
+                            action: "approve"
                         },
                         async: true,
                         beforeSend: function () {
@@ -425,38 +423,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                         },
                         success: function (response, status, jqXHR) {
 
-                            AJS.$('.onayli:not(.selected)').removeClass("onayli");
-                        }
-                    });
-                }
-
-                if (selectedButNotOnayli.length >0 ){
-                    jQuery.ajax({
-                        url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
-                        type: 'POST',
-                        timeout:300000,
-                        data: {
-                            issues: selectedButNotOnayli,
-                            action: "ceoOnay2Approved"
-                        },
-                        async: true,
-                        beforeSend: function () {
-                            Swal.showLoading()
-                        },
-                        complete: function (response) {
-                            Swal.hideLoading()
-                        },
-                        error: function (response) {
-                            Swal.fire({
-                                type: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                                footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
-                            })
-                        },
-                        success: function (response, status, jqXHR) {
-
-                            AJS.$('.selected:not(.onayli)').addClass("onayli")
+                            //AJS.$('.selected:not(.onayli)').addClass("onayli")
 
                             Swal.fire(
                                     'Başarılı!',
@@ -465,16 +432,13 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                             )
                         }
                     });
-
-                }
             });
 
             AJS.$('#DeclineButton').off().on("click", function () {
 
                 console.log("Entering Decline State");
 
-                var selectedButNotOnayli = table.cells('.selected:not(.onayli)', issueKeyColumnIndex).data().toArray();
-                var selectedAndOnayli = table.cells('.selected .onayli', issueKeyColumnIndex).data().toArray();
+                var selected = table.cells('.selected', issueKeyColumnIndex).data().toArray();
 
                 createOrUpdateCharts();
 
@@ -483,8 +447,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     type: 'POST',
                     timeout:300000,
                     data: {
-                        issues: selectedButNotOnayli,
-                        action: "ceoOnay2decline"
+                        selected: selected,
+                        action: "decline"
                     },
                     async: true,
                     beforeSend: function () {
@@ -503,42 +467,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     },
                     success: function (response, status, jqXHR) {
 
-                        table.rows('.selected:not(.onayli)').remove()
+                        table.rows('.selected').remove()
                                 .draw();
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Reddedildi',
-                            text: 'Projeler reddedildi!'})
-                    }
-                });
-                jQuery.ajax({
-                    url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/transitionissues",
-                    type: 'POST',
-                    timeout:300000,
-                    data: {
-                        issues: selectedAndOnayli,
-                        action: "approved2ceoOnay"
-                    },
-                    async: true,
-                    beforeSend: function () {
-                        Swal.showLoading()
-                    },
-                    complete: function (response) {
-                        Swal.hideLoading()
-                    },
-                    error: function (response) {
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: '<a href="mailto:berk.karabacak@veniture.com.tr ?Subject=Error%20at%20ProjectApprove" target="_top">Send Mail</a>'
-                        })
-                    },
-                    success: function (response, status, jqXHR) {
-
-                            AJS.$(".selected").removeClass('selected');
-                            AJS.$(".selected.onayli").removeClass('onayli');
 
                         Swal.fire({
                             icon: 'error',
@@ -552,13 +482,15 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
 
                 // var URL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
                 var selectedCellsArray = table.cells('.selected', issueKeyColumnIndex).data().toArray();
+                var notselectedCellsArray = table.cells(':not(.selected)', issueKeyColumnIndex).data().toArray();
 
                 jQuery.ajax({
                     url: AJS.params.baseURL + "/rest/florestservice/1.2/rest/sepetikaydet",
                     type: 'POST',
                     timeout:300000,
                     data: {
-                        issues: selectedCellsArray
+                        issues: selectedCellsArray,
+                        issuesNotSelected: notselectedCellsArray
                     },
                     async: true,
                     beforeSend: function () {
@@ -615,7 +547,10 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                 Object.keys(data).forEach(function(key){
                     var issueKey = Object.values(data[key])[issueKeyColumnIndex];
                     data[key]["issue"]='<a href="$baseUrl/browse/'+ issueKey+'" target="_blank">'+issueKey+'</a>';
-                    //console.log(Object.values(data[key])[0]);
+                    //console.log(Object.values(data[key]));
+                    // console.log(Object.values(data[key])[27]);
+                    // console.log(Object.values(data[key])[28]);
+                    // console.log(Object.values(data[key])[29]);
                     var rowNode = table.row.add(Object.values(data[key])).draw( false ).node();
 
                     if(Object.values(data[key])[isSavedOrder]=="true"){
@@ -630,6 +565,8 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                     //     AJS.$(rowNode).addClass("onaysiz");
                     // }
                 });
+
+                table.rows(".selected" ).select();
 
                 //tableTest.find('td').addClass('might-overflow');
 
@@ -1129,7 +1066,7 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
                                 <th customFieldId="customfield_11903">Proje Kategori</th>
                                 <th customFieldId="customfield_11800">Proje Yılı</th>
                                 <th customFieldId="customfield_11801">Ara Proje mi?</th>
-                                <th customFieldId="customfield_12300">is Saved?</th>
+                                <th customFieldId="customfield_12200">is Saved?</th>
                                 <th customFieldId="status">Durumu</th>
                             </tr>
                         </thead>

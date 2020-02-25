@@ -19,13 +19,10 @@ import static com.veniture.constants.Constants.*;
 public class GetCustomFieldsInExcel {
 
     private JqlQueryParser jqlQueryParser= ComponentAccessor.getComponent(JqlQueryParser.class);
-    private CustomFieldManager cfMgr=ComponentAccessor.getCustomFieldManager();
     private SearchService searchService=ComponentAccessor.getComponent(SearchService.class);
     private JiraAuthenticationContext authenticationContext =ComponentAccessor.getJiraAuthenticationContext();
 
-    public List<CustomField> invoke() throws JqlParseException {
-        SearchContext searchContext= searchService.getSearchContext(authenticationContext.getLoggedInUser(),jqlQueryParser.parseQuery(Constants.SC_SORGUSU));
-        //            return cfMgr.getCustomFieldObjects(searchContext).subList(2,5);
+    public List<CustomField> invoke()   {
 
         ArrayList<CustomField> cfArrayList= new ArrayList<>();
         CustomFieldManager customFieldManager=ComponentAccessor.getCustomFieldManager();
@@ -49,7 +46,7 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));//proje kategori
         cfArrayList.add(customFieldManager.getCustomFieldObject(projeYiliCf));//proje yili
         cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
-        cfArrayList.add(customFieldManager.getCustomFieldObject(isSelectedCf));// isSelected
+        //cfArrayList.add(customFieldManager.getCustomFieldObject(isSelectedCf));// isSelected
 
         //List<String> arrayList= cfArrayList.stream().map(CustomField::getName).collect(Collectors.toList());
         return cfArrayList;
@@ -79,7 +76,7 @@ public class GetCustomFieldsInExcel {
         cfArrayList.add(customFieldManager.getCustomFieldObject(11315l));       //danışmanlık gereklimi
         cfArrayList.add(customFieldManager.getCustomFieldObject(11903l));       //projectCategory
         cfArrayList.add(customFieldManager.getCustomFieldObject(projeYiliCf));//proje yili
-        cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
+        //cfArrayList.add(customFieldManager.getCustomFieldObject(araProjemiCf));// Ara proje mi
 
         return cfArrayList;
 //            return cfMgr.getCustomFieldObjects(searchContext);

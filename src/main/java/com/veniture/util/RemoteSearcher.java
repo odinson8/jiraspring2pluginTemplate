@@ -30,7 +30,7 @@ public class RemoteSearcher {
         this.requestFactory = requestFactory;
     }
 
-    public Integer getTotalRemainingTimeInYearForTeam(Integer teamId) {
+    public Double getTotalRemainingTimeInYearForTeam(Integer teamId) {
         String responseString = getResponseForAvailability(teamId);
         List<FooterTotalAvailabilityInfos> availabilityInfoColumns;
         availabilityInfoColumns = GSON.fromJson(responseString, IssueTableData.class).getFooter().getColumns();
@@ -41,23 +41,23 @@ public class RemoteSearcher {
             //Buraya giriyorsa takımlarin kapasitesi set edilmemiştir demekttir, o halde kapasiteyi sıfır yap.
             totalRemaining=0.0;
         }
-        return totalRemaining.intValue();
+        return totalRemaining;
 
 //        return 123;
     }
 
-    public Integer getTotalAllocatedTimeInYearForTeam(Integer teamId) {
+    public Double getTotalAllocatedTimeInYearForTeam(Integer teamId) {
         String responseString = getResponseForAvailability(teamId);
         List<FooterTotalAvailabilityInfos> availabilityInfoColumns;
         availabilityInfoColumns = GSON.fromJson(responseString, IssueTableData.class).getFooter().getColumns();
         Double totalAllocated;
         try {
-            totalAllocated = availabilityInfoColumns.stream().map(FooterTotalAvailabilityInfos::getAllocated).reduce(Double::sum).orElse(0.0);
+            totalAllocated = availabilityInfoColumns.stream().map(FooterTotalAvailabilityInfos::getTotalAllocated).reduce(Double::sum).orElse(0.0);
         } catch (Exception e) {
             //Buraya giriyorsa takımlarin kapasitesi set edilmemiştir demekttir, o halde kapasiteyi sıfır yap.
             totalAllocated=0.0;
         }
-        return totalAllocated.intValue();
+        return totalAllocated;
      //   return 2222;
     }
 
@@ -86,12 +86,12 @@ public class RemoteSearcher {
         return tempoTeamData;
     }
 
-    public Workload test() throws URIException {
-        Type workload = new TypeToken<Workload>() {}.getType();
-        Workload workloadData = GSON.fromJson(getResponseString(QUERY_WORKLOAD), workload);
-        Integer hourly=workloadData.getDays().stream().filter(o -> o.getSeconds() > - 10).mapToInt(Day::getSeconds).sum()/3600/5;
-        return workloadData;
-    }
+//    public Workload test() throws URIException {
+//        Type workload = new TypeToken<Workload>() {}.getType();
+//        Workload workloadData = GSON.fromJson(getResponseString(QUERY_WORKLOAD), workload);
+//        Integer hourly=workloadData.getDays().stream().filter(o -> o.getSeconds() > - 10).mapToInt(Day::getSeconds).sum()/3600/5;
+//        return workloadData;
+//    }
 
     public String getResponseString(String Query) {
         //final String fullUrl = scheme + hostname + URIUtil.encodeWithinQuery(QUERY);

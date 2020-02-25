@@ -13,7 +13,7 @@ import com.veniture.util.ProgramEforCfs;
 
 import java.util.List;
 
-import static com.veniture.util.team2Program.getTotalRemainingCapacityOfAllPrograms;
+import static com.veniture.constants.Constants.isSelectedCf;
 import static com.veniture.util.functions.getCustomFieldValueFromIssue;
 
 public class TableRow {
@@ -24,18 +24,6 @@ public class TableRow {
     @SerializedName("customFieldListWithValues")
     @Expose
     private List<CfWithValue> customFieldListWithValues;
-
-    @SerializedName("projeYili")
-    @Expose
-    private Integer projeYili;
-
-    @SerializedName("departmanOnceligi")
-    @Expose
-    private Integer departmanOnceligi;
-
-    @SerializedName("gmyOnceligi")
-    @Expose
-    private Integer gmyOnceligi;
 
     public TableRow(MutableIssue issue, List<CfWithValue> customFieldListWithValues) {
         this.issue = issue;
@@ -50,38 +38,6 @@ public class TableRow {
         this.issue = issue;
     }
 
-    public List<CfWithValue> getCustomFieldListWithValues() {
-        return customFieldListWithValues;
-    }
-
-    public Integer getProjeYili() {
-        return projeYili;
-    }
-
-    public void setProjeYili(Integer projeYili) {
-        this.projeYili = projeYili;
-    }
-
-    public Integer getDepartmanOnceligi() {
-        return departmanOnceligi;
-    }
-
-    public void setDepartmanOnceligi(Integer departmanOnceligi) {
-        this.departmanOnceligi = departmanOnceligi;
-    }
-
-    public Integer getGmyOnceligi() {
-        return gmyOnceligi;
-    }
-
-    public void setGmyOnceligi(Integer gmyOnceligi) {
-        this.gmyOnceligi = gmyOnceligi;
-    }
-
-    public void setCustomFieldListWithValues(List<CfWithValue> customFieldListWithValues) {
-        this.customFieldListWithValues = customFieldListWithValues;
-    }
-
     public JSONObject toJSON() throws JSONException {
 
         JSONObject jo = new JSONObject();
@@ -92,6 +48,19 @@ public class TableRow {
         addEforJson(jo);
         //jo.put("totalCapacity",com.veniture.util.functions.calculateEmployeeCountFromHour(getTotalRemainingCapacityOfAllPrograms()));
         addExcelCfs(jo);
+        //jo.put("isSelected",issue.getCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(isSelectedCf)));
+        String isSaved = null;
+
+        try {
+            isSaved = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(isSelectedCf).getValue(issue).toString();
+            assert isSaved != null;
+            if (!isSaved.equals("true")){
+                isSaved="false";
+            }
+        } catch (Exception e) {
+            isSaved="false";
+        }
+        jo.put("isSaved", isSaved);
         jo.put("status",issue.getStatus().getName());
         return jo;
     }

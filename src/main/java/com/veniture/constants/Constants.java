@@ -4,7 +4,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 
 public class Constants {
 
-    public static final Boolean isTest = true;
+    public static final Boolean isTest = false;
     public static final String SC_SORGUSU = "project = PF";
     public static final String JIRA_BASE_URL = ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
 
@@ -49,6 +49,8 @@ public class Constants {
     public static final Integer ApproveWorkflowTransitionId = 121;
     public static final Integer DeclineWorkflowTransitionId = 151;
     public static final Integer OnayaGeriGöderTransitionId = 271;
+    public static final Integer CanliOnayli2CanceledTransitionId = 151;
+    public static final Integer Onayli2CanceledTransitionId = 331;
 
     public static final long ABAPeforCfId       = 11605L;
     public static final long ANeforCfId         = 11606L;
@@ -77,5 +79,8 @@ public class Constants {
     public static final long projeKategoriCF = 11903l;
     public static final long projeYiliCf = 11800l;
     public static final long araProjemiCf = 11801l;
-    public static final long isSelectedCf = 12300l;
+    public static final long isSelectedCf = 12200l;
+    public static final long sponsorCf = 12304L;
+    public static final long CanliIsSelectedCf = 12200l;
+    public static final String isSelectedCfId = "customfield_12200";
 }

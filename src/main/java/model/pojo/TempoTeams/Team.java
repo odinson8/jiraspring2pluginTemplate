@@ -26,17 +26,17 @@ public class Team {
     private Boolean isPublic;
     @SerializedName("RemainingInAYear")
     @Expose
-    private Integer RemainingInAYear;
+    private Double RemainingInAYear;
 
     @SerializedName("TotalAvailabilityInAYear")
     @Expose
-    private Integer TotalAvailabilityInAYear;
+    private Double TotalAvailabilityInAYear;
 
-    public void setRemainingInAYear(Integer RemainingInAYear) {
+    public void setRemainingInAYear(Double RemainingInAYear) {
         this.RemainingInAYear = RemainingInAYear;
     }
 
-    public Integer getRemainingInAYear() { return RemainingInAYear; }
+    public Double getRemainingInAYear() { return RemainingInAYear; }
 
     public Integer getId() {
         return id;
@@ -54,44 +54,17 @@ public class Team {
         this.name = name;
     }
 
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getLead() {
-        return lead;
-    }
-
-    public void setLead(String lead) {
-        this.lead = lead;
-    }
-
     public String getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
-        this.program = program;
-    }
-
-    public Boolean getIsPublic() {
-        return isPublic;
-    }
-
-    public Integer getTotalAvailabilityInAYear() {
+    public Double getTotalAvailabilityInAYear() {
         return TotalAvailabilityInAYear;
     }
 
-    public void setTotalAvailabilityInAYear(Integer totalAvailabilityInAYear) {
+    public void setTotalAvailabilityInAYear(Double totalAvailabilityInAYear) {
         TotalAvailabilityInAYear = totalAvailabilityInAYear;
     }
 
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic;
-    }
 
 }
