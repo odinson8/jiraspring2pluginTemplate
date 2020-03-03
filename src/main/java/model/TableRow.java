@@ -67,20 +67,24 @@ public class TableRow {
 
     private void addExcelCfs(JSONObject jo) throws JSONException {
         for (CfWithValue cfWV:customFieldListWithValues){
-            String cfName = cfWV.getCustomField().getName();
-            String cfValue = cfWV.getValue();
+            String cfName = null;
+            String cfValue;
+            try {
+            cfName = cfWV.getCustomField().getName();
+            cfValue = cfWV.getValue();
             if (cfName.equals("Departman")){
-                try {
 //                    jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf("}")).replace(", 1="," - "));
                     jo.put(cfName, cfValue.substring(cfValue.indexOf("{null=")+6 ,cfValue.lastIndexOf(", 1")));
-                } catch (Exception e) {
-                    jo.put(cfName, "-");
                 }
-            }else {
+            else {
                 jo.put(cfName, cfValue);
             }
+
+            } catch (Exception e) {
+                    jo.put(cfName, "-");
+                }
+            }
         }
-    }
 
     private void addEforJson(JSONObject jo) throws JSONException {
         CustomFieldManager customFieldManager= ComponentAccessor.getCustomFieldManager();

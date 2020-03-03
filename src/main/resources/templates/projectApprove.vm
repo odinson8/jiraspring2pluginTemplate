@@ -25,6 +25,9 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
 
 
     <style id="css">
@@ -147,6 +150,20 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
             var table;
             var departmanSelectedTable;
             table=AJS.$("#projectsTable").DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Save as Excel',
+                        exportOptions: {
+                            columns: ':visible',
+                            modifier: {
+                                page: 'current',
+                                selected: true
+                            }
+                        }
+                    }
+                ],
                 //"stateSave": true,
                 "scrollX"   : true,
                 "scrollY":        "400px",
