@@ -1,12 +1,10 @@
 package com.veniture.rest;
 
 
-import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.atlassian.sal.api.net.RequestFactory;
 import org.slf4j.Logger;
@@ -19,7 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 
 @Path("/rest")
-public class rest {
+public class Rest {
     @JiraImport
     private RequestFactory requestFactory;
 //    private ApplicationProperties applicationProperties;
@@ -29,10 +27,10 @@ public class rest {
     private JiraAuthenticationContext authenticationContext;
     @JiraImport
     private IssueManager issueManager;
-    private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
+    private static final Logger logger = LoggerFactory.getLogger(Rest.class);// The transition ID
 
 
-    public rest(RequestFactory requestFactory, SearchService searchService, JiraAuthenticationContext authenticationContext){
+    public Rest(RequestFactory requestFactory, SearchService searchService, JiraAuthenticationContext authenticationContext){
         this.requestFactory = requestFactory;
         this.issueManager= ComponentAccessor.getIssueManager();
         this.searchService = searchService;

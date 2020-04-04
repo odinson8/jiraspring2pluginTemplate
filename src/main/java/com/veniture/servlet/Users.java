@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ProjectApprove extends HttpServlet {
+public class Users extends HttpServlet {
     @JiraImport
     private TemplateRenderer templateRenderer;
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
-    public static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
-    public ProjectApprove(TemplateRenderer templateRenderer) {
+    public static final Logger logger = LoggerFactory.getLogger(Users.class);
+    public Users(TemplateRenderer templateRenderer) {
         this.templateRenderer = templateRenderer;
     }
 

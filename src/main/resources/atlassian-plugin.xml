@@ -23,11 +23,11 @@
     <context>atl.general</context>
   </web-resource>
 
-  <web-item key="projectapprove-webitem" name="Proje Onay" section="system.top.navigation.bar" weight="200">
-    <description key="projectapprove-item-desc">Proje Onay</description>
-    <label key="Proje Onay"/>
-    <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link>
-  <!--    <condition class="com.veniture.condition.projectApprove"/>-->
+  <web-item key="users-webitem" name="Users" section="system.top.navigation.bar" weight="200">
+    <description key="users-item-desc">Users</description>
+    <label key="Users"/>
+    <link linkId="users-item-link">/plugins/servlet/users</link>
+  <!--    <condition class="com.veniture.condition.users"/>-->
   <!--    <conditions type="AND">-->
 <!--      <condition class="com.veniture.condition.gmy"/>-->
 <!--      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition">-->
@@ -35,9 +35,9 @@
 <!--  </conditions> -->
   </web-item>
 
-  <servlet name="Project Approve Servlet" key="projectapprove" class="com.veniture.servlet.ProjectApprove">
-    <description>projectapprove</description>
-    <url-pattern>/projectapprove</url-pattern>
+  <servlet name="Project Approve Servlet" key="users" class="com.veniture.servlet.Users">
+    <description>users</description>
+    <url-pattern>/users</url-pattern>
   </servlet>
 
   <rest name="Rest Service" key="restservice" path="/test" version="1.2">
