@@ -17,6 +17,8 @@
   <web-resource key="PortfolioManagement-resources" name="PortfolioManagement Web Resources">
     <resource type="download" name="PortfolioManagement.css" location="/css/PortfolioManagement.css"/>
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>
+    <resource type="download" name="DataTables.js" location="/js/DataTables/datatables.min.js"/>
+    <resource type="download" name="DataTables.css" location="/js/DataTables/datatables.min.css"/>
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>
@@ -25,8 +27,8 @@
     <description key="projectapprove-item-desc">Proje Onay</description>
     <label key="Proje Onay"/>
     <link linkId="projectapprove-item-link">/plugins/servlet/projectapprove</link>
-    <condition class="com.veniture.condition.projectApprove"/>
-<!--    <conditions type="AND">-->
+  <!--    <condition class="com.veniture.condition.projectApprove"/>-->
+  <!--    <conditions type="AND">-->
 <!--      <condition class="com.veniture.condition.gmy"/>-->
 <!--      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition">-->
 <!--    </condition>-->

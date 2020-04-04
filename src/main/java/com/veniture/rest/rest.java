@@ -30,9 +30,7 @@ public class rest {
     @JiraImport
     private IssueManager issueManager;
     private static final Logger logger = LoggerFactory.getLogger(rest.class);// The transition ID
-//    private static final Gson GSON = new Gson();
-    private static final IssueService ISSUE_SERVICE = ComponentAccessor.getIssueService();
-    private static final ApplicationUser CURRENT_USER = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+
 
     public rest(RequestFactory requestFactory, SearchService searchService, JiraAuthenticationContext authenticationContext){
         this.requestFactory = requestFactory;
@@ -47,6 +45,4 @@ public class rest {
     public String getCfValueFromIssue(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         return "test";
     }
-
-
 }

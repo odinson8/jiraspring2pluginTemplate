@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -46,11 +47,9 @@ public class ProjectApprove extends HttpServlet {
         ApplicationUser loggedInUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         JiraServiceContext jiraServiceContext = new JiraServiceContextImpl( loggedInUser );
         UserSearchService userSearchService = ComponentAccessor.getUserSearchService();
-        userSearchService.findUsersAllowEmptyQuery(jiraServiceContext,"");
-
+        List<ApplicationUser> allUsers= userSearchService.findUsersAllowEmptyQuery(jiraServiceContext,"");
         Map<String, Object> context = new HashMap<>();
-         context.put("programs", "asd");
-
+        context.put("allUsers", allUsers);
         return context;
     }
 }
