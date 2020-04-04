@@ -22,20 +22,15 @@ import java.util.Map;
 public class ProjectApprove extends HttpServlet {
     @JiraImport
     private TemplateRenderer templateRenderer;
-
-
     private static final String LIST_ISSUES_TEMPLATE = "/templates/projectApprove.vm";
     public static final Logger logger = LoggerFactory.getLogger(ProjectApprove.class);
-
     public ProjectApprove(TemplateRenderer templateRenderer) {
         this.templateRenderer = templateRenderer;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         Map<String, Object> context = null;
-
         try {
             context = createContext();
         }
@@ -48,11 +43,11 @@ public class ProjectApprove extends HttpServlet {
     }
 
     private Map<String, Object> createContext() {
-   /*     ApplicationUser loggedInUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+        ApplicationUser loggedInUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         JiraServiceContext jiraServiceContext = new JiraServiceContextImpl( loggedInUser );
         UserSearchService userSearchService = ComponentAccessor.getUserSearchService();
         userSearchService.findUsersAllowEmptyQuery(jiraServiceContext,"");
-*/
+
         Map<String, Object> context = new HashMap<>();
          context.put("programs", "asd");
 
