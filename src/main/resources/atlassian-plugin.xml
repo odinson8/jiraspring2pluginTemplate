@@ -19,6 +19,9 @@
     <resource type="download" name="PortfolioManagement.js" location="/js/PortfolioManagement.js"/>
     <resource type="download" name="DataTables.js" location="/js/DataTables/datatables.min.js"/>
     <resource type="download" name="DataTables.css" location="/js/DataTables/datatables.min.css"/>
+    <resource type="download" name="Buttons.js" location="/js/DataTables/Buttons-1.6.1/js/dataTables.buttons.min.js"/>
+    <resource type="download" name="Buttonshtml5.js" location="/js/DataTables/Buttons-1.6.1/js/buttons.html5.min.js"/>
+    <resource type="download" name="Buttons.css" location="/js/DataTables/Buttons-1.6.1/css/buttons.dataTables.min.css"/>
     <resource type="download" name="images/" location="/images"/>
     <context>atl.general</context>
   </web-resource>
@@ -40,7 +43,7 @@
     <url-pattern>/users</url-pattern>
   </servlet>
 
-  <rest name="Rest Service" key="restservice" path="/test" version="1.2">
+  <rest name="Rest Service" key="userservice" path="/userservice" version="1.0">
     <description key="restservice">The rest service</description>
   </rest>
 </atlassian-plugin>

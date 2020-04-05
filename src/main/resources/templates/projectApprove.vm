@@ -27,9 +27,23 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     </style>
         <script>
             AJS.$(document).ready(function() {
-                console.log("asd");
-                AJS.$('#example').DataTable();
+                console.log("-----");
+                var table = AJS.$('#example').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'collection',
+                                text: 'Export',
+                                buttons: [
+                                    'copy',
+                                    'csv'
+                                ]
+                            }
+                        ]
+                    }
+                );
             });
+
         </script>
     <meta name="decorator" content="atl.general">
 </head>
@@ -37,54 +51,37 @@ $webResourceManager.requireResource("com.veniture.PortfolioManagement:PortfolioM
     <body class="page-type-admin">
     <div class="content-container">
         <div class="content-body">
-      <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>$170,750</td>
-            </tr>
-            <tr>
-                <td>Donna Snider</td>
-                <td>Customer Support</td>
-                <td>New York</td>
-                <td>27</td>
-                <td>2011/01/25</td>
-                <td>$112,000</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </tfoot>
-    </table>
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Groups</th>
+                        <th>Is Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($user in $users)
+                        <tr>
+                            <td>$user.getFullName()</td>
+                            <td>$user.getUsername()</td>
+                            <td>$user.getEmail()</td>
+                            <td>$user.getGroups()</td>
+                            <td>$user.getIsActive()</td>
+                        </tr>
+                    #end
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Groups</th>
+                        <th>Is Active</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
     </body>
